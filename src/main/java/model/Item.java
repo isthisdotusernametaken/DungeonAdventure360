@@ -2,30 +2,49 @@ package model;
 
 public abstract class Item /*implements CharRepresentable*/ {
 
-    private final boolean myIsConsumable;
+    private final ItemType myType;
+    private final boolean myCanChangeCount;
     private int myCount;
 
-    Item(final boolean theIsConsumable,
+    Item(final ItemType theType,
+         final boolean theCanChangeCount,
          final int theCount) {
-        myIsConsumable = theIsConsumable;
+        myType = theType;
+        myCanChangeCount = theCanChangeCount;
         myCount = theCount;
+    }
+
+    final ItemType getType() {
+        return myType;
+    }
+
+    final boolean canChangeCount() {
+        return myCanChangeCount;
     }
 
     final int getCount() {
         return myCount;
     }
 
-    final void consume(final int theCount) {
-        if (myIsConsumable) {
-            myCount -= theCount;
+    final void addToStack(final int theCount) {
+        if (myCanChangeCount) {
+            myCount += theCount;
         }
     }
 
-    final Item takeFromStack(final int theCount) {
-        consume(theCount);
-
-        return newStack(theCount);
+    final void consume() {
+        if (myCanChangeCount) {
+            myCount--;
+        }
     }
 
-    abstract Item newStack(final int theCount);
+    final boolean isSameType(final Item theOther) {
+        return myType == theOther.myType &&
+               (
+                       myType != ItemType.BUFF_POTION /*||
+                       ((BuffPotion) this).getBuffType() == ((BuffPotion) theOther).getBuffType()*/
+               );
+    }
+
+    abstract Item copy();
 }

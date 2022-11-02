@@ -2,15 +2,16 @@ package model;
 
 public class Pillar extends Item {
 
-    final static Pillar ABSTRACTION = new Pillar('A');
-    final static Pillar ENCAPSULATION = new Pillar('E');
-    final static Pillar INHERITANCE = new Pillar('I');
-    final static Pillar POLYMORPHISM = new Pillar('P');
+    final static Pillar ABSTRACTION = new Pillar(ItemType.ABSTRACTION, 'A');
+    final static Pillar ENCAPSULATION = new Pillar(ItemType.ENCAPSULATION, 'E');
+    final static Pillar INHERITANCE = new Pillar(ItemType.INHERITANCE, 'I');
+    final static Pillar POLYMORPHISM = new Pillar(ItemType.POLYMORPHISM, 'P');
 
     private final char myCharRepresentation;
 
-    private Pillar(final char theCharRepresentation) {
-        super(false, 1);
+    private Pillar(final ItemType theType,
+                   final char theCharRepresentation) {
+        super(theType, false, 1);
 
         myCharRepresentation = theCharRepresentation;
     }
@@ -20,7 +21,7 @@ public class Pillar extends Item {
     }
 
     @Override
-    Item newStack(int theCount) {
+    Item copy() {
         return this;
     }
 }
