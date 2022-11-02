@@ -2,10 +2,16 @@ package model;
 
 public abstract class CharacterApplicableItem extends Item {
 
-    CharacterApplicableItem(ItemType theType,
-                            boolean theCanChangeCount,
-                            int theCount) {
-        super(theType, theCanChangeCount, theCount);
+    CharacterApplicableItem(final char theRepresentation,
+                            final ItemType theType,
+                            final boolean theCanChangeCount,
+                            final int theCount) {
+        super(
+                theRepresentation,
+                theType,
+                theCanChangeCount,
+                theCount
+        );
     }
 
     final int use(/*final DungeonCharacter theTarget*/) {

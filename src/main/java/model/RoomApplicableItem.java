@@ -2,16 +2,26 @@ package model;
 
 public abstract class RoomApplicableItem extends Item {
 
-    RoomApplicableItem(final ItemType theType,
+    RoomApplicableItem(final char theRepresentation,
+                       final ItemType theType,
                        final boolean theCanChangeCount,
                        final int theCount) {
-        super(theType, theCanChangeCount, theCount);
+        super(
+                theRepresentation,
+                theType,
+                theCanChangeCount,
+                theCount
+        );
     }
 
-    final int use(/*final Room theTarget*/) {
-        consume();
-        return applyEffect(/*theTarget*/);
+    final boolean use(/*final Room theTarget*/) {
+        boolean applied = applyEffect(/*theTarget*/);
+        if (applied) {
+            consume();
+        }
+
+        return applied;
     }
 
-    abstract int applyEffect(/*final Room theTarget*/);
+    abstract boolean applyEffect(/*final Room theTarget*/);
 }

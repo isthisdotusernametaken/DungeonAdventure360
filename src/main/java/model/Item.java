@@ -2,16 +2,23 @@ package model;
 
 public abstract class Item /*implements CharRepresentable*/ {
 
+    private final char myRepresentation;
     private final ItemType myType;
     private final boolean myCanChangeCount;
     private int myCount;
 
-    Item(final ItemType theType,
+    Item(final char theRepresentation,
+         final ItemType theType,
          final boolean theCanChangeCount,
          final int theCount) {
+        myRepresentation = theRepresentation;
         myType = theType;
         myCanChangeCount = theCanChangeCount;
         myCount = theCount;
+    }
+
+    public char charRepresentation() {
+        return myRepresentation;
     }
 
     final ItemType getType() {
