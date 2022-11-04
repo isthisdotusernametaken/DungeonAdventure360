@@ -12,7 +12,7 @@ public class Dungeon {
 //    public String toString() { //Static cannot overridden toString method in Object Java Lang
 //    }
 
-//    Room getRoom(RoomCoordinates theCoords) { //Need RoomCoordinates class
+//    Room getRoom(final RoomCoordinates theCoords) { //Need RoomCoordinates class
 //        return myRooms;
 //    }
 
@@ -20,7 +20,7 @@ public class Dungeon {
 //        return myMap;
 //    }
 
-//    private void generateMaze(RoomCoordinates) { //Need RoomCoordinates class
+//    private void generateMaze(final RoomCoordinates theDimensions) { //Need RoomCoordinates class
 //
 //    }
 }

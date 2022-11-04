@@ -33,7 +33,7 @@ public class Trap extends DamageDealer {
         return myCharRepresentation;
     }
 
-    final AttackResult attemptDamage(DungeonCharacter theCharacter) {
+    final AttackResult attemptDamage(final DungeonCharacter theCharacter) {
         return null;
     }
 
