@@ -1,5 +1,5 @@
 package model;
 
 public interface SpecialSkill {
-//    AttackResult use (DungeonCharacter theTarget);
+    AttackResult use (DungeonCharacter theTarget);
 }
