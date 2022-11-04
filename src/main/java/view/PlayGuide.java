@@ -3,27 +3,27 @@ package view;
 public class PlayGuide {
     private static final Menu GUIDE_MENU = null;
 
-    void open() {
+    static void open() {
 
     }
 
-    private String printControlGuide() {
+    private static String printControlGuide() {
         return "";
     }
 
-    private String printCharactersGuide() {
+    private static String printCharactersGuide() {
         return "";
     }
 
-    private String printInventoryGuide() {
+    private static String printInventoryGuide() {
         return "";
     }
 
-    private String printExplorationGuide() {
+    private static String printExplorationGuide() {
         return "";
     }
 
-    private String printCombatGuide() {
+    private static String printCombatGuide() {
         return "";
     }
 }

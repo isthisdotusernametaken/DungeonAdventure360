@@ -6,31 +6,31 @@ public class NewGameView {
     private static final Menu CLASS_MENU = null;
     private static final Menu DIFFICULTY_MENU = null;
 
-    MenuSignal open(Controller theController) {
+    static MenuSignal open(Controller theController) {
         return null;
     }
 
-    private void displayFiles(Controller theController) {
+    private static void displayFiles(Controller theController) {
 
     }
 
-    private String readFileName() {
+    private static String readFileName() {
         return "";
     }
 
-    private String readAdventurerName() {
+    private static String readAdventurerName() {
         return "";
     }
 
-    private String readAdventurerClass() {
+    private static String readAdventurerClass() {
         return "";
     }
 
-    private String readDifficulty() {
+    private static String readDifficulty() {
         return "";
     }
 
-    private String attemptCreateGame(Controller theController) {
+    private static String attemptCreateGame(Controller theController) {
         return "";
     }
 }

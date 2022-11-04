@@ -6,19 +6,19 @@ public class ExplorationView {
     private static final Menu ROOM_MENU = null;
     private static final Menu MOVE_MENU = null;
 
-    MenuSignal open(Controller theController) {
+    static MenuSignal open(Controller theController) {
         return null;
     }
 
-    private void displayRoom(Controller theController) {
+    private static void displayRoom(Controller theController) {
 
     }
 
-    private boolean move(Controller theController) {
+    private static boolean move(Controller theController) {
         return false;
     }
 
-    private void collectItems(Controller theController) {
+    private static void collectItems(Controller theController) {
 
     }
 }

@@ -6,23 +6,23 @@ public class InventoryView {
     private static final String SELECT_PROMPT = null;
     private static final Menu ITEM_ACTION_MENU = null;
 
-    void open(Controller theController) {
+    static void open(Controller theController) {
 
     }
 
-    private void displayItems(Controller theController) {
+    private static void displayItems(Controller theController) {
 
     }
 
-    private int selectItem(int theMaxIndex) {
+    private static int selectItem(int theMaxIndex) {
         return 0;
     }
 
-    private boolean attemptUseItem(Controller theController, int theIndex) {
+    private static boolean attemptUseItem(Controller theController, int theIndex) {
         return false;
     }
 
-    private void dropItem(Controller theController, int theIndex) {
+    private static void dropItem(Controller theController, int theIndex) {
 
     }
 }

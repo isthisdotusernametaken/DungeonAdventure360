@@ -7,7 +7,7 @@ public class UISelection {
     private static final String SELECT_GUI = null;
     private static final String SELECT_CONSOLE_UI = null;
 
-    public int selectUI() {
+    public static int selectUI() {
         return 0;
     }
 }
