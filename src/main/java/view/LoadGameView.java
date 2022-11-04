@@ -3,13 +3,14 @@ package view;
 import controller.Controller;
 
 public class LoadGameView {
+
     private static final String PROMPT = null;
 
-    static MenuSignal open(Controller theController) {
+    static MenuSignal open(final Controller theController) {
         return null;
     }
 
-    private static void displayFiles(Controller theController) {
+    private static void displayFiles(final Controller theController) {
 
     }
 
@@ -17,7 +18,7 @@ public class LoadGameView {
         return "";
     }
 
-    private static String attemptLoadGame(Controller theController) {
+    private static String attemptLoadGame(final Controller theController) {
         return "";
     }
 }

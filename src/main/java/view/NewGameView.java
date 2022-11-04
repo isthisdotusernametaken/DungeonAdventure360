@@ -3,14 +3,15 @@ package view;
 import controller.Controller;
 
 public class NewGameView {
+
     private static final Menu CLASS_MENU = null;
     private static final Menu DIFFICULTY_MENU = null;
 
-    static MenuSignal open(Controller theController) {
+    static MenuSignal open(final Controller theController) {
         return null;
     }
 
-    private static void displayFiles(Controller theController) {
+    private static void displayFiles(final Controller theController) {
 
     }
 
@@ -30,7 +31,7 @@ public class NewGameView {
         return "";
     }
 
-    private static String attemptCreateGame(Controller theController) {
+    private static String attemptCreateGame(final Controller theController) {
         return "";
     }
 }

@@ -3,13 +3,14 @@ package view;
 import controller.Controller;
 
 public class MapView {
+
     private static final String PROMPT = null;
 
-    static void open(Controller theController) {
+    static void open(final Controller theController) {
 
     }
 
-    private static void displayMap(Controller theController) {
+    private static void displayMap(final Controller theController) {
 
     }
 

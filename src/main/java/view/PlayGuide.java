@@ -1,6 +1,7 @@
 package view;
 
 public class PlayGuide {
+
     private static final Menu GUIDE_MENU = null;
 
     static void open() {

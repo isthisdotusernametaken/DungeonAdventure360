@@ -1,11 +1,14 @@
 package view;
 
 public class Menu {
+
     private final String myTitle;
     private final String[] myMenuDescriptions;
     private final String[] myMenuOptions;
 
-    Menu(String theTitle, String[] theMenuDescriptions, String[] theMenuOptions) {
+    Menu(final String theTitle,
+         final String[] theMenuDescriptions,
+         final String[] theMenuOptions) {
         myTitle = theTitle;
         myMenuDescriptions = theMenuDescriptions;
         myMenuOptions = theMenuOptions;
@@ -14,7 +17,7 @@ public class Menu {
         return 0;
     }
 
-    int select(int[] theExcludedOptions) {
+    int select(final int[] theExcludedOptions) {
         return 0;
     }
 }

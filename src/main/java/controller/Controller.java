@@ -3,13 +3,17 @@ package controller;
 
 import model.DungeonAdventure;
 import view.ConsoleUI;
+import view.UISelection;
 
 public class Controller {
+
     private DungeonAdventure myGame;
     private final ConsoleUI myUI;
 
-    public Controller(DungeonAdventure myGame) { //Not in the UML
-        myUI = null;
+    public Controller() {
+        myUI = UISelection.select() == UISelection.CONSOLE_UI ?
+                new ConsoleUI(this) :
+                null/*new GUI(this)*/;
     }
 
     public static void main(String[] args) {
@@ -43,6 +47,7 @@ public class Controller {
     public String getInventory() {
         return "";
     }
+
     public String getMap() {
         return "";
     }
@@ -63,19 +68,19 @@ public class Controller {
         return "";
     }
 
-    public boolean move(String theDirection) {
+    public boolean move(final String theDirection) {
         return true;
     }
 
-    public void useItem(int theIndexInInventory) {
+    public void useItem(final int theIndexInInventory) {
 
     }
 
-    public void dropItem(int theIndexInInventory) {
+    public void dropItem(final int theIndexInInventory) {
 
     }
 
-    public void collectItem(int theIndexInInventory) {
+    public void collectItem(final int theIndexInInventory) {
 
     }
 
@@ -83,7 +88,7 @@ public class Controller {
         return "";
     }
 
-    public String useSpecialSkills(int theIndex) {
+    public String useSpecialSkills(final int theIndex) {
         return "";
     }
 
@@ -91,15 +96,15 @@ public class Controller {
         return "";
     }
 
-    public String createGame(String theGameDetails) {
+    public String createGame(final String theGameDetails) {
         return "";
     }
 
-    public String loadGame(String theFile) {
+    public String loadGame(final String theFile) {
         return "";
     }
 
-    public String saveGame(String theFile) {
+    public String saveGame(final String theFile) {
         return "";
     }
 
