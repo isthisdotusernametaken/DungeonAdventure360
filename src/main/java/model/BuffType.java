@@ -7,7 +7,8 @@ public enum BuffType {
     SPEED(false),
     WEAKNESS(true),
     BROKEN_BONE(true),
-    BURNING(true);
+    BURNING(true),
+    BLEEDING(true);
 
 
     private final boolean myIsDebuff;
