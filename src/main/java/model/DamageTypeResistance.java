@@ -2,18 +2,18 @@ package model;
 
 public class DamageTypeResistance {
 
-    // private final DamageType myDamageType;
+    private final DamageType myDamageType;
     private final double myResistance;
 
-    DamageTypeResistance(// final DamageType theDamageType
+    DamageTypeResistance(final DamageType theDamageType,
                          final double theResistance) {
-        // myDamageType = theDamageType;
+        myDamageType = theDamageType;
         myResistance = Util.clampFraction(theResistance);
     }
 
-//    DamageType getDamageType() {
-//        return myDamageType;
-//    }
+    DamageType getDamageType() {
+        return myDamageType;
+    }
 
     double getResistance() {
         return myResistance;
