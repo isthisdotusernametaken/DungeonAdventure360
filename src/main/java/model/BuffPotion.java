@@ -5,24 +5,22 @@ public class BuffPotion extends CharacterApplicableItem {
     private static final int MIN_DURATION = 2;
     private static final int MAX_DURATION = 5;
 
-    //private final BuffType myBuffType;
+    private final BuffType myBuffType;
 
-    BuffPotion(final int theCount/*, final BuffType theBuffType*/) {
+    BuffPotion(final int theCount, final BuffType theBuffType) {
         super(
-                '\0'/*theBuffType.charRepresentation*/,
+                theBuffType.charRepresentation(),
                 ItemType.BUFF_POTION,
                 true,
                 theCount
         );
 
-        // myBuffType = theBuffType;
+        myBuffType = theBuffType;
     }
 
-    /*
     BuffType getBuffType() {
         return myBuffType;
     }
-    */
 
     @Override
     int applyEffect(/*final DungeonCharacter theTarget*/) {
@@ -34,6 +32,6 @@ public class BuffPotion extends CharacterApplicableItem {
 
     @Override
     Item copy() {
-        return new BuffPotion(getCount()/*, myBuffType*/);
+        return new BuffPotion(getCount(), myBuffType);
     }
 }

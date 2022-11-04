@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Item /*implements CharRepresentable*/ {
+public abstract class Item implements CharRepresentable {
 
     private final char myRepresentation;
     private final ItemType myType;
@@ -48,8 +48,8 @@ public abstract class Item /*implements CharRepresentable*/ {
     final boolean isSameType(final Item theOther) {
         return myType == theOther.myType &&
                (
-                       myType != ItemType.BUFF_POTION /*||
-                       ((BuffPotion) this).getBuffType() == ((BuffPotion) theOther).getBuffType()*/
+                       myType != ItemType.BUFF_POTION ||
+                       ((BuffPotion) this).getBuffType() == ((BuffPotion) theOther).getBuffType()
                );
     }
 
