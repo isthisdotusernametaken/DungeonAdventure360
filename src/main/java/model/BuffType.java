@@ -13,10 +13,12 @@ public enum BuffType {
     private final boolean myIsDebuff;
 
     BuffType(final boolean theIsDebuff){
+
         myIsDebuff = theIsDebuff;
     }
 
     boolean isDebuff() {
+
         return myIsDebuff;
     }
 }
