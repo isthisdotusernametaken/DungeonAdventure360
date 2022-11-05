@@ -6,7 +6,6 @@ public class Trap extends DamageDealer implements CharRepresentable {
     private final boolean myIsSingleUse;
     private boolean myIsBroken;
     private final boolean myIsBoardable;
-    private final int myDebuffDuration;
 
     Trap(final boolean theIsSingleUse,
          final boolean theIsBoardable,
@@ -14,15 +13,16 @@ public class Trap extends DamageDealer implements CharRepresentable {
          final int theMaxDamage,
          final double theHitChance,
          final double theDebuffChance,
+         final int theDebuffDuration,
          final DamageType theDamageType,
          final int theSpeed,
-         final int theDebuffDuration,
          final char theCharRepresentation) {
 
         super(theMinDamage,
               theMaxDamage,
               theHitChance,
               theDebuffChance,
+              theDebuffDuration,
               theDamageType,
               theSpeed
         );
@@ -31,7 +31,6 @@ public class Trap extends DamageDealer implements CharRepresentable {
         myIsSingleUse = theIsSingleUse;
         myIsBroken = false;
         myIsBoardable = theIsBoardable;
-        myDebuffDuration = theDebuffDuration;
     }
 
     public final char charRepresentation() {
@@ -47,7 +46,7 @@ public class Trap extends DamageDealer implements CharRepresentable {
     }
 
     final AttackResult activate(final DungeonCharacter theTarget) {
-        return attemptDamage(theTarget, false, myDebuffDuration);
+        return attemptDamage(theTarget, false);
     }
 
     final boolean board() {

@@ -16,6 +16,7 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theMaxDamage,
                      final double theHitChance,
                      final double theDebuffChance,
+                     final int theDebuffDuration,
                      final DamageType theDamageType,
                      final int theSpeed,
                      final double theBlockChance/*,
@@ -24,6 +25,7 @@ public abstract class DungeonCharacter extends DamageDealer {
               theMaxDamage,
               theHitChance,
               theDebuffChance,
+              theDebuffDuration,
               theDamageType,
               theSpeed
         );
@@ -97,7 +99,9 @@ public abstract class DungeonCharacter extends DamageDealer {
                                           final boolean theIsBlockable,
                                           final int theDebuffDuration) {
         if (!(theIsBlockable && Util.probabilityTest(myBlockChance))) {
-            applyDamage(theDamage, theDamageType);
+            if (applyDamage(theDamage, theDamageType)) {
+                return AttackResult.KILL;
+            }
 
             if (Util.probabilityTest(
                     adjustedDebuffChance(theDebuffChance, theDamageType))
@@ -140,9 +144,11 @@ public abstract class DungeonCharacter extends DamageDealer {
         return 1.0 - getAdjustedResistance(theDamageType);
     }
 
-    private void applyDamage(final int theBaseDamage,
+    private boolean applyDamage(final int theBaseDamage,
                              final DamageType theDamageType) {
         myHP -= adjustedDamage(theBaseDamage, theDamageType);
+
+        return myHP <= 0;
     }
 
     private int adjustedDamage(final int theBaseDamage,
