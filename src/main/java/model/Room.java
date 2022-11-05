@@ -15,7 +15,7 @@ public class Room {
     /**
      * The width and length of the contents of a Room in its String
      * representation.
-     * Should be
+     * Should be >= 2
      */
     private static final int ROOM_SIZE = 3;
 
