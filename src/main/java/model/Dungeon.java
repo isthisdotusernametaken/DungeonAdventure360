@@ -2,25 +2,35 @@ package model;
 
 public class Dungeon {
 
-//    private final Room[][] myRooms; //Need Room class
-//    private final Map myMap;        //Need Map class
+    private final Room[][][] myRooms;
+    private final Map myMap;
 
-//    Dungeon theDungeon (final RoomCoordinates theDimensions){ //Need RoomCoordinates class
-//        return null;
-//    }
+    Dungeon(final RoomCoordinates theDimensions){
+        myRooms = generateMaze(theDimensions);
+        myMap = new Map(theDimensions);
+    }
 
-//    public String toString() { //Static cannot overridden toString method in Object Java Lang
-//    }
+    public String toString() {
+        return "";
+    }
 
-//    Room getRoom(final RoomCoordinates theCoords) { //Need RoomCoordinates class
-//        return myRooms;
-//    }
+    Room getRoom(final RoomCoordinates theCoords) {
+        return myRooms[theCoords.getFloor()]
+                      [theCoords.getX()]
+                      [theCoords.getY()];
+    }
 
-//    Map getMap() { //Need Map class
-//        return myMap;
-//    }
+    Map getMap() {
+        return myMap;
+    }
 
-//    private void generateMaze(final RoomCoordinates theDimensions) { //Need RoomCoordinates class
-//
-//    }
+    private Room[][][] generateMaze(final RoomCoordinates theDimensions) {
+        Room[][][] maze = new Room[theDimensions.getFloor()]
+                                  [theDimensions.getX()]
+                                  [theDimensions.getY()];
+
+        // generate maze
+
+        return maze;
+    }
 }
