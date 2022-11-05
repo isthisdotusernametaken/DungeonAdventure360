@@ -27,7 +27,7 @@ public class Container {
 
     String useItem(final int theIndex,
                    final DungeonCharacter theTarget,
-                   /*final Map theMap,*/
+                   final Map theMap,
                    final Room theRoom,
                    final RoomCoordinates theCoords) {
         Item selectedItem = myItems.get(theIndex);
@@ -36,7 +36,7 @@ public class Container {
             return ((CharacterApplicableItem) selectedItem).use(theTarget);
         }
         if (selectedItem instanceof MapApplicableItem) {
-            return ((MapApplicableItem) selectedItem).use(/*theMap, */theCoords);
+            return ((MapApplicableItem) selectedItem).use(theMap, theCoords);
         }
         if (selectedItem instanceof RoomApplicableItem) {
             return ((RoomApplicableItem) selectedItem).use(theRoom);

@@ -16,12 +16,14 @@ public abstract class MapApplicableItem extends Item {
         );
     }
 
-    final String use(/*final Map theTarget, */final RoomCoordinates theCoords) {
+    final String use(final Map theTarget,
+                     final RoomCoordinates theCoords) {
         consume();
-        applyEffect(/*theTarget, */theCoords);
+        applyEffect(theTarget, theCoords);
 
         return MAP_UPDATED;
     }
 
-    abstract void applyEffect(/*final Map theTarget, */final RoomCoordinates theCoords);
+    abstract void applyEffect(final Map theTarget,
+                              final RoomCoordinates theCoords);
 }

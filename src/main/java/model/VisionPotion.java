@@ -14,10 +14,10 @@ public class VisionPotion extends MapApplicableItem {
     }
 
     @Override
-    void applyEffect(/*final Map theTarget, */final RoomCoordinates theCoords) {
+    void applyEffect(final Map theTarget, final RoomCoordinates theCoords) {
         for (int i = theCoords.getX() - 1; i <= theCoords.getX() + 1; i++) {
             for (int j = theCoords.getY() - 1; j <= theCoords.getY() + 1; j++) {
-                // theTarget.explore(theCoords.getFloor(), i, j);
+                theTarget.explore(theCoords.getFloor(), i, j);
             }
         }
     }
