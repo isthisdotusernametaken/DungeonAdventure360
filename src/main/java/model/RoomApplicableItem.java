@@ -14,14 +14,15 @@ public abstract class RoomApplicableItem extends Item {
         );
     }
 
-    final boolean use(/*final Room theTarget*/) {
-        boolean applied = applyEffect(/*theTarget*/);
-        if (applied) {
+    final String use(final Room theTarget) {
+        if (applyEffect(theTarget)) {
             consume();
         }
 
-        return applied;
+        return getResult();
     }
 
-    abstract boolean applyEffect(/*final Room theTarget*/);
+    abstract boolean applyEffect(final Room theTarget);
+
+    abstract String getResult();
 }

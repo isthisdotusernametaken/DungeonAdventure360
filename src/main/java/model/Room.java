@@ -21,21 +21,21 @@ public class Room {
 
     private final Direction[] myDoors;
     private final Container myContainer;
-    //private final Trap myTrap;
+    private final Trap myTrap;
     //private Monster myMonster;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
     Room(final Direction[] theDoors,
          final List<Item> theItems,
-         //final Trap theTrap,
+         final Trap theTrap,
          //final Monster theMonster,
          final boolean theIsEntrance,
          final boolean theIsExit) {
 
         myDoors = theDoors.clone();
         myContainer = new Container(theItems);
-        //myTrap = theTrap;
+        myTrap = theTrap;
         //myMonster = theMonster;
         myIsEntrance = theIsEntrance;
         myIsExit = theIsExit;
@@ -78,22 +78,20 @@ public class Room {
         return myIsExit;
     }
 
-//    String viewTrap() {
-//        return myTrap.toString();
-//    }
-//
-//    AttackResult activateTrap(final DungeonCharacter theTarget) {
-//        return myTrap == null ?
-//               AttackResult.NO_ACTION :
-//               myTrap.activate(theTarget);
-//    }
-//
-//    boolean boardTrap() {
-//        return myTrap == null ?
-//               false :
-//               myTrap.board();
-//    }
-//
+    boolean hasTrap() {
+        return myTrap != null;
+    }
+
+    AttackResult activateTrap(final DungeonCharacter theTarget) {
+        return myTrap == null ?
+               AttackResult.NO_ACTION :
+               myTrap.activate(theTarget);
+    }
+
+    boolean boardTrap() {
+        return myTrap != null && myTrap.board();
+    }
+
 //    Monster getMonster() {
 //        return myMonster;
 //    }
@@ -132,15 +130,15 @@ public class Room {
         if (myIsExit) {
             addToContents(EXIT, contents, position);
         }
-//        if (myTrap != null) {
-//            addToContents(
-//                    myTrap.isBroken() ?
-//                            BROKEN_TRAP :
-//                            myTrap.charRepresentation(),
-//                    contents,
-//                    position
-//            );
-//        }
+        if (myTrap != null) {
+            addToContents(
+                    myTrap.isBroken() ?
+                            BROKEN_TRAP :
+                            myTrap.charRepresentation(),
+                    contents,
+                    position
+            );
+        }
         for (Item item : myContainer.viewItems()) {
             if (testContentsFull(contents, position)) {
                 break;

@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Container {
 
+    private static final String UNKNOWN_TYPE = "Unknown item type selected. " +
+                                               "Cannot be used.";
+
     private final List<Item> myItems;
 
     Container(final List<Item> theItems) {
@@ -22,23 +25,24 @@ public class Container {
         return items;
     }
 
-    List<Item> viewItemsAsList() {
-        return List.of(viewItems());
-    }
-
-    void useItem(final int theIndex/*,
-                 final DungeonCharacter theTarget,
-                 final Map theMap,
-                 final Room theRoom*/,
-                 final RoomCoordinates theCoords) {
+    String useItem(final int theIndex,
+                   final DungeonCharacter theTarget,
+                   /*final Map theMap,*/
+                   final Room theRoom,
+                   final RoomCoordinates theCoords) {
         Item selectedItem = myItems.get(theIndex);
+
         if (selectedItem instanceof CharacterApplicableItem) {
-            ((CharacterApplicableItem) selectedItem).use(/*theTarget*/);
-        } else if (selectedItem instanceof MapApplicableItem) {
-            ((MapApplicableItem) selectedItem).use(/*theTarget, */theCoords);
-        } else if (selectedItem instanceof RoomApplicableItem) {
-            ((RoomApplicableItem) selectedItem).use(/*theTarget*/);
+            return ((CharacterApplicableItem) selectedItem).use(theTarget);
         }
+        if (selectedItem instanceof MapApplicableItem) {
+            return ((MapApplicableItem) selectedItem).use(/*theMap, */theCoords);
+        }
+        if (selectedItem instanceof RoomApplicableItem) {
+            return ((RoomApplicableItem) selectedItem).use(theRoom);
+        }
+
+        throw new IllegalArgumentException(UNKNOWN_TYPE);
     }
 
     void addItem(final Item theItem) {

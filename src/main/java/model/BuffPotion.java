@@ -23,11 +23,11 @@ public class BuffPotion extends CharacterApplicableItem {
     }
 
     @Override
-    int applyEffect(/*final DungeonCharacter theTarget*/) {
+    String applyEffect(final DungeonCharacter theTarget) {
         int duration = Util.randomInt(MIN_DURATION, MAX_DURATION);
-        // theTarget.applyBuff(myBuffType, duration);
+        theTarget.applyBuff(myBuffType, duration);
 
-        return duration;
+        return "";
     }
 
     @Override

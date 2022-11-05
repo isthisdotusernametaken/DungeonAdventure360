@@ -17,11 +17,10 @@ public class HealthPotion extends CharacterApplicableItem {
     }
 
     @Override
-    int applyEffect(/*final DungeonCharacter theTarget*/) {
+    String applyEffect(final DungeonCharacter theTarget) {
         int healAmount = Util.randomInt(MIN_HEAL, MAX_HEAL);
-        // theTarget.heal(healAmount);
 
-        return healAmount;
+        return "" + theTarget.heal(healAmount);
     }
 
     @Override

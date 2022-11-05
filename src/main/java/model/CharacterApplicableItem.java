@@ -14,10 +14,10 @@ public abstract class CharacterApplicableItem extends Item {
         );
     }
 
-    final int use(/*final DungeonCharacter theTarget*/) {
+    final String use(final DungeonCharacter theTarget) {
         consume();
-        return applyEffect(/*theTarget*/);
+        return applyEffect(theTarget);
     }
 
-    abstract int applyEffect(/*final DungeonCharacter theTarget*/);
+    abstract String applyEffect(final DungeonCharacter theTarget);
 }
