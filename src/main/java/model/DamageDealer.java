@@ -6,6 +6,7 @@ public abstract class DamageDealer {
     private final int myMaxDamage;
     private final double myHitChance;
     private final double myDebuffChance;
+    private final int myDebuffDuration;
     private final DamageType myDamageType;
     private final int mySpeed;
 
@@ -13,12 +14,14 @@ public abstract class DamageDealer {
                  final int theMaxDamage,
                  final double theHitChance,
                  final double theDebuffChance,
+                 final int theDebuffDuration,
                  final DamageType theDamageType,
                  final int theSpeed) {
         myMinDamage = theMinDamage;
         myMaxDamage = theMaxDamage;
         myHitChance = theHitChance;
         myDebuffChance = theDebuffChance;
+        myDebuffDuration = theDebuffDuration;
         myDamageType = theDamageType;
         mySpeed = theSpeed;
     }
@@ -68,15 +71,14 @@ public abstract class DamageDealer {
     }
 
     final AttackResult attemptDamage(final DungeonCharacter theTarget,
-                                     final boolean theIsBlockable,
-                                     final int theDebuffDuration) {
+                                     final boolean theIsBlockable) {
         if (Util.probabilityTest(getAdjustedHitChance())) {
             return theTarget.applyDamageAndBuff(
                     myDamageType,
                     Util.randomInt(getAdjustedMinDamage(), getAdjustedMaxDamage()),
                     getAdjustedDebuffChance(),
                     theIsBlockable,
-                    theDebuffDuration
+                    myDebuffDuration
             );
         }
         return AttackResult.MISS;

@@ -22,21 +22,21 @@ public class Room {
     private final Direction[] myDoors;
     private final Container myContainer;
     private final Trap myTrap;
-    //private Monster myMonster;
+    private Monster myMonster;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
     Room(final Direction[] theDoors,
          final List<Item> theItems,
          final Trap theTrap,
-         //final Monster theMonster,
+         final Monster theMonster,
          final boolean theIsEntrance,
          final boolean theIsExit) {
 
         myDoors = theDoors.clone();
         myContainer = new Container(theItems);
         myTrap = theTrap;
-        //myMonster = theMonster;
+        myMonster = theMonster;
         myIsEntrance = theIsEntrance;
         myIsExit = theIsExit;
     }
@@ -92,9 +92,26 @@ public class Room {
         return myTrap != null && myTrap.board();
     }
 
-//    Monster getMonster() {
-//        return myMonster;
-//    }
+    Monster getMonster() {
+        return myMonster;
+    }
+
+    AttackResult attackMonster(final DungeonCharacter theAttacker) {
+        if (myMonster == null) {
+            return AttackResult.NO_ACTION;
+        } else {
+            final AttackResult result = theAttacker.attemptDamage(
+                    myMonster,true
+            );
+
+            if (result == AttackResult.KILL) {
+                // Send drops to Room's Container
+                myMonster = null;
+            }
+
+            return result;
+        }
+    }
 
 
     // **-**
