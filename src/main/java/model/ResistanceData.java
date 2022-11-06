@@ -2,41 +2,48 @@ package model;
 
 public class ResistanceData {
 
-    private final double UNSPECIFIED_RESISTANCE;
-    private final double[] myResistance;
+    private static final double UNSPECIFIED_RESISTANCE = -1;
 
-    ResistanceData(DamageTypeResistance[] theResistance) {
+    private final double[] myResistances;
 
-
-    }
-     double getResistance(DamageType theDamageType){
-
-         return 0;
-     }
-      double getResistance(int theDamageType) {
-
-
-          return 0;
-      }
-        
-        private double[] allUnspecified(){
-
-            return new double[0];
-        }
-        
-    private void setResistance(DamageTypeResistance[] theResistance) {
-        
-    }
-    
-    private void setResistance(DamageTypeResistance theResistance) {
-        
-    }
-    
-    private void setUnspecifiedToZero(){
-        
+    ResistanceData(final DamageTypeResistance[] theResistances) {
+        myResistances = allUnspecified();
+        setResistances(theResistances);
+        setUnspecifiedToZero();
     }
 
-    private boolean isUnspecified(int theIndex) {
+    double getResistance(final DamageType theDamageType) {
+
+        return 0;
+    }
+
+    double getResistance(final int theDamageType) {
+
+
+        return 0;
+    }
+
+
+    // Constructor helpers
+
+    private double[] allUnspecified() {
+
+        return new double[0];
+    }
+
+    private void setResistances(final DamageTypeResistance[] theResistance) {
+
+    }
+
+    private void setResistance(final DamageTypeResistance theResistance) {
+
+    }
+
+    private void setUnspecifiedToZero() {
+
+    }
+
+    private boolean isUnspecified(final int theIndex) {
         return false;
     }
 

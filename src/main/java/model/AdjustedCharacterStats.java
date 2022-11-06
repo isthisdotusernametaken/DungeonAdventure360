@@ -7,63 +7,70 @@ public class AdjustedCharacterStats {
     private double myHitChance;
     private double myDebuffChance;
     private int mySpeed;
-    private final double[] myResistance;
+    private final double[] myResistances;
 
-    AdjustedCharacterStats(DungeonCharacter theCharacter){
-
+    AdjustedCharacterStats(DungeonCharacter theCharacter) {
+        myResistances = new double[DamageType.values().length];
+        resetStats(theCharacter);
     }
+
     int getMinDamage() {
         return myMinDamage;
     }
+
     int getMaxDamage() {
         return myMaxDamage;
     }
+
+    double getHitChance() {
+        return myHitChance;
+    }
+
     double getDebuffChance() {
         return myDebuffChance;
     }
-    DamageType getDamageType() {
 
-        return null;
-    }
     int getSpeed() {
         return mySpeed;
     }
 
-    double[] getResistance(DamageType theDamageType) {
-
-        return myResistance;
+    double getResistance(final DamageType theDamageType) {
+        return myResistances[theDamageType.ordinal()];
     }
-    void setMinDamage(int theMinDamage) {
+
+    void setMinDamage(final int theMinDamage) {
         this.myMinDamage = theMinDamage;
-
     }
-    void setMaxDamage(int theMaxDamage) {
+
+    void setMaxDamage(final int theMaxDamage) {
         this.myMaxDamage = theMaxDamage;
-
     }
-    void setHitChance(double theHitChance) {
-        this.myHitChance = theHitChance;
 
-    }
-    void setDebuffChance(double theDebuffChance) {
-        this.myDebuffChance = theDebuffChance;
-
-    }
-    void setSpeed(int theSpeed) {
-        this.mySpeed = theSpeed;
-
-    }
-    void setResistance(DamageType theDamageType,
-                       double theResistance) {
-
-
-    }
-    void resetStats(DungeonCharacter theCharacter){
-
-    }
-    void resetResistance(DungeonCharacter theCharacter){
+    void setHitChance(final double theHitChance) {
+        this.myHitChance = Util.clampFraction(theHitChance);
 
     }
 
+    void setDebuffChance(final double theDebuffChance) {
+        this.myDebuffChance = Util.clampFraction(theDebuffChance);
 
+    }
+
+    void setSpeed(final int theSpeed) {
+        this.mySpeed = Util.clampPositiveInt(theSpeed);
+    }
+
+    void setResistance(final DamageType theDamageType,
+                       final double theResistance) {
+
+
+    }
+
+    void resetStats(final DungeonCharacter theCharacter) {
+
+    }
+
+    void resetResistance(final DungeonCharacter theCharacter) {
+
+    }
 }
