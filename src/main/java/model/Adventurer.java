@@ -20,6 +20,7 @@ public class Adventurer extends DungeonCharacter {
                final DamageType theDamageType,
                final int theSpeed,
                final double theBlockChance,
+               final ResistanceData theResistances,
                final SpecialSkill ... theSpecialSkills) {
           super(theName,
                 theMaxHP,
@@ -30,7 +31,8 @@ public class Adventurer extends DungeonCharacter {
                 theDebuffDuration,
                 theDamageType,
                 theSpeed,
-                theBlockChance
+                theBlockChance,
+                theResistances
           );
 
           mySpecialSkills = theSpecialSkills.clone();
