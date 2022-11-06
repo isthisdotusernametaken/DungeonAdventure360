@@ -53,10 +53,4 @@ public class Adventurer extends DungeonCharacter {
                                        final int theIndex) {
         return mySpecialSkills[theIndex].use(theTarget);
     }
-
-    final void move(final int theFloors,
-                    final int theWidth,
-                    final int theHeight) {
-
-    }
 }
