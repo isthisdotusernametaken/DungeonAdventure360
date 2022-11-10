@@ -1,67 +1,45 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ResistanceDataTest {
 
-    private ResistanceData myInstance;
-
-    @BeforeEach
-    void createInstance() {
-        myInstance = new ResistanceData();
-    }
+    private static final ResistanceData RES_DATA = new ResistanceData(
+            new double[DamageType.values().length]
+    );
 
     @Test
-    void testGetResistanceDamageType() {
-        DamageType type = DamageType.SHARP;
-        double value = 0.777;
-        myInstance.myResistances[type.ordinal()] = value;
+    void testConstructorInitializeArray() {
+        double[] resistances = new double[DamageType.values().length];
+        for (int i = 0; i < resistances.length; i++) {
+            resistances[i] = 0.1 * i;
+        }
+        ResistanceData resistanceData = new ResistanceData(resistances);
 
-        assertEquals(value, myInstance.getResistance(type));
-    }
-
-    @Test
-    void testGetResistanceInt() {
-        int index = 0;
-        double value = 0.5;
-        myInstance.myResistances[index] = value;
-
-        assertEquals(value, myInstance.getResistance(index));
-    }
-
-    @Test
-    void testAllUnspecified() {
-        double[] resistances = myInstance.allUnspecified();
-
-        for (double resistance : resistances) {
+        for (int i = 0; i < resistances.length; i++) {
             assertEquals(
-                    ResistanceData.UNSPECIFIED_RESISTANCE,
-                    resistance
+                    resistances[i],
+                    resistanceData.myResistances[i]
             );
         }
     }
 
     @Test
-    void testSetResistances() {
+    void testGetResistanceDamageType() {
+        DamageType type = DamageType.SHARP;
+        double resistance = 0.777;
+        RES_DATA.myResistances[type.ordinal()] = resistance;
 
+        assertEquals(resistance, RES_DATA.getResistance(type));
     }
 
     @Test
-    void testIsUnspecifiedNotUnspecified() {
-        assertFalse(
-                myInstance.isUnspecified(0)
-        );
-    }
+    void testGetResistanceInt() {
+        int index = 0;
+        double resistance = 0.5;
+        RES_DATA.myResistances[index] = resistance;
 
-    @Test
-    void testIsUnspecifiedUnspecified() {
-        assertTrue(
-                myInstance.isUnspecified(
-                        ResistanceData.UNSPECIFIED_RESISTANCE
-                )
-        );
+        assertEquals(resistance, RES_DATA.getResistance(index));
     }
 }
