@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 public class ResistanceData {
 
     private static final double UNSPECIFIED_RESISTANCE = -1;
@@ -13,38 +15,46 @@ public class ResistanceData {
     }
 
     double getResistance(final DamageType theDamageType) {
-
-        return 0;
+        return myResistances[theDamageType.ordinal()];
     }
 
     double getResistance(final int theDamageType) {
-
-
-        return 0;
+        return myResistances[theDamageType];
     }
 
 
     // Constructor helpers
 
     private double[] allUnspecified() {
+        double[] resistances = new double[DamageType.values().length];
+        Arrays.fill(resistances, UNSPECIFIED_RESISTANCE);
 
-        return new double[0];
+        return resistances;
     }
 
-    private void setResistances(final DamageTypeResistance[] theResistance) {
-
+    private void setResistances(final DamageTypeResistance[] theResistances) {
+        for (DamageTypeResistance resistance : theResistances) {
+            setResistance(resistance);
+        }
     }
 
     private void setResistance(final DamageTypeResistance theResistance) {
-
+        myResistances[
+                theResistance.getDamageType().ordinal()
+        ] = theResistance.getResistance();
     }
 
     private void setUnspecifiedToZero() {
-
+        int i = 0;
+        for (double resistance : myResistances) {
+            if (isUnspecified(resistance)) {
+                myResistances[i] = 0.0;
+            }
+            i++;
+        }
     }
 
-    private boolean isUnspecified(final int theIndex) {
-        return false;
+    private boolean isUnspecified(final double theResistance) {
+        return theResistance == UNSPECIFIED_RESISTANCE;
     }
-
 }
