@@ -4,6 +4,13 @@ import java.util.List;
 
 public class Room {
 
+    /**
+     * The width and length of the contents of a Room in its String
+     * representation.
+     * Should be >= 2
+     */
+    static final int ROOM_SIZE = 3;
+
     private static final char EMPTY = ' ';
     private static final char MORE = '…';
     private static final char ENTRANCE = 'i';
@@ -12,12 +19,6 @@ public class Room {
     private static final char WALL = '*';
     private static final char HORIZONTAL_DOOR = '-';
     private static final char VERTICAL_DOOR = '|';
-    /**
-     * The width and length of the contents of a Room in its String
-     * representation.
-     * Should be >= 2
-     */
-    private static final int ROOM_SIZE = 3;
 
     private final Direction[] myDoors;
     private final Container myContainer;
