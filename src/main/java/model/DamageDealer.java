@@ -75,7 +75,7 @@ public abstract class DamageDealer {
         if (Util.probabilityTest(getAdjustedHitChance())) {
             return theTarget.applyDamageAndBuff(
                     myDamageType,
-                    Util.randomInt(getAdjustedMinDamage(), getAdjustedMaxDamage()),
+                    Util.randomIntInc(getAdjustedMinDamage(), getAdjustedMaxDamage()),
                     getAdjustedDebuffChance(),
                     theIsBlockable,
                     myDebuffDuration
