@@ -2,42 +2,17 @@ package model;
 
 public class ResistanceData {
 
-    private final double UNSPECIFIED_RESISTANCE;
-    private final double[] myResistance;
+    private final double[] myResistances;
 
-    ResistanceData(DamageTypeResistance[] theResistance) {
-
-
-    }
-     double getResistance(DamageType theDamageType){
-
-         return 0;
-     }
-      double getResistance(int theDamageType) {
-
-
-          return 0;
-      }
-        
-        private double[] allUnspecified(){
-
-            return new double[0];
-        }
-        
-    private void setResistance(DamageTypeResistance[] theResistance) {
-        
-    }
-    
-    private void setResistance(DamageTypeResistance theResistance) {
-        
-    }
-    
-    private void setUnspecifiedToZero(){
-        
+    ResistanceData(final double[] theResistances) {
+        myResistances = theResistances.clone();
     }
 
-    private boolean isUnspecified(int theIndex) {
-        return false;
+    double getResistance(final DamageType theDamageType) {
+        return myResistances[theDamageType.ordinal()];
     }
 
+    double getResistance(final int theDamageType) {
+        return myResistances[theDamageType];
+    }
 }

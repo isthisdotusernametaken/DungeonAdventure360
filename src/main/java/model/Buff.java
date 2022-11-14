@@ -5,31 +5,31 @@ public abstract class Buff {
     private final BuffType myType;
     private int myDuration;
 
-    Buff( BuffType theType,
-          int theDuration) {
+    Buff(final BuffType theType,
+         final int theDuration) {
         myType = theType;
         myDuration = theDuration;
-
     }
-    final BuffType getType() {
 
+    final BuffType getType() {
         return myType;
     }
-    final int getMyDuration() {
 
+    final int getMyDuration() {
         return myDuration;
     }
-    final void changeDuration(int theAmount) {
 
+    final void changeDuration(final int theTurns) {
+        myDuration += theTurns;
     }
+
     final void advance() {
-
+        myDuration--;
     }
+
     final boolean isCompleted() {
-
-        return false;
+        return myDuration <= 0;
     }
-    void adjustStats(AdjustedCharacterStats theStats) {
 
-    }
+    abstract void adjustStats(AdjustedCharacterStats theStats);
 }

@@ -1,6 +1,7 @@
 package model;
 
 public class RoomCoordinates {
+
     private final int myFloor;
     private final int myX;
     private final int myY;
