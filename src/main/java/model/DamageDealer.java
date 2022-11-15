@@ -42,6 +42,10 @@ public abstract class DamageDealer {
         return myDebuffChance;
     }
 
+    final int getDebuffDuration() {
+        return myDebuffDuration;
+    }
+
     final DamageType getDamageType() {
         return myDamageType;
     }
