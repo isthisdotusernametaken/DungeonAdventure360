@@ -25,6 +25,10 @@ public class Util {
         return RANDOM.nextInt(theMin, theMax);
     }
 
+    static int randomIntExc(final int theMax) {
+        return RANDOM.nextInt(theMax);
+    }
+
     static int randomIntInc(final int theMin, final int theMax) {
         return RANDOM.nextInt(theMin, theMax + 1);
     }
