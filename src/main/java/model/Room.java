@@ -28,11 +28,11 @@ public class Room {
     private final boolean myIsExit;
 
     Room(final Direction[] theDoors,
-         final List<Item> theItems,
          final Trap theTrap,
          final Monster theMonster,
          final boolean theIsEntrance,
-         final boolean theIsExit) {
+         final boolean theIsExit,
+         final Item ... theItems) {
 
         myDoors = theDoors.clone();
         myContainer = new Container(theItems);
