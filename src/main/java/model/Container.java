@@ -11,7 +11,9 @@ public class Container {
     private final List<Item> myItems;
 
     Container(final List<Item> theItems) {
-        myItems = new ArrayList<>(theItems);
+        myItems = theItems == null ?
+                  new ArrayList<>() :
+                  new ArrayList<>(theItems);
     }
 
     Item[] viewItems() {
