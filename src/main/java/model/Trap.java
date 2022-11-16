@@ -41,6 +41,10 @@ public class Trap extends DamageDealer implements CharRepresentable {
         return myIsSingleUse;
     }
 
+    final boolean isBoardable() {
+        return myIsBoardable;
+    }
+
     final boolean isBroken() {
         return myIsBroken;
     }
