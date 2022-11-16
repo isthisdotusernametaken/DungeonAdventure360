@@ -25,6 +25,10 @@ public enum BuffType implements CharRepresentable {
         myRepresentation = theRepresentation;
     }
 
+    static int positiveTypeCount() {
+        return POSITIVE_TYPES.length;
+    }
+
     static BuffType randomPositiveBuffType() {
         return POSITIVE_TYPES[Util.randomIntExc(POSITIVE_TYPES.length)];
     }
