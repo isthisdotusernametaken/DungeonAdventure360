@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Container {
     private final List<Item> myItems;
 
     Container(final Item ... theItems) {
-        myItems = Arrays.asList(theItems);
+        myItems = new ArrayList<>(Arrays.asList(theItems));
     }
 
     Item[] viewItems() {
