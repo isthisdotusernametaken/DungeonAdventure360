@@ -33,7 +33,9 @@ public class MockDBManager {
     }
 
     static Table readTable(final String theTable) {
-        return new MockTable(TABLES.get(theTable));
+        final String[][] table = TABLES.get(theTable);
+
+        return table == null ? null : new MockTable(table);
     }
 
     static void setTable(final String theTable, final String[] ... theRows) {
