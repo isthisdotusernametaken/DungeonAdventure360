@@ -4,7 +4,8 @@ public class SpecialSkillFactory {
 
     private static final String INVALID_SKILL = "Invalid skill: ";
 
-    static SpecialSkill createSpecialSkill(final String theSkillName) {
+    static SpecialSkill createSpecialSkill(final String theSkillName)
+            throws IllegalArgumentException {
         return switch (theSkillName) {
             case "CrushingBlow" -> new CrushingBlow();
             case "SneakAttack" -> new SneakAttack();

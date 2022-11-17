@@ -10,8 +10,26 @@ public class MonsterFactory {
     private static final String TABLE_NAME = "Monsters";
     private static final List<Monster> TEMPLATES = new ArrayList<>();
 
-    static {
-        generateTemplates();
+    static void generateTemplates()
+            throws SQLException, IllegalArgumentException {
+        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+
+        while (table.next()) {
+            TEMPLATES.add(new Monster(
+                    table.getString(),
+                    table.getInt(),
+                    table.getInt(),
+                    table.getInt(),
+                    table.getDouble(),
+                    table.getDouble(),
+                    table.getInt(),
+                    DamageType.valueOf(table.getString()),
+                    table.getInt(),
+                    table.getDouble(),
+                    table.getDouble(),
+                    table.getResistanceData()
+            ));
+        }
     }
 
     static Monster createRandomMonster() {
@@ -41,30 +59,5 @@ public class MonsterFactory {
                 template.getHealChance(),
                 template.getResistances()
         );
-    }
-
-    private static void generateTemplates() {
-        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
-        try {
-            while (table.next()) {
-                TEMPLATES.add(new Monster(
-                        table.getString(),
-                        table.getInt(),
-                        table.getInt(),
-                        table.getInt(),
-                        table.getDouble(),
-                        table.getDouble(),
-                        table.getInt(),
-                        DamageType.valueOf(table.getString()),
-                        table.getInt(),
-                        table.getDouble(),
-                        table.getDouble(),
-                        table.getResistanceData()
-                ));
-            }
-        } catch (SQLException | IllegalArgumentException e) {
-            e.printStackTrace();
-            System.exit(0); // Replace?
-        }
     }
 }

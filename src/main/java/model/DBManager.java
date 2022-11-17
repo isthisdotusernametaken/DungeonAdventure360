@@ -28,8 +28,7 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println(READ_ERROR + theTable);
             e.printStackTrace();
-            System.exit(0); // Replace?
-            return null; // For compiler. Should never be encountered
+            return null; // Indicate failure to read table
         }
     }
 
