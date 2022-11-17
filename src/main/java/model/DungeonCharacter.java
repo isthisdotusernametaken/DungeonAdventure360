@@ -5,7 +5,6 @@ import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
-    private final String myName;
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
@@ -24,7 +23,8 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theSpeed,
                      final double theBlockChance,
                      final ResistanceData theResistances) {
-        super(theMinDamage,
+        super(theName,
+              theMinDamage,
               theMaxDamage,
               theHitChance,
               theDebuffChance,
@@ -33,17 +33,12 @@ public abstract class DungeonCharacter extends DamageDealer {
               theSpeed
         );
 
-        myName = theName;
         myMaxHP = theMaxHP;
         myHP = myMaxHP;
         myBlockChance = theBlockChance;
         myResistances = theResistances;
         myAdjustedStats = new AdjustedCharacterStats(this);
         myBuffs = new ArrayList<>();
-    }
-
-    final String getName() {
-        return myName;
     }
 
     final int getMaxHP() {

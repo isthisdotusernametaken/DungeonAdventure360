@@ -2,6 +2,7 @@ package model;
 
 public abstract class DamageDealer {
 
+    private final String myName;
     private final int myMinDamage;
     private final int myMaxDamage;
     private final double myHitChance;
@@ -10,13 +11,15 @@ public abstract class DamageDealer {
     private final DamageType myDamageType;
     private final int mySpeed;
 
-    DamageDealer(final int theMinDamage,
+    DamageDealer(final String theName,
+                 final int theMinDamage,
                  final int theMaxDamage,
                  final double theHitChance,
                  final double theDebuffChance,
                  final int theDebuffDuration,
                  final DamageType theDamageType,
                  final int theSpeed) {
+        myName = theName;
         myMinDamage = theMinDamage;
         myMaxDamage = theMaxDamage;
         myHitChance = theHitChance;
@@ -24,6 +27,10 @@ public abstract class DamageDealer {
         myDebuffDuration = theDebuffDuration;
         myDamageType = theDamageType;
         mySpeed = theSpeed;
+    }
+
+    final String getName() {
+        return myName;
     }
 
     final int getMinDamage() {
