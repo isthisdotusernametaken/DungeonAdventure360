@@ -17,7 +17,7 @@ public class TemplateGenerator {
     final Table myTable;
     int myColumn;
 
-    TemplateGenerator(final String theTable) {
+    TemplateGenerator(final String theTable) throws IllegalArgumentException {
         myTable = MockDBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
