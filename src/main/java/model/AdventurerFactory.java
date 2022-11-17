@@ -10,8 +10,26 @@ public class AdventurerFactory {
     private static final String TABLE_NAME = "Adventurers";
     private static final List<Adventurer> TEMPLATES = new ArrayList<>();
 
-    static {
-        generateTemplates();
+    static void generateTemplates()
+            throws SQLException, IllegalArgumentException {
+        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+
+        while (table.next()) {
+            TEMPLATES.add(new Adventurer(
+                    table.getString(),
+                    table.getInt(),
+                    table.getInt(),
+                    table.getInt(),
+                    table.getDouble(),
+                    table.getDouble(),
+                    table.getInt(),
+                    DamageType.valueOf(table.getString()),
+                    table.getInt(),
+                    table.getDouble(),
+                    table.getResistanceData(),
+                    table.getSpecialSkill()
+            ));
+        }
     }
 
     static Adventurer createRandomAdventurer() {
@@ -41,30 +59,5 @@ public class AdventurerFactory {
                 template.getResistances(),
                 template.getSpecialSkill()
         );
-    }
-
-    private static void generateTemplates() {
-        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
-        try {
-            while (table.next()) {
-                TEMPLATES.add(new Adventurer(
-                        table.getString(),
-                        table.getInt(),
-                        table.getInt(),
-                        table.getInt(),
-                        table.getDouble(),
-                        table.getDouble(),
-                        table.getInt(),
-                        DamageType.valueOf(table.getString()),
-                        table.getInt(),
-                        table.getDouble(),
-                        table.getResistanceData(),
-                        table.getSpecialSkill()
-                ));
-            }
-        } catch (SQLException | IllegalArgumentException e) {
-            e.printStackTrace();
-            System.exit(0); // Replace?
-        }
     }
 }

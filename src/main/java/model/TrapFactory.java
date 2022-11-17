@@ -10,8 +10,25 @@ public class TrapFactory {
     private static final String TABLE_NAME = "Traps";
     private static final List<Trap> TEMPLATES = new ArrayList<>();
 
-    static {
-        generateTemplates();
+    static void generateTemplates()
+            throws SQLException, IllegalArgumentException {
+        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+
+        while (table.next()) {
+            TEMPLATES.add(new Trap(
+                    table.getString(),
+                    table.getBoolean(),
+                    table.getBoolean(),
+                    table.getInt(),
+                    table.getInt(),
+                    table.getDouble(),
+                    table.getDouble(),
+                    table.getInt(),
+                    DamageType.valueOf(table.getString()),
+                    table.getInt(),
+                    table.getChar()
+            ));
+        }
     }
 
     static Trap createRandomTrap() {
@@ -40,29 +57,5 @@ public class TrapFactory {
                 template.getSpeed(),
                 template.charRepresentation()
         );
-    }
-
-    private static void generateTemplates() {
-        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
-        try {
-            while (table.next()) {
-                TEMPLATES.add(new Trap(
-                        table.getString(),
-                        table.getBoolean(),
-                        table.getBoolean(),
-                        table.getInt(),
-                        table.getInt(),
-                        table.getDouble(),
-                        table.getDouble(),
-                        table.getInt(),
-                        DamageType.valueOf(table.getString()),
-                        table.getInt(),
-                        table.getChar()
-                ));
-            }
-        } catch (SQLException | IllegalArgumentException e) {
-            e.printStackTrace();
-            System.exit(0); // Replace?
-        }
     }
 }

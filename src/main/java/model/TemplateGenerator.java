@@ -11,12 +11,16 @@ public class TemplateGenerator {
             "Invalid individual char: ";
     private static final String NULL_FIELD =
             "Field is null: ";
+    private static final String INVALID_TABLE =
+            "No such table exists: ";
 
     private final Table myTable;
     private int myColumn;
 
-    TemplateGenerator(final String theTable) {
+    TemplateGenerator(final String theTable) throws IllegalArgumentException {
         myTable = DBManager.readTable(theTable);
+        exceptionOnNoTable(theTable);
+
         myColumn = 1;
     }
 
@@ -107,6 +111,15 @@ public class TemplateGenerator {
         if (myTable.wasNull()) {
             throw new IllegalArgumentException(
                     NULL_FIELD + myColumn
+            );
+        }
+    }
+
+    private void exceptionOnNoTable(final String theTable)
+            throws IllegalArgumentException {
+        if (myTable == null) {
+            throw new IllegalArgumentException(
+                    INVALID_TABLE + theTable
             );
         }
     }
