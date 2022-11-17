@@ -5,29 +5,29 @@ import java.util.Scanner;
 
 public class TemplateGenerator {
 
-    private static final String INVALID_RESISTANCE_DATA =
+    static final String INVALID_RESISTANCE_DATA =
             "Invalid resistance data: ";
-    private static final String CHAR_TOO_LONG =
+    static final String CHAR_TOO_LONG =
             "Invalid individual char: ";
-    private static final String NULL_FIELD =
+    static final String NULL_FIELD =
             "Field is null: ";
 
-    private final Table myTable;
-    private int myColumn;
+    final Table myTable;
+    int myColumn;
 
     TemplateGenerator(final String theTable) {
-        myTable = DBManager.readTable(theTable);
+        myTable = MockDBManager.readTable(theTable);
         myColumn = 1;
     }
 
-    private static void resistanceDataException(final String theField)
+    static void resistanceDataException(final String theField)
             throws IllegalArgumentException {
         throw new IllegalArgumentException(
                 INVALID_RESISTANCE_DATA + theField
         );
     }
 
-    private static void exceptionOnMultipleChars(final String theField)
+    static void exceptionOnMultipleChars(final String theField)
             throws IllegalArgumentException {
         if (theField.length() != 1) {
             throw new IllegalArgumentException(
@@ -102,7 +102,7 @@ public class TemplateGenerator {
         return field;
     }
 
-    private void exceptionOnNull()
+    void exceptionOnNull()
             throws SQLException, IllegalArgumentException {
         if (myTable.wasNull()) {
             throw new IllegalArgumentException(
