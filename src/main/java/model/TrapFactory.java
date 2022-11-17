@@ -1,23 +1,27 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrapFactory {
 
+    private static final String TABLE_NAME = "Traps";
     private static final List<Trap> TEMPLATES = new ArrayList<>();
 
     static {
-        // static call for db connection and read ResultSet for monster table
-        // into TEMPLATES
+        generateTemplates();
     }
 
     static Trap createRandomTrap() {
-        final Trap template = TEMPLATES.get(
-                Util.randomIntExc(TEMPLATES.size())
-        );
+        return createTrap(Util.randomIntExc(TEMPLATES.size()));
+    }
+
+    static Trap createTrap(final int theTypeIndex) {
+        final Trap template = TEMPLATES.get(theTypeIndex);
 
         return new Trap(
+                template.getName(),
                 template.isSingleUse(),
                 template.isBoardable(),
                 template.getMinDamage(),
@@ -29,5 +33,29 @@ public class TrapFactory {
                 template.getSpeed(),
                 template.charRepresentation()
         );
+    }
+
+    private static void generateTemplates() {
+        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+        try {
+            while (table.next()) {
+                TEMPLATES.add(new Trap(
+                        table.getString(),
+                        table.getBoolean(),
+                        table.getBoolean(),
+                        table.getInt(),
+                        table.getInt(),
+                        table.getDouble(),
+                        table.getDouble(),
+                        table.getInt(),
+                        DamageType.valueOf(table.getString()),
+                        table.getInt(),
+                        table.getChar()
+                ));
+            }
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
+            System.exit(0); // Replace?
+        }
     }
 }

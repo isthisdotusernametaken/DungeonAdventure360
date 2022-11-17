@@ -1,21 +1,24 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MonsterFactory {
 
+    private static final String TABLE_NAME = "Monsters";
     private static final List<Monster> TEMPLATES = new ArrayList<>();
 
     static {
-        // static call for db connection and read ResultSet for monster table
-        // into TEMPLATES
+        generateTemplates();
     }
 
     static Monster createRandomMonster() {
-        final Monster template = TEMPLATES.get(
-                Util.randomIntExc(TEMPLATES.size())
-        );
+        return createMonster(Util.randomIntExc(TEMPLATES.size()));
+    }
+
+    static Monster createMonster(final int theTypeIndex) {
+        final Monster template = TEMPLATES.get(theTypeIndex);
 
         return new Monster(
                 template.getName(),
@@ -31,5 +34,30 @@ public class MonsterFactory {
                 template.getHealChance(),
                 template.getResistances()
         );
+    }
+
+    private static void generateTemplates() {
+        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+        try {
+            while (table.next()) {
+                TEMPLATES.add(new Monster(
+                        table.getString(),
+                        table.getInt(),
+                        table.getInt(),
+                        table.getInt(),
+                        table.getDouble(),
+                        table.getDouble(),
+                        table.getInt(),
+                        DamageType.valueOf(table.getString()),
+                        table.getInt(),
+                        table.getDouble(),
+                        table.getDouble(),
+                        table.getResistanceData()
+                ));
+            }
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
+            System.exit(0); // Replace?
+        }
     }
 }
