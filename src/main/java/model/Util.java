@@ -14,15 +14,23 @@ public class Util {
         return RANDOM.nextDouble(1.0);
     }
 
-    static int randomInt(final int theMin, final int theMax) {
-        return RANDOM.nextInt(theMin, theMax + 1);
-    }
-
     static double clampFraction(final double theFraction) {
         return Math.max(
                 0.0,
                 Math.min(theFraction, 1.0)
         );
+    }
+
+    static int randomIntExc(final int theMin, final int theMax) {
+        return RANDOM.nextInt(theMin, theMax);
+    }
+
+    static int randomIntExc(final int theMax) {
+        return RANDOM.nextInt(theMax);
+    }
+
+    static int randomIntInc(final int theMin, final int theMax) {
+        return RANDOM.nextInt(theMin, theMax + 1);
     }
 
     static int clampPositiveInt(final int theValue) {

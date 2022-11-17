@@ -25,4 +25,10 @@ public class RoomCoordinates {
     int getY() {
         return myY;
     }
+
+    boolean isSameRoom(final RoomCoordinates theOther) {
+        return myFloor == theOther.myFloor &&
+               myX == theOther.myX &&
+               myY == theOther.myY;
+    }
 }

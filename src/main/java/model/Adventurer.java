@@ -1,14 +1,8 @@
 package model;
 
-import java.util.Arrays;
-import java.util.function.Function;
-
 public class Adventurer extends DungeonCharacter {
 
-    private static final Function<SpecialSkill, String> TO_STRINGS =
-            Object::toString;
-
-    private final SpecialSkill[] mySpecialSkills;
+    private final SpecialSkill mySpecialSkill;
 
     Adventurer(final String theName,
                final int theMaxHP,
@@ -21,7 +15,7 @@ public class Adventurer extends DungeonCharacter {
                final int theSpeed,
                final double theBlockChance,
                final ResistanceData theResistances,
-               final SpecialSkill ... theSpecialSkills) {
+               final SpecialSkill theSpecialSkill) {
           super(theName,
                 theMaxHP,
                 theMinDamage,
@@ -35,7 +29,7 @@ public class Adventurer extends DungeonCharacter {
                 theResistances
           );
 
-          mySpecialSkills = theSpecialSkills.clone();
+          mySpecialSkill = theSpecialSkill;
     }
 
     @Override
@@ -43,14 +37,11 @@ public class Adventurer extends DungeonCharacter {
         return "";
     }
 
-    final String[] getSpecialSkillNames() {
-        return (String[]) Arrays.stream(mySpecialSkills)
-                                .map(TO_STRINGS)
-                                .toArray();
+    final SpecialSkill getSpecialSkill() {
+        return mySpecialSkill;
     }
 
-    final AttackResult useSpecialSkill(final DungeonCharacter theTarget,
-                                       final int theIndex) {
-        return mySpecialSkills[theIndex].use(theTarget);
+    final AttackResult useSpecialSkill(final DungeonCharacter theTarget) {
+        return mySpecialSkill.use(theTarget);
     }
 }
