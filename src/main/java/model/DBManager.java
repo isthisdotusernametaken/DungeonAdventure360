@@ -16,7 +16,7 @@ public class DBManager {
 
     private static final SQLiteDataSource DATA_SOURCE = createDataSource();
 
-    static ResultSet readTable(final String theTable) {
+    static ResultSetTable readTable(final String theTable) {
         try (Connection connection = connect();
              PreparedStatement stmt = connection.prepareStatement(TABLE_QUERY)) {
 
@@ -24,7 +24,7 @@ public class DBManager {
             ResultSet table = stmt.executeQuery();
             connection.close();
 
-            return table;
+            return new ResultSetTable(table);
         } catch (SQLException e) {
             System.out.println(READ_ERROR + theTable);
             e.printStackTrace();
