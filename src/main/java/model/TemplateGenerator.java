@@ -13,7 +13,7 @@ public class TemplateGenerator {
     private static final String NULL_FIELD =
             "Field is null: ";
 
-    private final ResultSet myTable;
+    private final Table myTable;
     private int myColumn;
 
     TemplateGenerator(final String theTable) {
