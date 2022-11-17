@@ -5,32 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class TrapFactory {
+public class AdventurerFactory {
 
-    private static final String TABLE_NAME = "Traps";
-    private static final List<Trap> TEMPLATES = new ArrayList<>();
+    private static final String TABLE_NAME = "Adventurers";
+    private static final List<Adventurer> TEMPLATES = new ArrayList<>();
 
     static {
         generateTemplates();
     }
 
-    static Trap createRandomTrap() {
-        return createTrap(Util.randomIntExc(TEMPLATES.size()));
+    static Adventurer createRandomAdventurer() {
+        return createAdventurer(Util.randomIntExc(TEMPLATES.size()));
     }
 
-    static Trap[] createAllTraps() {
+    static Adventurer[] createAllAdventurers() {
         return IntStream.range(0, TEMPLATES.size())
-               .mapToObj(TrapFactory::createTrap)
-               .toArray(Trap[]::new);
+               .mapToObj(AdventurerFactory::createAdventurer)
+               .toArray(Adventurer[]::new);
     }
 
-    static Trap createTrap(final int theTypeIndex) {
-        final Trap template = TEMPLATES.get(theTypeIndex);
+    static Adventurer createAdventurer(final int theTypeIndex) {
+        final Adventurer template = TEMPLATES.get(theTypeIndex);
 
-        return new Trap(
+        return new Adventurer(
                 template.getName(),
-                template.isSingleUse(),
-                template.isBoardable(),
+                template.getMaxHP(),
                 template.getMinDamage(),
                 template.getMaxDamage(),
                 template.getHitChance(),
@@ -38,7 +37,9 @@ public class TrapFactory {
                 template.getDebuffDuration(),
                 template.getDamageType(),
                 template.getSpeed(),
-                template.charRepresentation()
+                template.getBlockChance(),
+                template.getResistances(),
+                template.getSpecialSkill()
         );
     }
 
@@ -46,10 +47,9 @@ public class TrapFactory {
         TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
         try {
             while (table.next()) {
-                TEMPLATES.add(new Trap(
+                TEMPLATES.add(new Adventurer(
                         table.getString(),
-                        table.getBoolean(),
-                        table.getBoolean(),
+                        table.getInt(),
                         table.getInt(),
                         table.getInt(),
                         table.getDouble(),
@@ -57,7 +57,9 @@ public class TrapFactory {
                         table.getInt(),
                         DamageType.valueOf(table.getString()),
                         table.getInt(),
-                        table.getChar()
+                        table.getDouble(),
+                        table.getResistanceData(),
+                        table.getSpecialSkill()
                 ));
             }
         } catch (SQLException | IllegalArgumentException e) {

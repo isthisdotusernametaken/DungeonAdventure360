@@ -3,6 +3,7 @@ package model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class MonsterFactory {
 
@@ -15,6 +16,12 @@ public class MonsterFactory {
 
     static Monster createRandomMonster() {
         return createMonster(Util.randomIntExc(TEMPLATES.size()));
+    }
+
+    static Monster[] createAllMonsters() {
+        return IntStream.range(0, TEMPLATES.size())
+               .mapToObj(MonsterFactory::createMonster)
+               .toArray(Monster[]::new);
     }
 
     static Monster createMonster(final int theTypeIndex) {

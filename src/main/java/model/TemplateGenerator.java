@@ -10,7 +10,8 @@ public class TemplateGenerator {
             "Invalid resistance data: ";
     private static final String CHAR_TOO_LONG =
             "Invalid individual char: ";
-    private static final String NULL_FIELD = "Field is null: ";
+    private static final String NULL_FIELD =
+            "Field is null: ";
 
     private final ResultSet myTable;
     private int myColumn;
@@ -40,23 +41,28 @@ public class TemplateGenerator {
         return myTable.next();
     }
 
+    SpecialSkill getSpecialSkill()
+            throws SQLException, IllegalArgumentException {
+        return SpecialSkillFactory.createSpecialSkill(getString());
+    }
+
     ResistanceData getResistanceData()
             throws SQLException, IllegalArgumentException {
-        final String theResistances = getString();
-        final Scanner scanner = new Scanner(theResistances.trim());
+        final String resistances = getString();
+        final Scanner scanner = new Scanner(resistances.trim());
         final double[] resistanceValues =
                 new double[DamageType.values().length];
 
         for (int i = 0; i < resistanceValues.length; i++) {
             if (!scanner.hasNextDouble()) {
-                resistanceDataException(theResistances);
+                resistanceDataException(resistances);
             }
 
             resistanceValues[i] = scanner.nextDouble();
         }
 
         if (scanner.hasNext()) { // Invalid because of extra data in field
-            resistanceDataException(theResistances);
+            resistanceDataException(resistances);
         }
 
         return new ResistanceData(resistanceValues);
