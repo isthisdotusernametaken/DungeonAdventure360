@@ -37,8 +37,8 @@ public class Adventurer extends DungeonCharacter {
         return "";
     }
 
-    final String getSpecialSkillName() {
-        return mySpecialSkill.toString();
+    final SpecialSkill getSpecialSkill() {
+        return mySpecialSkill;
     }
 
     final AttackResult useSpecialSkill(final DungeonCharacter theTarget) {
