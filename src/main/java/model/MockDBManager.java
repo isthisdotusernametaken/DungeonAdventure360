@@ -13,7 +13,7 @@ public class MockDBManager {
     static final String[][] ADVENTURERS = {
             {
                 "TestAdventurer", "800", "60", "80", "0.8", "0.15", "3",
-                "SHARP", "12", "0.1", "0.1 0.1 0.1 0.0 0.0"
+                "SHARP", "12", "0.1", "0.1 0.1 0.1 0.0 0.0", "CrushingBlow"
             }
     };
     static final String[][] TRAPS = {
