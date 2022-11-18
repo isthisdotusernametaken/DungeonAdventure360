@@ -1,11 +1,107 @@
 package model;
 
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
+
+import static model.MockDBManager.MockTable;
+import static model.TemplateGenerator.*;
+import static model.TestingUtil.*;
 
 public class TemplateGeneratorTest {
 
     @Test
-    void testConstructor() {
+    void testConstructorValidTable() {
+        final String tableName = "Monsters";
 
+        assertDoesNotThrow(() -> new TemplateGenerator(tableName));
+
+        final TemplateGenerator generator = new TemplateGenerator(tableName);
+
+        assertEquals(1, generator.myColumn);
+        assertNotNull(generator.myTable);
+    }
+
+    @Test
+    void testConstructorInvalidTable() {
+        final String table = "";
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                () -> new TemplateGenerator(table),
+                INVALID_TABLE + table
+        );
+    }
+
+    @Test
+    void testResistanceDataException() {
+        final String field = "badfield";
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                () -> resistanceDataException(field),
+                INVALID_RESISTANCE_DATA + field
+        );
+    }
+
+    @Test
+    void testExceptionOnMultipleCharsOneChar() {
+        assertDoesNotThrow(() -> exceptionOnMultipleChars("a"));
+    }
+
+    @Test
+    void testExceptionOnMultipleCharsEmpty() {
+        final String field = "";
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                () -> exceptionOnMultipleChars(field),
+                CHAR_TOO_LONG + field
+        );
+    }
+
+    @Test
+    void testExceptionOnMultipleCharsMultipleChars() {
+        final String field = "abc";
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                () -> exceptionOnMultipleChars(field),
+                CHAR_TOO_LONG + field
+        );
+    }
+
+    @Test
+    void textNextReturnTrue() {
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final MockTable table = (MockTable) generator.myTable;
+
+        table.myRow = table.myFields.length - 1;
+        try {
+            assertTrue(generator.next());
+        } catch (SQLException e) {
+            fail(); // Mock doesn't throw SQLException.
+            // Should never be encountered
+        }
+    }
+
+    @Test
+    void textNextReturnFalse() {
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final MockTable table = (MockTable) generator.myTable;
+
+        table.myRow = table.myFields.length;
+        try {
+            assertFalse(generator.next());
+        } catch (SQLException e) {
+            fail(); // Mock doesn't throw SQLException.
+                    // Should never be encountered
+        }
     }
 }
