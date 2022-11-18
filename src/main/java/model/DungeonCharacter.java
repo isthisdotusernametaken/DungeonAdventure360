@@ -1,14 +1,17 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class DungeonCharacter extends DamageDealer {
 
     private final String myName;
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
-//    private final ResistancesData myResistances; //Need ResistanceData class
-//    private final AdjustedCharacterStats myAdjustedStats; //Need AdjustedCharacterStats class
-//    private final List<Buff> myBuffs; //Need Buff class
+    private final ResistanceData myResistances;
+    private final AdjustedCharacterStats myAdjustedStats;
+    private final List<Buff> myBuffs;
 
     DungeonCharacter(final String theName,
                      final int theMaxHP,
@@ -19,8 +22,8 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theDebuffDuration,
                      final DamageType theDamageType,
                      final int theSpeed,
-                     final double theBlockChance/*,
-                     final ResistanceData theResistances*/) { //Need ResistanceData class
+                     final double theBlockChance,
+                     final ResistanceData theResistances) {
         super(theMinDamage,
               theMaxDamage,
               theHitChance,
@@ -34,7 +37,9 @@ public abstract class DungeonCharacter extends DamageDealer {
         myMaxHP = theMaxHP;
         myHP = myMaxHP;
         myBlockChance = theBlockChance;
-//        myResistances = theResistances; //Need ResistanceData class
+        myResistances = theResistances;
+        myAdjustedStats = new AdjustedCharacterStats(this);
+        myBuffs = new ArrayList<>();
     }
 
     final String getName() {
@@ -49,9 +54,9 @@ public abstract class DungeonCharacter extends DamageDealer {
         return myHP;
     }
 
-//    final ResistancesData getMyResistances() { //Need ResistanceData class
-//        return myResistances;
-//    }
+    final ResistanceData getResistances() {
+        return myResistances;
+    }
 
     @Override
     final int getAdjustedMinDamage() {

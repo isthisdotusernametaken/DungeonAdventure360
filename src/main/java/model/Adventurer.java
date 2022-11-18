@@ -1,8 +1,14 @@
 package model;
 
-public class Adventurer extends DungeonCharacter{
+import java.util.Arrays;
+import java.util.function.Function;
 
-    final SpecialSkill[] mySpecialSkills;
+public class Adventurer extends DungeonCharacter {
+
+    private static final Function<SpecialSkill, String> TO_STRINGS =
+            Object::toString;
+
+    private final SpecialSkill[] mySpecialSkills;
 
     Adventurer(final String theName,
                final int theMaxHP,
@@ -14,7 +20,8 @@ public class Adventurer extends DungeonCharacter{
                final DamageType theDamageType,
                final int theSpeed,
                final double theBlockChance,
-               final SpecialSkill[] theSpecialSkills) {
+               final ResistanceData theResistances,
+               final SpecialSkill ... theSpecialSkills) {
           super(theName,
                 theMaxHP,
                 theMinDamage,
@@ -24,10 +31,11 @@ public class Adventurer extends DungeonCharacter{
                 theDebuffDuration,
                 theDamageType,
                 theSpeed,
-                theBlockChance
+                theBlockChance,
+                theResistances
           );
 
-          mySpecialSkills = theSpecialSkills;
+          mySpecialSkills = theSpecialSkills.clone();
     }
 
     @Override
@@ -35,22 +43,14 @@ public class Adventurer extends DungeonCharacter{
         return "";
     }
 
-    final double getBlockChance() {
-        return 0;
-    }
-
     final String[] getSpecialSkillNames() {
-        return new String[0];
+        return (String[]) Arrays.stream(mySpecialSkills)
+                                .map(TO_STRINGS)
+                                .toArray();
     }
 
-    final boolean useSpecialSkill(final DungeonCharacter theTarget,
-                                  final int theIndex) {
-        return false;
-    }
-
-    final void move(final int theFloors,
-                    final int theWidth,
-                    final int theHeight) {
-
+    final AttackResult useSpecialSkill(final DungeonCharacter theTarget,
+                                       final int theIndex) {
+        return mySpecialSkills[theIndex].use(theTarget);
     }
 }

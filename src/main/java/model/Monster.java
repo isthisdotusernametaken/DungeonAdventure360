@@ -14,8 +14,8 @@ public class Monster extends DungeonCharacter {
             final DamageType theDamageType,
             final int theSpeed,
             final double theBlockChance,
-            final double theHealChance/*,
-            final ResistanceData theResistances*/) { //Need ResistanceData class
+            final double theHealChance,
+            final ResistanceData theResistances) {
         super(
                 theName,
                 theMaxHP,
@@ -26,7 +26,8 @@ public class Monster extends DungeonCharacter {
                 theDebuffDuration,
                 theDamageType,
                 theSpeed,
-                theBlockChance
+                theBlockChance,
+                theResistances
         );
 
         myHealChance = theHealChance;
