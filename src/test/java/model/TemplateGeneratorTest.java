@@ -100,8 +100,36 @@ public class TemplateGeneratorTest {
         try {
             assertFalse(generator.next());
         } catch (SQLException e) {
-            fail(); // Mock doesn't throw SQLException.
-                    // Should never be encountered
+            e.printStackTrace(); // Mock doesn't throw SQLException. Should
+            fail();              // never be encountered
         }
+    }
+
+    @Test
+    void testGetSpecialSkillValid() {
+        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+
+        generator.myColumn = ((MockTable) generator.myTable)
+                             .myFields[0].length; // Point to last field
+
+        try {
+            assertTrue(generator.getSpecialSkill() instanceof CrushingBlow);
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace(); // Mock doesn't throw SQLException, and mock
+            fail();              // should have fields in the right place, so
+                                 // should never be encountered
+        }
+    }
+
+    @Test
+    void testGetSpecialSkillInvalid() {
+        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getSpecialSkill,
+                SpecialSkillFactory.INVALID_SKILL +
+                        MockDBManager.ADVENTURERS[0][0]
+        );
     }
 }

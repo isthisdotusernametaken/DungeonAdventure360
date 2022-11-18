@@ -2,7 +2,7 @@ package model;
 
 public class SpecialSkillFactory {
 
-    private static final String INVALID_SKILL = "Invalid skill: ";
+    static final String INVALID_SKILL = "Invalid skill: ";
 
     static SpecialSkill createSpecialSkill(final String theSkillName)
             throws IllegalArgumentException {

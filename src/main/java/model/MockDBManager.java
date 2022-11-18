@@ -94,7 +94,7 @@ public class MockDBManager {
         }
 
         private String getStringAndCheckNull(final int theColumn) {
-            final String field = myFields[myRow][theColumn];
+            final String field = myFields[myRow][theColumn - 1];
             myNull = field == null;
 
             return field;
