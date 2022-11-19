@@ -22,6 +22,13 @@ public class MockDBManager {
                 "4", "BLUNT", "5", "P"
             }
     };
+    static final String[][] INVALID_RESISTANCES = {
+            {
+                "0.1 0.1 0.1 0.0",
+                "0.1 0.1 0.1 0.0 0.0 0.1",
+                "SHARP"
+            }
+    };
 
     private static final HashMap<String, String[][]> TABLES = new HashMap<>();
 
@@ -30,6 +37,7 @@ public class MockDBManager {
         setTable("Monsters", MONSTERS);
         setTable("Adventurers", ADVENTURERS);
         setTable("Traps", TRAPS);
+        setTable("InvalidResistances", INVALID_RESISTANCES);
     }
 
     static Table readTable(final String theTable) {

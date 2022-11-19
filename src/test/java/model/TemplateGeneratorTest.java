@@ -2,12 +2,8 @@ package model;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static model.MockDBManager.INVALID_RESISTANCES;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import static model.MockDBManager.MockTable;
@@ -148,5 +144,31 @@ public class TemplateGeneratorTest {
         } catch (SQLException e) {
             unexpectedExceptionFailure(e); // Should never be encountered
         }
+    }
+
+    @Test
+    void testGetResistanceDataTooFewValues() {
+        getResistanceDataInvalidTestHelper(1);
+    }
+
+    @Test
+    void testGetResistanceDataTooManyValues() {
+        getResistanceDataInvalidTestHelper(2);
+    }
+
+    @Test
+    void testGetResistanceDataInvalidValues() {
+        getResistanceDataInvalidTestHelper(3);
+    }
+
+    private void getResistanceDataInvalidTestHelper(final int theColumn) {
+        final TemplateGenerator generator = new TemplateGenerator("InvalidResistances");
+        generator.myColumn = theColumn;
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getResistanceData,
+                INVALID_RESISTANCE_DATA + INVALID_RESISTANCES[0][theColumn - 1]
+        );
     }
 }
