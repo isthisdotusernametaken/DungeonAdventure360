@@ -1,7 +1,9 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+
+import static model.TestingUtil.assertResistanceDataEqualsArray;
 
 public class ResistanceDataTest {
 
@@ -15,14 +17,10 @@ public class ResistanceDataTest {
         for (int i = 0; i < resistances.length; i++) {
             resistances[i] = 0.1 * i;
         }
-        ResistanceData resistanceData = new ResistanceData(resistances);
 
-        for (int i = 0; i < resistances.length; i++) {
-            assertEquals(
-                    resistances[i],
-                    resistanceData.myResistances[i]
-            );
-        }
+        assertResistanceDataEqualsArray(
+                resistances, new ResistanceData(resistances)
+        );
     }
 
     @Test

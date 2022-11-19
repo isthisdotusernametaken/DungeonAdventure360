@@ -86,8 +86,8 @@ public class TemplateGeneratorTest {
         try {
             assertTrue(generator.next());
         } catch (SQLException e) {
-            fail(); // Mock doesn't throw SQLException.
-            // Should never be encountered
+            unexpectedExceptionFailure(e); // Mock doesn't throw SQLException.
+                                           // Should never be encountered
         }
     }
 
@@ -100,8 +100,7 @@ public class TemplateGeneratorTest {
         try {
             assertFalse(generator.next());
         } catch (SQLException e) {
-            e.printStackTrace(); // Mock doesn't throw SQLException. Should
-            fail();              // never be encountered
+            unexpectedExceptionFailure(e); // Should never be encountered
         }
     }
 
@@ -115,9 +114,10 @@ public class TemplateGeneratorTest {
         try {
             assertTrue(generator.getSpecialSkill() instanceof CrushingBlow);
         } catch (SQLException | IllegalArgumentException e) {
-            e.printStackTrace(); // Mock doesn't throw SQLException, and mock
-            fail();              // should have fields in the right place, so
-                                 // should never be encountered
+            unexpectedExceptionFailure(e); // Mock doesn't throw SQLException,
+                                           // and mock should have fields in
+                                           // the right place, so should never
+                                           // be encountered
         }
     }
 
@@ -131,5 +131,22 @@ public class TemplateGeneratorTest {
                 SpecialSkillFactory.INVALID_SKILL +
                         MockDBManager.ADVENTURERS[0][0]
         );
+    }
+
+    @Test
+    void testGetResistanceDataValid() {
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+
+        generator.myColumn = ((MockTable) generator.myTable)
+                             .myFields[0].length; // Point to last field
+
+        try {
+            assertResistanceDataEqualsArray(
+                    new double[]{0.1, 0.0, 0.2, 0.5, 0.1},
+                    generator.getResistanceData()
+            );
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e); // Should never be encountered
+        }
     }
 }
