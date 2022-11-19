@@ -21,8 +21,8 @@ public class TemplateGenerator {
     int myColumn;
 
     TemplateGenerator(final String theTable)
-            throws SQLException, IllegalArgumentException {
-        myTable = MockDBManager.readTable(theTable);
+            throws IllegalArgumentException {
+        myTable = DBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
         myTableName = theTable;
@@ -105,11 +105,11 @@ public class TemplateGenerator {
                 ")";
     }
 
-    void exceptionOnNoTable(final String theTable)
-            throws SQLException, IllegalArgumentException {
+    private void exceptionOnNoTable(final String theTable)
+            throws IllegalArgumentException {
         if (myTable == null) {
             throw new IllegalArgumentException(
-                    INVALID_TABLE + theTable + getFieldLocation()
+                    INVALID_TABLE + theTable
             );
         }
     }
