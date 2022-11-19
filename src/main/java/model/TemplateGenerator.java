@@ -5,39 +5,28 @@ import java.util.Scanner;
 
 public class TemplateGenerator {
 
-    static final String INVALID_RESISTANCE_DATA =
-            "Invalid resistance data: ";
-    static final String CHAR_TOO_LONG =
-            "Invalid individual char: ";
-    static final String NULL_FIELD =
-            "Field is null: ";
-    static final String INVALID_TABLE =
+    private static final String INVALID_TABLE =
             "No such table exists: ";
+    private static final String NULL_FIELD =
+            "Field is null: ";
+    private static final String INVALID_RESISTANCE_DATA =
+            "Invalid resistance data: ";
+    private static final String CHAR_TOO_LONG =
+            "Invalid individual char: ";
+    private static final String INVALID_PROBABILITY =
+            "Probability out of range: ";
 
-    final Table myTable;
-    int myColumn;
+    private final Table myTable;
+    private final String myTableName;
+    private int myColumn;
 
-    TemplateGenerator(final String theTable) throws IllegalArgumentException {
-        myTable = MockDBManager.readTable(theTable);
+    TemplateGenerator(final String theTable)
+            throws SQLException, IllegalArgumentException {
+        myTable = DBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
+        myTableName = theTable;
         myColumn = 1;
-    }
-
-    static void resistanceDataException(final String theField)
-            throws IllegalArgumentException {
-        throw new IllegalArgumentException(
-                INVALID_RESISTANCE_DATA + theField
-        );
-    }
-
-    static void exceptionOnMultipleChars(final String theField)
-            throws IllegalArgumentException {
-        if (theField.length() != 1) {
-            throw new IllegalArgumentException(
-                    CHAR_TOO_LONG + theField
-            );
-        }
     }
 
     boolean next() throws SQLException {
@@ -62,6 +51,7 @@ public class TemplateGenerator {
             }
 
             resistanceValues[i] = scanner.nextDouble();
+            exceptionOnIllegalProbability(resistanceValues[i]);
         }
 
         if (scanner.hasNext()) { // Invalid because of extra data in field
@@ -95,6 +85,7 @@ public class TemplateGenerator {
     double getDouble() throws SQLException, IllegalArgumentException {
         final double field = myTable.getDouble(myColumn++);
         exceptionOnNull();
+        exceptionOnIllegalProbability(field);
 
         return field;
     }
@@ -106,20 +97,53 @@ public class TemplateGenerator {
         return field;
     }
 
-    void exceptionOnNull()
+    private String getFieldLocation() throws SQLException {
+        return "(" +
+                myTableName +
+                ": row " + myTable.getRow() +
+                ", column " + myColumn +
+                ")";
+    }
+
+    private void exceptionOnNoTable(final String theTable)
             throws SQLException, IllegalArgumentException {
-        if (myTable.wasNull()) {
+        if (myTable == null) {
             throw new IllegalArgumentException(
-                    NULL_FIELD + myColumn
+                    INVALID_TABLE + theTable + getFieldLocation()
             );
         }
     }
 
-    void exceptionOnNoTable(final String theTable)
-            throws IllegalArgumentException {
-        if (myTable == null) {
+    private void exceptionOnNull()
+            throws SQLException, IllegalArgumentException {
+        if (myTable.wasNull()) {
             throw new IllegalArgumentException(
-                    INVALID_TABLE + theTable
+                    NULL_FIELD + myColumn + getFieldLocation()
+            );
+        }
+    }
+
+    private void resistanceDataException(final String theField)
+            throws SQLException, IllegalArgumentException {
+        throw new IllegalArgumentException(
+                INVALID_RESISTANCE_DATA + theField + getFieldLocation()
+        );
+    }
+
+    private void exceptionOnMultipleChars(final String theField)
+            throws SQLException, IllegalArgumentException {
+        if (theField.length() != 1) {
+            throw new IllegalArgumentException(
+                    CHAR_TOO_LONG + theField + getFieldLocation()
+            );
+        }
+    }
+
+    private void exceptionOnIllegalProbability(final double theProbability)
+            throws SQLException, IllegalArgumentException {
+        if (theProbability < 0.0 || theProbability > 1.0) {
+            throw new IllegalArgumentException(
+                    INVALID_PROBABILITY + theProbability + getFieldLocation()
             );
         }
     }

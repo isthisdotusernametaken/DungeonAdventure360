@@ -17,6 +17,11 @@ public class ResultSetTable implements Table {
     }
 
     @Override
+    public int getRow() throws SQLException {
+        return myResultSet.getRow();
+    }
+
+    @Override
     public String getString(final int theColumn) throws SQLException {
         return myResultSet.getString(theColumn);
     }
