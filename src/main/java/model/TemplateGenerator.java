@@ -106,10 +106,10 @@ public class TemplateGenerator {
     }
 
     private void exceptionOnNoTable(final String theTable)
-            throws SQLException, IllegalArgumentException {
+            throws IllegalArgumentException {
         if (myTable == null) {
             throw new IllegalArgumentException(
-                    INVALID_TABLE + theTable + getFieldLocation()
+                    INVALID_TABLE + theTable
             );
         }
     }
