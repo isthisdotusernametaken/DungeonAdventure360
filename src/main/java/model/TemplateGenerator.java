@@ -22,7 +22,7 @@ public class TemplateGenerator {
 
     TemplateGenerator(final String theTable)
             throws IllegalArgumentException {
-        myTable = DBManager.readTable(theTable);
+        myTable = MockDBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
         myTableName = theTable;
@@ -105,7 +105,7 @@ public class TemplateGenerator {
                 ")";
     }
 
-    private void exceptionOnNoTable(final String theTable)
+    void exceptionOnNoTable(final String theTable)
             throws IllegalArgumentException {
         if (myTable == null) {
             throw new IllegalArgumentException(

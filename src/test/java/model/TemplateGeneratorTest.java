@@ -18,7 +18,7 @@ public class TemplateGeneratorTest {
 
         assertDoesNotThrow(() -> new TemplateGenerator(tableName));
 
-        final TemplateGenerator generator = constructorHelper("Monsters");
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
 
         assertEquals(1, generator.myColumn);
         assertNotNull(generator.myTable);
@@ -37,7 +37,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void textNextReturnTrue() {
-        final TemplateGenerator generator = constructorHelper("Monsters");
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length - 1;
@@ -51,7 +51,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void textNextReturnFalse() {
-        final TemplateGenerator generator = constructorHelper("Monsters");
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length;
@@ -64,7 +64,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillValid() {
-        final TemplateGenerator generator = constructorHelper("Adventurers");
+        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -81,19 +81,20 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillInvalid() {
-        final TemplateGenerator generator = constructorHelper("Adventurers");
+        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
                 generator::getSpecialSkill,
                 SpecialSkillFactory.INVALID_SKILL +
-                        MockDBManager.ADVENTURERS[0][0]
+                        MockDBManager.ADVENTURERS[0][0] +
+                        getFieldLocationHelper(generator)
         );
     }
 
     @Test
     void testGetResistanceDataValid() {
-        final TemplateGenerator generator = constructorHelper("Monsters");
+        final TemplateGenerator generator = new TemplateGenerator("Monsters");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -163,9 +164,18 @@ public class TemplateGeneratorTest {
 //        );
 //    }
 
-    private TemplateGenerator constructorHelper(final String theTable) {
+//    private TemplateGenerator constructorHelper(final String theTable) {
+//        try {
+//            return new TemplateGenerator(theTable);
+//        } catch (SQLException e) {
+//            unexpectedExceptionFailure(e); // Mock should not throw SQLException
+//            return null;
+//        }
+//    }
+
+    private String getFieldLocationHelper(final TemplateGenerator theGenerator) {
         try {
-            return new TemplateGenerator(theTable);
+            return theGenerator.getFieldLocation();
         } catch (SQLException e) {
             unexpectedExceptionFailure(e); // Mock should not throw SQLException
             return null;
@@ -173,13 +183,15 @@ public class TemplateGeneratorTest {
     }
 
     private void getResistanceDataInvalidTestHelper(final int theColumn) {
-        final TemplateGenerator generator = constructorHelper("InvalidResistances");
+        final TemplateGenerator generator = new TemplateGenerator("InvalidResistances");
         generator.myColumn = theColumn;
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
                 generator::getResistanceData,
-                INVALID_RESISTANCE_DATA + INVALID_RESISTANCES[0][theColumn - 1]
+                INVALID_RESISTANCE_DATA +
+                        INVALID_RESISTANCES[0][theColumn - 1] +
+                        getFieldLocationHelper(generator)
         );
     }
 }
