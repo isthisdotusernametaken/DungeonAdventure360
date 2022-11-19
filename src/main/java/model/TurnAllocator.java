@@ -22,11 +22,19 @@ public class TurnAllocator {
         myTurns = assignTurns(adventurerAsFastOrFaster);
     }
 
+    private static double calculateSpeedRatio(final boolean theAdventurerAsFastOrFaster,
+                                              final int theAdventurerSpeed,
+                                              final int theMonsterSpeed) {
+        return theAdventurerAsFastOrFaster ?
+                ((double) theAdventurerSpeed) / theMonsterSpeed :
+                ((double) theMonsterSpeed) / theAdventurerSpeed;
+    }
+
     boolean nextTurn() {
         final boolean turn = myTurns[myCurrentTurn];
 
         incrementTurn();
-        incrementIfSkippingExtraTurn();
+        incrementTurnIfSkippingExtra();
 
         return turn;
     }
@@ -37,20 +45,12 @@ public class TurnAllocator {
         }
     }
 
-    private void incrementIfSkippingExtraTurn() {
+    private void incrementTurnIfSkippingExtra() {
         if (myCurrentTurn == myExtraTurnIndex &&
             Util.probabilityTest(myExtraTurnChance)
         ) {
             incrementTurn();
         }
-    }
-
-    private double calculateSpeedRatio(final boolean theAdventurerAsFastOrFaster,
-                                       final int theAdventurerSpeed,
-                                       final int theMonsterSpeed) {
-        return theAdventurerAsFastOrFaster ?
-               ((double) theAdventurerSpeed) / theMonsterSpeed :
-               ((double) theMonsterSpeed) / theAdventurerSpeed;
     }
 
     private boolean[] assignTurns(final boolean theAdventurerAsFastOrFaster) {
