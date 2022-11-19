@@ -18,7 +18,7 @@ public class TemplateGeneratorTest {
 
         assertDoesNotThrow(() -> new TemplateGenerator(tableName));
 
-        final TemplateGenerator generator = new TemplateGenerator(tableName);
+        final TemplateGenerator generator = constructorHelper("Monsters");
 
         assertEquals(1, generator.myColumn);
         assertNotNull(generator.myTable);
@@ -36,46 +36,8 @@ public class TemplateGeneratorTest {
     }
 
     @Test
-    void testResistanceDataException() {
-        final String field = "badfield";
-
-        assertThrowsWithMessage(
-                IllegalArgumentException.class,
-                () -> resistanceDataException(field),
-                INVALID_RESISTANCE_DATA + field
-        );
-    }
-
-    @Test
-    void testExceptionOnMultipleCharsOneChar() {
-        assertDoesNotThrow(() -> exceptionOnMultipleChars("a"));
-    }
-
-    @Test
-    void testExceptionOnMultipleCharsEmpty() {
-        final String field = "";
-
-        assertThrowsWithMessage(
-                IllegalArgumentException.class,
-                () -> exceptionOnMultipleChars(field),
-                CHAR_TOO_LONG + field
-        );
-    }
-
-    @Test
-    void testExceptionOnMultipleCharsMultipleChars() {
-        final String field = "abc";
-
-        assertThrowsWithMessage(
-                IllegalArgumentException.class,
-                () -> exceptionOnMultipleChars(field),
-                CHAR_TOO_LONG + field
-        );
-    }
-
-    @Test
     void textNextReturnTrue() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length - 1;
@@ -89,7 +51,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void textNextReturnFalse() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length;
@@ -102,7 +64,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillValid() {
-        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+        final TemplateGenerator generator = constructorHelper("Adventurers");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -119,7 +81,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillInvalid() {
-        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+        final TemplateGenerator generator = constructorHelper("Adventurers");
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
@@ -131,7 +93,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetResistanceDataValid() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -161,8 +123,57 @@ public class TemplateGeneratorTest {
         getResistanceDataInvalidTestHelper(3);
     }
 
+
+
+//    @Test
+//    void testResistanceDataException() {
+//        final String field = "badfield";
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                () -> resistanceDataException(field),
+//                INVALID_RESISTANCE_DATA + field
+//        );
+//    }
+//
+//    @Test
+//    void testExceptionOnMultipleCharsOneChar() {
+//        assertDoesNotThrow(() -> exceptionOnMultipleChars("a"));
+//    }
+//
+//    @Test
+//    void testExceptionOnMultipleCharsEmpty() {
+//        final String field = "";
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                () -> exceptionOnMultipleChars(field),
+//                CHAR_TOO_LONG + field
+//        );
+//    }
+//
+//    @Test
+//    void testExceptionOnMultipleCharsMultipleChars() {
+//        final String field = "abc";
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                () -> exceptionOnMultipleChars(field),
+//                CHAR_TOO_LONG + field
+//        );
+//    }
+
+    private TemplateGenerator constructorHelper(final String theTable) {
+        try {
+            return new TemplateGenerator(theTable);
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e); // Mock should not throw SQLException
+            return null;
+        }
+    }
+
     private void getResistanceDataInvalidTestHelper(final int theColumn) {
-        final TemplateGenerator generator = new TemplateGenerator("InvalidResistances");
+        final TemplateGenerator generator = constructorHelper("InvalidResistances");
         generator.myColumn = theColumn;
 
         assertThrowsWithMessage(

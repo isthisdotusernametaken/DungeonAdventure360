@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class MockDBManager {
@@ -66,6 +67,11 @@ public class MockDBManager {
         @Override
         public boolean next() {
             return myRow++ < myFields.length;
+        }
+
+        @Override
+        public int getRow() throws SQLException {
+            return myRow + 1;
         }
 
         @Override
