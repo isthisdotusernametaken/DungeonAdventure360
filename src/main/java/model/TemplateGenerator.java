@@ -21,7 +21,7 @@ public class TemplateGenerator {
     private int myColumn;
 
     TemplateGenerator(final String theTable)
-            throws SQLException, IllegalArgumentException {
+            throws IllegalArgumentException {
         myTable = DBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
