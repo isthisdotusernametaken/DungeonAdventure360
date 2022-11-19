@@ -20,9 +20,9 @@ public class TemplateGenerator {
     private final String myTableName;
     private int myColumn;
 
-    TemplateGenerator(final String theTable)
-            throws IllegalArgumentException {
-        myTable = DBManager.readTable(theTable);
+    TemplateGenerator(final DBManager theDBManager, final String theTable)
+            throws SQLException, IllegalArgumentException {
+        myTable = theDBManager.readTable(theTable);
         exceptionOnNoTable(theTable);
 
         myTableName = theTable;
@@ -98,7 +98,7 @@ public class TemplateGenerator {
     }
 
     private String getFieldLocation() throws SQLException {
-        return "(" +
+        return " (" +
                 myTableName +
                 ": row " + myTable.getRow() +
                 ", column " + myColumn +

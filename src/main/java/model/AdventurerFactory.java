@@ -10,9 +10,11 @@ public class AdventurerFactory {
     private static final String TABLE_NAME = "Adventurers";
     private static final List<Adventurer> TEMPLATES = new ArrayList<>();
 
-    static void generateTemplates()
+    static void generateTemplates(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
-        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+        TemplateGenerator table = new TemplateGenerator(
+                theDBManager, TABLE_NAME
+        );
 
         while (table.next()) {
             TEMPLATES.add(new Adventurer(
