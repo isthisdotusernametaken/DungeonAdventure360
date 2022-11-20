@@ -1,6 +1,6 @@
 package model;
 
-public class Adventurer extends DungeonCharacter{
+public class Adventurer extends DungeonCharacter {
 
     private final SpecialSkill mySpecialSkill;
 
@@ -37,12 +37,11 @@ public class Adventurer extends DungeonCharacter{
         return "";
     }
 
-    final String getSpecialSkillName() {
-        return mySpecialSkill.toString();
+    final SpecialSkill getSpecialSkill() {
+        return mySpecialSkill;
     }
 
-    final AttackResult useSpecialSkill(final DungeonCharacter theTarget,
-                                       final int theIndex) {
+    final AttackResult useSpecialSkill(final DungeonCharacter theTarget) {
         return mySpecialSkill.use(theTarget);
     }
 }

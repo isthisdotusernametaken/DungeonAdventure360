@@ -5,7 +5,6 @@ import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
-    private final String myName;
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
@@ -24,7 +23,8 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theSpeed,
                      final double theBlockChance,
                      final ResistanceData theResistances) {
-        super(theMinDamage,
+        super(theName,
+              theMinDamage,
               theMaxDamage,
               theHitChance,
               theDebuffChance,
@@ -33,7 +33,6 @@ public abstract class DungeonCharacter extends DamageDealer {
               theSpeed
         );
 
-        myName = theName;
         myMaxHP = theMaxHP;
         myHP = myMaxHP;
         myBlockChance = theBlockChance;
@@ -42,19 +41,19 @@ public abstract class DungeonCharacter extends DamageDealer {
         myBuffs = new ArrayList<>();
     }
 
-    final String getName() {
-        return myName;
-    }
-
-    final int getMyMaxHP() {
+    final int getMaxHP() {
         return myMaxHP;
     }
 
-    final int getMyHP() {
+    final int getHP() {
         return myHP;
     }
 
-    final ResistanceData getMyResistances() {
+    final double getBlockChance() {
+        return myBlockChance;
+    }
+
+    final ResistanceData getResistances() {
         return myResistances;
     }
 
@@ -137,9 +136,9 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     }
 
-    private Buff getBuff(final BuffType theBuffType) {
-        return null;
-    }
+//    private Buff getBuff(final BuffType theBuffType) { //Need Buff Class
+//        return null;
+//    }
 
     private void advanceBuffs() {
 
