@@ -42,23 +42,23 @@ public class AdjustedCharacterStats {
     }
 
     void setMinDamage(final int theMinDamage) {
-        this.myMinDamage = theMinDamage;
+        myMinDamage = theMinDamage;
     }
 
     void setMaxDamage(final int theMaxDamage) {
-        this.myMaxDamage = theMaxDamage;
+        myMaxDamage = theMaxDamage;
     }
 
     void setHitChance(final double theHitChance) {
-        this.myHitChance = Util.clampFraction(theHitChance);
+        myHitChance = Util.clampFraction(theHitChance);
     }
 
     void setDebuffChance(final double theDebuffChance) {
-        this.myDebuffChance = Util.clampFraction(theDebuffChance);
+        myDebuffChance = Util.clampFraction(theDebuffChance);
     }
 
     void setSpeed(final int theSpeed) {
-        this.mySpeed = Util.clampPositiveInt(theSpeed);
+        mySpeed = Util.clampPositiveInt(theSpeed);
     }
 
     void setResistance(final DamageType theDamageType,
