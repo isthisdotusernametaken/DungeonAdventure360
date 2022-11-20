@@ -7,7 +7,7 @@ public class TemplateGenerator {
 
     private static final String INVALID_TABLE =
             "No such table exists: ";
-    static final String INVALID_FIELD =
+    private static final String INVALID_FIELD =
             "Invalid field (possibly wrong data type): ";
     private static final String NULL_FIELD =
             "Field is null";
