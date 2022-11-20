@@ -41,7 +41,6 @@ public class SQLiteDBManager implements DBManager {
         ) {
             stmt.setString(1, theTable);
             ResultSet table = stmt.executeQuery();
-            connection.close();
 
             return new ResultSetTable(table);
         } catch (SQLException e) {
