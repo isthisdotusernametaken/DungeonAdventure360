@@ -124,7 +124,7 @@ public class TemplateGenerator {
             throws SQLException, IllegalArgumentException {
         if (myTable.wasNull()) {
             throw new IllegalArgumentException(
-                    NULL_FIELD + myColumn + getFieldLocation()
+                    NULL_FIELD + getFieldLocation()
             );
         }
     }
