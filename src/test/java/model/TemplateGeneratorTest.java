@@ -12,7 +12,7 @@ import static model.TestingUtil.*;
 
 public class TemplateGeneratorTest {
 
-    private static DBManager DB_MANAGER = new MockDBManager();
+    private static final DBManager DB_MANAGER = new MockDBManager();
 
     @Test
     void testConstructorValidTable() {
