@@ -12,13 +12,15 @@ import static model.TestingUtil.*;
 
 public class TemplateGeneratorTest {
 
+    private static DBManager DB_MANAGER = new MockDBManager();
+
     @Test
     void testConstructorValidTable() {
         final String tableName = "Monsters";
 
-        assertDoesNotThrow(() -> new TemplateGenerator(tableName));
+        assertDoesNotThrow(() -> constructorHelper(tableName));
 
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
 
         assertEquals(1, generator.myColumn);
         assertNotNull(generator.myTable);
@@ -30,14 +32,14 @@ public class TemplateGeneratorTest {
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
-                () -> new TemplateGenerator(table),
+                () -> constructorHelper(table),
                 INVALID_TABLE + table
         );
     }
 
     @Test
     void textNextReturnTrue() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length - 1;
@@ -51,7 +53,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void textNextReturnFalse() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
         final MockTable table = (MockTable) generator.myTable;
 
         table.myRow = table.myFields.length;
@@ -64,7 +66,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillValid() {
-        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+        final TemplateGenerator generator = constructorHelper("Adventurers");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -81,7 +83,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetSpecialSkillInvalid() {
-        final TemplateGenerator generator = new TemplateGenerator("Adventurers");
+        final TemplateGenerator generator = constructorHelper("Adventurers");
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
@@ -94,7 +96,7 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetResistanceDataValid() {
-        final TemplateGenerator generator = new TemplateGenerator("Monsters");
+        final TemplateGenerator generator = constructorHelper("Monsters");
 
         generator.myColumn = ((MockTable) generator.myTable)
                              .myFields[0].length; // Point to last field
@@ -164,14 +166,14 @@ public class TemplateGeneratorTest {
 //        );
 //    }
 
-//    private TemplateGenerator constructorHelper(final String theTable) {
-//        try {
-//            return new TemplateGenerator(theTable);
-//        } catch (SQLException e) {
-//            unexpectedExceptionFailure(e); // Mock should not throw SQLException
-//            return null;
-//        }
-//    }
+    private TemplateGenerator constructorHelper(final String theTable) {
+        try {
+            return new TemplateGenerator(DB_MANAGER, theTable);
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e); // Mock should not throw SQLException
+            return null;
+        }
+    }
 
     private String getFieldLocationHelper(final TemplateGenerator theGenerator) {
         try {
@@ -183,7 +185,7 @@ public class TemplateGeneratorTest {
     }
 
     private void getResistanceDataInvalidTestHelper(final int theColumn) {
-        final TemplateGenerator generator = new TemplateGenerator("InvalidResistances");
+        final TemplateGenerator generator = constructorHelper("InvalidResistances");
         generator.myColumn = theColumn;
 
         assertThrowsWithMessage(

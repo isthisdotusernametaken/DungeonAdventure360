@@ -3,7 +3,7 @@ package model;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class MockDBManager {
+public class MockDBManager implements DBManager {
 
     static final String[][] MONSTERS = {
             {
@@ -41,16 +41,16 @@ public class MockDBManager {
         setTable("InvalidResistances", INVALID_RESISTANCES);
     }
 
-    static Table readTable(final String theTable) {
-        final String[][] table = TABLES.get(theTable);
-
-        return table == null ? null : new MockTable(table);
-    }
-
     static void setTable(final String theTable, final String[] ... theRows) {
         // Only used for unit tests and not included in production branch, so
         // proper cloning of arrays not needed
         TABLES.put(theTable, theRows);
+    }
+
+    public MockTable readTable(final String theTable) {
+        final String[][] table = TABLES.get(theTable);
+
+        return table == null ? null : new MockTable(table);
     }
 
     static class MockTable implements Table {
