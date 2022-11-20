@@ -19,6 +19,6 @@ public class TrapDB extends DungeonDatabase{
             e.printStackTrace();
             System.exit( 0 );
         }
-        System.out.println( "Inserted rows into test table successfully" );
+        System.out.println( "Inserted rows into Trap table successfully" );
     }
 }

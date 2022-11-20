@@ -8,14 +8,6 @@ public class DungeonDatabase {
     private final static String myFile = "jdbc:sqlite:DungeonDataBase.db";
     private final static SQLiteDataSource myDS = new SQLiteDataSource();
 
-    DungeonDatabase () {
-        createDataBase();
-        createMonsterDataBaseTable();
-        createAdventurerDataBaseTable();
-        createTrapDataBaseTable();
-    }
-
-
     public static void main(String[] args) {
         createDataBase();
         createMonsterDataBaseTable();
@@ -63,16 +55,18 @@ public class DungeonDatabase {
 
     private static void createAdventurerDataBaseTable() {
 
-        String query = "CREATE TABLE IF NOT EXISTS Adventurer (\n"
-                + "theAdventurerName TEXT PRIMARY KEY,\n"
-                + "theMaxHP INTEGER NOT NULL,\n"
-                + "theMinDamage INTEGER NOT NULL,\n"
-                + "theMaxDamage INTEGER NOT NULL,\n"
-                + "theHitChance REAL NOT NULL,\n"
-                + "theDeBuffChance REAL NOT NULL,\n"
-                + "theDebuffDuration INTEGER NOT NULL,\n"
-                + "theAttackSpeed INTEGER NOT NULL,\n"
-                + "theBlockChance REAL NOT NULL)";
+        String query = """
+                CREATE TABLE IF NOT EXISTS Adventurer (
+                theAdventurerName TEXT PRIMARY KEY,
+                theMaxHP INTEGER NOT NULL,
+                theMinDamage INTEGER NOT NULL,
+                theMaxDamage INTEGER NOT NULL,
+                theHitChance REAL NOT NULL,
+                theDeBuffChance REAL NOT NULL,
+                theDebuffDuration INTEGER NOT NULL,
+                theAttackSpeed INTEGER NOT NULL,
+                theBlockChance REAL NOT NULL)""";
+
 
         try ( Connection conn = myDS.getConnection();
               Statement stmt = conn.createStatement(); ) {
