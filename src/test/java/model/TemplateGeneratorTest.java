@@ -235,13 +235,13 @@ public class TemplateGeneratorTest {
     }
 
     @Test
-    void testGetIntInvalid() throws SQLException {
+    void testGetIntInvalid() {
         final TemplateGenerator generator = constructorHelper("Monsters");
 
         assertThrowsWithMessage(
-                IllegalArgumentException.class,
+                SQLException.class,
                 generator::getInt,
-                INVALID_CHAR_LENGTH +
+                INVALID_FIELD +
                         getFieldLocationBeforeCallHelper(generator)
         );
     }
