@@ -59,31 +59,31 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     @Override
     final int getAdjustedMinDamage() {
-        return 0;
+        return myAdjustedStats.getMinDamage();
     }
 
     @Override
     final int getAdjustedMaxDamage() {
-        return 0;
+        return myAdjustedStats.getMaxDamage();
     }
 
     @Override
     final double getAdjustedHitChance() {
-        return 0;
+        return myAdjustedStats.getHitChance();
     }
 
     @Override
     final double getAdjustedDebuffChance() {
-        return 0;
+        return myAdjustedStats.getDebuffChance();
     }
 
     @Override
     final int getAdjustedSpeed() {
-        return 0;
+        return myAdjustedStats.getSpeed();
     }
 
     final double getAdjustedResistance(final DamageType theDamageType) {
-        return 0;
+        return myAdjustedStats.getResistance(theDamageType);
     }
 
     final int heal(final int theAmount) {

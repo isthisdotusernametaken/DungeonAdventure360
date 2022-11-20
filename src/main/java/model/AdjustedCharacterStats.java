@@ -2,6 +2,7 @@ package model;
 
 public class AdjustedCharacterStats {
 
+    private final DungeonCharacter myCharacter;
     private int myMinDamage;
     private int myMaxDamage;
     private double myHitChance;
@@ -11,7 +12,9 @@ public class AdjustedCharacterStats {
 
     AdjustedCharacterStats(DungeonCharacter theCharacter) {
         myResistances = new double[DamageType.values().length];
-        resetStats(theCharacter);
+        myCharacter = theCharacter;
+
+        resetStats();
     }
 
     int getMinDamage() {
@@ -48,12 +51,10 @@ public class AdjustedCharacterStats {
 
     void setHitChance(final double theHitChance) {
         this.myHitChance = Util.clampFraction(theHitChance);
-
     }
 
     void setDebuffChance(final double theDebuffChance) {
         this.myDebuffChance = Util.clampFraction(theDebuffChance);
-
     }
 
     void setSpeed(final int theSpeed) {
@@ -62,15 +63,25 @@ public class AdjustedCharacterStats {
 
     void setResistance(final DamageType theDamageType,
                        final double theResistance) {
-
-
+        myResistances[theDamageType.ordinal()] = Util.clampFraction(
+                theResistance
+        );
     }
 
-    void resetStats(final DungeonCharacter theCharacter) {
+    void resetStats() {
+        myMinDamage = myCharacter.getMinDamage();
+        myMaxDamage = myCharacter.getMaxDamage();
+        myHitChance = myCharacter.getHitChance();
+        myDebuffChance = myCharacter.getDebuffChance();
+        mySpeed = myCharacter.getSpeed();
 
+        resetResistances();
     }
 
-    void resetResistance(final DungeonCharacter theCharacter) {
-
+    void resetResistances() {
+        final ResistanceData baseResistances = myCharacter.getResistances();
+        for (int i = 0; i < myResistances.length; i++) {
+            myResistances[i] = baseResistances.getResistance(i);
+        }
     }
 }
