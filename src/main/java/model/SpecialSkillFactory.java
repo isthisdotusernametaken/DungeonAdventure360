@@ -6,7 +6,7 @@ public class SpecialSkillFactory {
 
     static SpecialSkill createSpecialSkill(final String theSkillName)
             throws IllegalArgumentException {
-        return switch (theSkillName) {
+        return switch (theSkillName.trim()) {
             case "CrushingBlow" -> new CrushingBlow();
             case "SneakAttack" -> new SneakAttack();
             case "Heal" -> new Heal();

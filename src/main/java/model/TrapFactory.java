@@ -10,9 +10,11 @@ public class TrapFactory {
     private static final String TABLE_NAME = "Traps";
     private static final List<Trap> TEMPLATES = new ArrayList<>();
 
-    static void generateTemplates()
+    static void generateTemplates(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
-        TemplateGenerator table = new TemplateGenerator(TABLE_NAME);
+        TemplateGenerator table = new TemplateGenerator(
+                theDBManager, TABLE_NAME
+        );
 
         while (table.next()) {
             TEMPLATES.add(new Trap(
