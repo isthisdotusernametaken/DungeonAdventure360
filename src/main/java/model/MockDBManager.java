@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 public class MockDBManager implements DBManager {
@@ -30,9 +29,14 @@ public class MockDBManager implements DBManager {
                 "SHARP"
             }
     };
-    static final String[][] NULLS = {
+    static final String[][] NULL = {
             {
                 null, null
+            }
+    };
+    static final String[][] EMPTY = {
+            {
+                ""
             }
     };
 
@@ -44,7 +48,8 @@ public class MockDBManager implements DBManager {
         setTable("Adventurers", ADVENTURERS);
         setTable("Traps", TRAPS);
         setTable("InvalidResistances", INVALID_RESISTANCES);
-        setTable("Nulls", NULLS);
+        setTable("Null", NULL);
+        setTable("Empty", EMPTY);
     }
 
     static void setTable(final String theTable, final String[] ... theRows) {

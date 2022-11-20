@@ -3,6 +3,7 @@ package model;
 import java.sql.SQLException;
 
 import static model.MockDBManager.INVALID_RESISTANCES;
+import static model.MockDBManager.TRAPS;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -140,11 +141,60 @@ public class TemplateGeneratorTest {
 
     @Test
     void testGetStringNull() {
-        final TemplateGenerator generator = constructorHelper("Nulls");
+        final TemplateGenerator generator = constructorHelper("Null");
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
                 generator::getString,
+                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
+        );
+    }
+
+    @Test
+    void testGetCharValid() {
+        final TemplateGenerator generator = constructorHelper("Traps");
+
+        generator.myColumn = TRAPS[0].length;
+
+        try {
+            assertEquals(
+                    MockDBManager.TRAPS[0][TRAPS[0].length - 1].charAt(0),
+                    generator.getChar()
+            );
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e);
+        }
+    }
+
+//    @Test
+//    void testGetCharEmpty() {
+//        final TemplateGenerator generator = constructorHelper("Adventurer");
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                generator::getChar,
+//                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
+//        );
+//    }
+//
+//    @Test
+//    void testGetCharTooLong() {
+//        final TemplateGenerator generator = constructorHelper("Null");
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                generator::getString,
+//                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
+//        );
+//    }
+
+    @Test
+    void testGetCharNull() {
+        final TemplateGenerator generator = constructorHelper("Null");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getChar,
                 NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
         );
     }
