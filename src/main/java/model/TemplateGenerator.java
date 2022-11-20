@@ -7,8 +7,10 @@ public class TemplateGenerator {
 
     private static final String INVALID_TABLE =
             "No such table exists: ";
+    static final String INVALID_FIELD =
+            "Invalid field (possibly wrong data type): ";
     private static final String NULL_FIELD =
-            "Field is null: ";
+            "Field is null";
     private static final String INVALID_RESISTANCE_DATA =
             "Invalid resistance data: ";
     private static final String INVALID_CHAR_LENGTH =
@@ -118,6 +120,12 @@ public class TemplateGenerator {
                     INVALID_TABLE + theTable
             );
         }
+    }
+
+    private void invalidFieldException() throws SQLException {
+        throw new SQLException(
+                INVALID_FIELD + getFieldLocation()
+        );
     }
 
     private void exceptionOnNull()
