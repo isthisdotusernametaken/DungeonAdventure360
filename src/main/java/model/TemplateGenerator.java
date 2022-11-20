@@ -35,7 +35,13 @@ public class TemplateGenerator {
 
     SpecialSkill getSpecialSkill()
             throws SQLException, IllegalArgumentException {
-        return SpecialSkillFactory.createSpecialSkill(getString());
+        try {
+            return SpecialSkillFactory.createSpecialSkill(getString());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    e.getMessage() + getFieldLocation()
+            );
+        }
     }
 
     ResistanceData getResistanceData()
