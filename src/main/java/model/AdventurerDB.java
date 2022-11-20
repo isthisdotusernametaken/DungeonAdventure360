@@ -8,7 +8,6 @@ import org.sqlite.SQLiteDataSource;
 
 public class AdventurerDB {
 
-    private final static String DB_FILE = "jdbc:sqlite:dungeon_adventure.db";
     private static final SQLiteDataSource DATA_SOURCE = new SQLiteDataSource();
 
     public static void main(String[] args) {
@@ -20,26 +19,28 @@ public class AdventurerDB {
     private static void openConnection(SQLiteDataSource ds) {
 
         try {
-            ds.setUrl(myFile);
-        } catch ( Exception e ) {
+            ds.setUrl(SQLiteDBManager.DB_FILE);
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
-        System.out.println( "Opened database successfully" );
+        System.out.println("Opened database successfully");
     }
 
     private static void createDatabaseTable(SQLiteDataSource ds) {
 
-        String query = "CREATE TABLE IF NOT EXISTS Adventurer (\n"
-                + "theAdventurerName TEXT PRIMARY KEY,\n"
-                + "theMaxHP INTEGER NOT NULL,\n"
-                + "theMinDamage INTEGER NOT NULL,\n"
-                + "theMaxDamage INTEGER NOT NULL,\n"
-                + "theHitChance REAL NOT NULL,\n"
-                + "theDeBuffChance REAL NOT NULL,\n"
-                + "theDebuffDuration INTEGER NOT NULL,\n"
-                + "theAttackSpeed INTEGER NOT NULL,\n"
-                + "theBlockChance REAL NOT NULL)";
+        String query = """
+                CREATE TABLE IF NOT EXISTS Adventurers (
+                    Name TEXT PRIMARY KEY,
+                    MaxHP INTEGER NOT NULL,
+                    MinDamage INTEGER NOT NULL,
+                    MaxDamage INTEGER NOT NULL,
+                    HitChance REAL NOT NULL,
+                    DebuffChance REAL NOT NULL,
+                    DebuffDuration INTEGER NOT NULL,
+                    AttackSpeed INTEGER NOT NULL,
+                    BlockChance REAL NOT NULL
+                );""";
 
         try ( Connection conn = ds.getConnection();
               Statement stmt = conn.createStatement(); ) {
