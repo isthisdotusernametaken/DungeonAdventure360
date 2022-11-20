@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class MockDBManager implements DBManager {
@@ -93,24 +94,39 @@ public class MockDBManager implements DBManager {
         }
 
         @Override
-        public int getInt(int theColumn) {
+        public int getInt(int theColumn) throws SQLException {
             final String field = getStringAndCheckNull(theColumn);
 
-            return myNull ? 0 : Integer.parseInt(field);
+            try {
+                return myNull ? 0 : Integer.parseInt(field);
+            } catch (NumberFormatException e) {
+                throw new SQLException();
+            }
         }
 
         @Override
-        public double getDouble(int theColumn) {
+        public double getDouble(int theColumn) throws SQLException {
             final String field = getStringAndCheckNull(theColumn);
 
-            return myNull ? 0.0 : Double.parseDouble(field);
+            try {
+                return myNull ? 0.0 : Double.parseDouble(field);
+            } catch (NumberFormatException e) {
+                throw new SQLException();
+            }
         }
 
         @Override
-        public boolean getBoolean(int theColumn) {
+        public boolean getBoolean(int theColumn) throws SQLException {
             final String field = getStringAndCheckNull(theColumn);
 
-            return !myNull && Boolean.parseBoolean(field);
+            if (myNull || "false".equalsIgnoreCase(field)) {
+                return false;
+            }
+            if ("true".equalsIgnoreCase(field)) {
+                return true;
+            }
+
+            throw new SQLException();
         }
 
         @Override

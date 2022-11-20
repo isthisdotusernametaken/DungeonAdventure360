@@ -234,17 +234,17 @@ public class TemplateGeneratorTest {
         }
     }
 
-//    @Test
-//    void testGetIntInvalid() {
-//        final TemplateGenerator generator = constructorHelper("Monsters");
-//
-//        assertThrowsWithMessage(
-//                IllegalArgumentException.class,
-//                generator::getInt,
-//                INVALID_CHAR_LENGTH +
-//                        getFieldLocationBeforeCallHelper(generator)
-//        );
-//    }
+    @Test
+    void testGetIntInvalid() throws SQLException {
+        final TemplateGenerator generator = constructorHelper("Monsters");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getInt,
+                INVALID_CHAR_LENGTH +
+                        getFieldLocationBeforeCallHelper(generator)
+        );
+    }
 
     @Test
     void testGetIntNull() {
