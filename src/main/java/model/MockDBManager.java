@@ -70,7 +70,7 @@ public class MockDBManager implements DBManager {
         }
 
         @Override
-        public int getRow() throws SQLException {
+        public int getRow() {
             return myRow + 1;
         }
 
