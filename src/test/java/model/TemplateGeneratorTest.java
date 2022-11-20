@@ -2,6 +2,7 @@ package model;
 
 import java.sql.SQLException;
 
+import static model.MockDBManager.ADVENTURERS;
 import static model.MockDBManager.INVALID_RESISTANCES;
 import static model.MockDBManager.TRAPS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,21 @@ import static model.TestingUtil.*;
 public class TemplateGeneratorTest {
 
     private static final DBManager DB_MANAGER = new MockDBManager();
+    private static TemplateGenerator UNUSED_NON_NULL_GENERATOR;
+
+    static {
+        try {
+            UNUSED_NON_NULL_GENERATOR = new TemplateGenerator(
+                    DB_MANAGER, "Adventurers"
+            );
+        } catch (SQLException | IllegalArgumentException e) {
+            // Mock shouldn't throw SQLException, so should never be
+            // encountered. Even if encountered, successfully avoids incorrect
+            // static checking by compiler marking constructorHelper as
+            // possibly returning null
+            e.printStackTrace();
+        }
+    }
 
     @Test
     void testConstructorValidTable() {
@@ -33,7 +49,7 @@ public class TemplateGeneratorTest {
 
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
-                () -> constructorHelper(table),
+                () -> new TemplateGenerator(DB_MANAGER, table),
                 INVALID_TABLE + table
         );
     }
@@ -166,27 +182,30 @@ public class TemplateGeneratorTest {
         }
     }
 
-//    @Test
-//    void testGetCharEmpty() {
-//        final TemplateGenerator generator = constructorHelper("Adventurer");
-//
-//        assertThrowsWithMessage(
-//                IllegalArgumentException.class,
-//                generator::getChar,
-//                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
-//        );
-//    }
-//
-//    @Test
-//    void testGetCharTooLong() {
-//        final TemplateGenerator generator = constructorHelper("Null");
-//
-//        assertThrowsWithMessage(
-//                IllegalArgumentException.class,
-//                generator::getString,
-//                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
-//        );
-//    }
+    @Test
+    void testGetCharEmpty() {
+        final TemplateGenerator generator = constructorHelper("Empty");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getChar,
+                INVALID_CHAR_LENGTH +
+                        getFieldLocationBeforeCallHelper(generator)
+        );
+    }
+
+    @Test
+    void testGetCharTooLong() {
+        final TemplateGenerator generator = constructorHelper("Adventurers");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getChar,
+                INVALID_CHAR_LENGTH +
+                        ADVENTURERS[0][0] +
+                        getFieldLocationBeforeCallHelper(generator)
+        );
+    }
 
     @Test
     void testGetCharNull() {
@@ -195,6 +214,45 @@ public class TemplateGeneratorTest {
         assertThrowsWithMessage(
                 IllegalArgumentException.class,
                 generator::getChar,
+                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
+        );
+    }
+
+    @Test
+    void testGetIntValid() {
+        final TemplateGenerator generator = constructorHelper("Monsters");
+
+        generator.myColumn = 2;
+
+        try {
+            assertEquals(
+                    MockDBManager.MONSTERS[0][1],
+                    "" + generator.getInt()
+            );
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e);
+        }
+    }
+
+//    @Test
+//    void testGetIntInvalid() {
+//        final TemplateGenerator generator = constructorHelper("Monsters");
+//
+//        assertThrowsWithMessage(
+//                IllegalArgumentException.class,
+//                generator::getInt,
+//                INVALID_CHAR_LENGTH +
+//                        getFieldLocationBeforeCallHelper(generator)
+//        );
+//    }
+
+    @Test
+    void testGetIntNull() {
+        final TemplateGenerator generator = constructorHelper("Null");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getInt,
                 NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
         );
     }
@@ -242,9 +300,10 @@ public class TemplateGeneratorTest {
     private TemplateGenerator constructorHelper(final String theTable) {
         try {
             return new TemplateGenerator(DB_MANAGER, theTable);
-        } catch (SQLException e) {
-            unexpectedExceptionFailure(e); // Mock should not throw SQLException
-            return null;
+        } catch (SQLException | IllegalArgumentException e) {
+            unexpectedExceptionFailure(e); // Mock shouldn't throw SQLException
+            return UNUSED_NON_NULL_GENERATOR; // and all table names in tests
+                                              // should be correct
         }
     }
 

@@ -31,7 +31,7 @@ public class MockDBManager implements DBManager {
     };
     static final String[][] NULL = {
             {
-                null, null
+                null
             }
     };
     static final String[][] EMPTY = {
