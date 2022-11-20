@@ -107,7 +107,7 @@ public class TemplateGenerator {
         return " (" +
                 myTableName +
                 ": row " + myTable.getRow() +
-                ", column " + myColumn +
+                ", column " + (myColumn - 1) +
                 ")";
     }
 
