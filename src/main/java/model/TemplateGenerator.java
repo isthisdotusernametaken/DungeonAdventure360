@@ -70,39 +70,59 @@ public class TemplateGenerator {
     }
 
     String getString() throws SQLException, IllegalArgumentException {
-        final String field = myTable.getString(myColumn++);
-        exceptionOnNull();
+        try {
+            final String field = myTable.getString(myColumn++);
+            exceptionOnNull();
 
-        return field;
+            return field;
+        } catch (SQLException e) {
+            throw invalidFieldException();
+        }
     }
 
     char getChar() throws SQLException, IllegalArgumentException {
-        final String field = getString();
-        exceptionOnInvalidCharLength(field);
+        try {
+            final String field = getString();
+            exceptionOnInvalidCharLength(field);
 
-        return field.charAt(0);
+            return field.charAt(0);
+        } catch (SQLException e) {
+            throw invalidFieldException();
+        }
     }
 
     int getInt() throws SQLException, IllegalArgumentException {
-        final int field = myTable.getInt(myColumn++);
-        exceptionOnNull();
+        try {
+            final int field = myTable.getInt(myColumn++);
+            exceptionOnNull();
 
-        return field;
+            return field;
+        } catch (SQLException e) {
+            throw invalidFieldException();
+        }
     }
 
     double getDouble() throws SQLException, IllegalArgumentException {
-        final double field = myTable.getDouble(myColumn++);
-        exceptionOnNull();
-        exceptionOnIllegalProbability(field);
+        try {
+            final double field = myTable.getDouble(myColumn++);
+            exceptionOnNull();
+            exceptionOnIllegalProbability(field);
 
-        return field;
+            return field;
+        } catch (SQLException e) {
+            throw invalidFieldException();
+        }
     }
 
     boolean getBoolean() throws SQLException, IllegalArgumentException {
-        final boolean field = myTable.getBoolean(myColumn++);
-        exceptionOnNull();
+        try {
+            final boolean field = myTable.getBoolean(myColumn++);
+            exceptionOnNull();
 
-        return field;
+            return field;
+        } catch (SQLException e) {
+            throw invalidFieldException();
+        }
     }
 
     private String getFieldLocation() throws SQLException {
@@ -122,8 +142,8 @@ public class TemplateGenerator {
         }
     }
 
-    private void invalidFieldException() throws SQLException {
-        throw new SQLException(
+    private SQLException invalidFieldException() throws SQLException {
+        return new SQLException(
                 INVALID_FIELD + getFieldLocation()
         );
     }
