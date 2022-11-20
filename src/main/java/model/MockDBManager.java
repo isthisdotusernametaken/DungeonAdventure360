@@ -30,6 +30,11 @@ public class MockDBManager implements DBManager {
                 "SHARP"
             }
     };
+    static final String[][] NULLS = {
+            {
+                null, null
+            }
+    };
 
     private static final HashMap<String, String[][]> TABLES = new HashMap<>();
 
@@ -39,6 +44,7 @@ public class MockDBManager implements DBManager {
         setTable("Adventurers", ADVENTURERS);
         setTable("Traps", TRAPS);
         setTable("InvalidResistances", INVALID_RESISTANCES);
+        setTable("Nulls", NULLS);
     }
 
     static void setTable(final String theTable, final String[] ... theRows) {

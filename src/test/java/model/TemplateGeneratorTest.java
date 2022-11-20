@@ -90,7 +90,7 @@ public class TemplateGeneratorTest {
                 generator::getSpecialSkill,
                 SpecialSkillFactory.INVALID_SKILL +
                         MockDBManager.ADVENTURERS[0][0] +
-                        getFieldLocationHelper(generator)
+                        getFieldLocationBeforeCallHelper(generator)
         );
     }
 
@@ -124,6 +124,29 @@ public class TemplateGeneratorTest {
     @Test
     void testGetResistanceDataInvalidValues() {
         getResistanceDataInvalidTestHelper(3);
+    }
+
+    @Test
+    void testGetStringValid() {
+        try {
+            assertEquals(
+                    MockDBManager.TRAPS[0][0],
+                    constructorHelper("Traps").getString()
+            );
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e);
+        }
+    }
+
+    @Test
+    void testGetStringNull() {
+        final TemplateGenerator generator = constructorHelper("Nulls");
+
+        assertThrowsWithMessage(
+                IllegalArgumentException.class,
+                generator::getString,
+                NULL_FIELD + getFieldLocationBeforeCallHelper(generator)
+        );
     }
 
 
@@ -175,7 +198,20 @@ public class TemplateGeneratorTest {
         }
     }
 
-    private String getFieldLocationHelper(final TemplateGenerator theGenerator) {
+    private String getFieldLocationBeforeCallHelper(final TemplateGenerator theGenerator) {
+        try {
+            theGenerator.myColumn++; // Simulate myColumn++ from start of call
+            final String fieldLocation = theGenerator.getFieldLocation();
+            theGenerator.myColumn--;
+
+            return fieldLocation;
+        } catch (SQLException e) {
+            unexpectedExceptionFailure(e); // Mock shouldn't throw SQLException
+            return null;
+        }
+    }
+
+    private String getFieldLocationAfterCallHelper(final TemplateGenerator theGenerator) {
         try {
             return theGenerator.getFieldLocation();
         } catch (SQLException e) {
@@ -193,7 +229,7 @@ public class TemplateGeneratorTest {
                 generator::getResistanceData,
                 INVALID_RESISTANCE_DATA +
                         INVALID_RESISTANCES[0][theColumn - 1] +
-                        getFieldLocationHelper(generator)
+                        getFieldLocationBeforeCallHelper(generator)
         );
     }
 }
