@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 public enum BuffType implements CharRepresentable {
 
     NONE(false, ' '), // Representation should not be used
@@ -11,6 +13,10 @@ public enum BuffType implements CharRepresentable {
     BLEEDING(true, 'B'),
     POISONED(true, '☠');
 
+    private static final BuffType[] POSITIVE_TYPES =
+            Arrays.stream(values()).filter(
+                    (type) -> type != NONE && !type.isDebuff()
+            ).toArray(BuffType[]::new);
 
     private final boolean myIsDebuff;
     private final char myRepresentation;
@@ -18,6 +24,14 @@ public enum BuffType implements CharRepresentable {
     BuffType(final boolean theIsDebuff, final char theRepresentation) {
         myIsDebuff = theIsDebuff;
         myRepresentation = theRepresentation;
+    }
+
+    static int positiveTypeCount() {
+        return POSITIVE_TYPES.length;
+    }
+
+    static BuffType randomPositiveBuffType() {
+        return POSITIVE_TYPES[Util.randomIntExc(POSITIVE_TYPES.length)];
     }
 
     @Override
