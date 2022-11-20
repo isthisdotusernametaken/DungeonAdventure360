@@ -1,78 +1,30 @@
 package view;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
-public class UISelection extends JFrame implements ActionListener {
+public class UISelection {
 
     public static final int GUI = 0;
     public static final int CONSOLE_UI = 1;
-    private static final String SELECT_PROMPT = null;
-    private static final String SELECT_GUI = null;
-    private static final String SELECT_CONSOLE_UI = null;
+    private static final String TITLE = "Select a UI";
+    private static final String SELECT_PROMPT =
+            "Select a UI to play Dungeon Adventure with, or press Cancel to " +
+            "close the application.";
+    private static final String SELECT_GUI = "GUI";
+    private static final String SELECT_CONSOLE_UI = "Console UI";
+    private static final String SELECT_CANCEL = "Cancel";
 
     public static int select() {
-        return CONSOLE_UI;
+        return JOptionPane.showOptionDialog(
+                null,
+                SELECT_PROMPT,
+                TITLE,
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                new String[]{SELECT_GUI, SELECT_CONSOLE_UI, SELECT_CANCEL},
+                null
+        );
     }
-
-    static JFrame f;
-    static JDialog d, d1, a;
-
-    public static void frame(String[] args) {
-
-        f  = new JFrame("Dungeon Adventure");
-
-        UISelection ob = new UISelection();
-
-        JPanel pan = new JPanel();
-
-        JButton but = new JButton("SELECT_PROMPT");
-
-        but.addActionListener(ob);
-
-        pan.add(but);
-        f.add(pan);
-
-        f.setSize(500, 300);
-        f.show();
-    }
-    public void actionPerformed(ActionEvent e) {
-        String ob = e.getActionCommand();
-        if (ob.equals("SELECT_PROMPT")) {
-            d = new JDialog(f, "CONSOLE_UI");
-
-           JLabel a = new JLabel("click this to play with UI");
-            JButton b = new JButton("SELECT_CONSOLE_UI");
-
-            b.addActionListener(this);
-
-            JPanel p = new JPanel();
-            p.add(b);
-            p.add(a);
-
-            d.add(p);
-            d.setSize(100,100);
-            d.setVisible(true);
-        }
-        else {
-          d1 = new JDialog(d, "GUI");
-          JLabel a = new JLabel("click here to play with GUI");
-          JButton b = new JButton("SELECT_GUI");
-
-          b.addActionListener(this);
-          JPanel p = new JPanel();
-          p.add(a);
-          p.add(b);
-
-          d1.add(p);
-
-          d1.setSize(100,100);
-          d1.setLocation(0,250);
-          d1.setVisible(true);
-        }
-    }
-
-
 }
 
