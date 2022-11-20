@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.sqlite.SQLiteDataSource;
 
 public class SQLiteDBManager implements DBManager {
 
     private static final String DB_FILE = "dungeon_adventure.db";
-    private static final String TABLE_QUERY = "SELECT * FROM ?";
+    private static final String TABLE_QUERY = "SELECT * FROM ";
     private static final String CONNECT_ERROR = "Database connection to " +
                                                 DB_FILE +
                                                 " could not be established.";
@@ -37,12 +38,10 @@ public class SQLiteDBManager implements DBManager {
     public ResultSetTable readTable(final String theTable)
             throws SQLException {
         try (Connection connection = connect();
-             PreparedStatement stmt = connection.prepareStatement(TABLE_QUERY)
-        ) {
-            stmt.setString(1, theTable);
-            ResultSet table = stmt.executeQuery();
-
-            return new ResultSetTable(table);
+             Statement stmt = connection.createStatement()) {
+            return new ResultSetTable(
+                    stmt.executeQuery(TABLE_QUERY + theTable)
+            );
         } catch (SQLException e) {
             throw new SQLException(READ_ERROR + theTable + ".", e);
         }
