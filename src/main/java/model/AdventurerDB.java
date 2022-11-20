@@ -1,57 +1,17 @@
 package model;
 
-import org.sqlite.SQLiteDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class AdventurerDB {
+public class AdventurerDB extends DungeonDatabase{
 
-    private final static String myFile = "jdbc:sqlite:Adventurer.db";
-    private static final SQLiteDataSource ds = new SQLiteDataSource();
-
-    public static void main(String[] args) {
-        openConnection(ds);
-        createDatabaseTable(ds);
-        insertMonsterTable(ds);
+    AdventurerDB() {
+        openConnection();
+        insertAdventurerTable();
     }
 
-    private static void openConnection(SQLiteDataSource ds) {
-
-        try {
-            ds.setUrl(myFile);
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-        System.out.println( "Opened database successfully" );
-    }
-
-    private static void createDatabaseTable(SQLiteDataSource ds) {
-
-        String query = "CREATE TABLE IF NOT EXISTS Adventurer (\n"
-                + "theAdventurerName TEXT PRIMARY KEY,\n"
-                + "theMaxHP INTEGER NOT NULL,\n"
-                + "theMinDamage INTEGER NOT NULL,\n"
-                + "theMaxDamage INTEGER NOT NULL,\n"
-                + "theHitChance REAL NOT NULL,\n"
-                + "theDeBuffChance REAL NOT NULL,\n"
-                + "theDebuffDuration INTEGER NOT NULL,\n"
-                + "theAttackSpeed INTEGER NOT NULL,\n"
-                + "theBlockChance REAL NOT NULL)";
-
-        try ( Connection conn = ds.getConnection();
-              Statement stmt = conn.createStatement(); ) {
-            stmt.execute(query);
-        } catch ( SQLException e ) {
-            e.printStackTrace();
-            System.exit( 0 );
-        }
-        System.out.println( "Created database successfully" );
-    }
-
-    private static void insertMonsterTable(SQLiteDataSource ds) {
+    private static void insertAdventurerTable() {
 
         String warriorDB = "INSERT INTO Adventurer ( theAdventurerName, "
                 + "theMaxHP,"
@@ -108,16 +68,16 @@ public class AdventurerDB {
                 + "'6',"
                 + "'0.4')";
 
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = openConnection();
              Statement stmt = conn.createStatement(); ) {
             stmt.executeUpdate( warriorDB );
             stmt.executeUpdate( priestessDB );
             stmt.execute(thiefDB);
+            System.out.println( "Inserted rows into Adventurer table successfully" );
 
         } catch ( SQLException e ) {
             e.printStackTrace();
             System.exit( 0 );
         }
-        System.out.println( "Inserted rows into test table successfully" );
     }
 }
