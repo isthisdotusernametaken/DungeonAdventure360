@@ -5,7 +5,7 @@ public class PlayGuide {
     private static final Menu GUIDE_MENU = null;
 
     static void open() {
-    MenuSignal playGuide = MenuSignal.PLAY_GUIDE;
+
     }
 
     private static String printControlGuide() {

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
@@ -8,9 +9,9 @@ public abstract class DungeonCharacter extends DamageDealer {
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
-//    private final ResistancesData myResistances; //Need ResistanceData class
-    private final AdjustedCharacterStats myAdjustedStats = null; //Need AdjustedCharacterStats class
-    private final List<Buff> myBuffs = null; //Need Buff class
+    private final ResistanceData myResistances;
+    private final AdjustedCharacterStats myAdjustedStats;
+    private final List<Buff> myBuffs;
 
     DungeonCharacter(final String theName,
                      final int theMaxHP,
@@ -21,8 +22,8 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theDebuffDuration,
                      final DamageType theDamageType,
                      final int theSpeed,
-                     final double theBlockChance/*,
-                     final ResistanceData theResistances*/) { //Need ResistanceData class
+                     final double theBlockChance,
+                     final ResistanceData theResistances) {
         super(theMinDamage,
               theMaxDamage,
               theHitChance,
@@ -36,7 +37,9 @@ public abstract class DungeonCharacter extends DamageDealer {
         myMaxHP = theMaxHP;
         myHP = myMaxHP;
         myBlockChance = theBlockChance;
-//        myResistances = theResistances; //Need ResistanceData class
+        myResistances = theResistances;
+        myAdjustedStats = new AdjustedCharacterStats(this);
+        myBuffs = new ArrayList<>();
     }
 
     final String getName() {
@@ -51,37 +54,37 @@ public abstract class DungeonCharacter extends DamageDealer {
         return myHP;
     }
 
-//    final ResistancesData getMyResistances() { //Need ResistanceData class
-//        return myResistances;
-//    }
+    final ResistanceData getMyResistances() {
+        return myResistances;
+    }
 
     @Override
     final int getAdjustedMinDamage() {
-        return 0;
+        return myAdjustedStats.getMinDamage();
     }
 
     @Override
     final int getAdjustedMaxDamage() {
-        return 0;
+        return myAdjustedStats.getMaxDamage();
     }
 
     @Override
     final double getAdjustedHitChance() {
-        return 0;
+        return myAdjustedStats.getHitChance();
     }
 
     @Override
     final double getAdjustedDebuffChance() {
-        return 0;
+        return myAdjustedStats.getDebuffChance();
     }
 
     @Override
     final int getAdjustedSpeed() {
-        return 0;
+        return myAdjustedStats.getSpeed();
     }
 
     final double getAdjustedResistance(final DamageType theDamageType) {
-        return 0;
+        return myAdjustedStats.getResistance(theDamageType);
     }
 
     final int heal(final int theAmount) {

@@ -28,8 +28,4 @@ public class Util {
     static int clampPositiveInt(final int theValue) {
         return Math.max(1, theValue);
     }
-
-    static int clampSpeed(final int theSpeed) {
-        return Math.max(1, theSpeed);
-    }
 }

@@ -1,20 +1,20 @@
 package model;
 
-import org.sqlite.SQLiteDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.sqlite.SQLiteDataSource;
+
 public class AdventurerDB {
 
-    private final static String myFile = "jdbc:sqlite:Adventurer.db";
-    private static final SQLiteDataSource ds = new SQLiteDataSource();
+    private final static String DB_FILE = "jdbc:sqlite:dungeon_adventure.db";
+    private static final SQLiteDataSource DATA_SOURCE = new SQLiteDataSource();
 
     public static void main(String[] args) {
-        openConnection(ds);
-        createDatabaseTable(ds);
-        insertMonsterTable(ds);
+        openConnection(DATA_SOURCE);
+        createDatabaseTable(DATA_SOURCE);
+        insertMonsterTable(DATA_SOURCE);
     }
 
     private static void openConnection(SQLiteDataSource ds) {

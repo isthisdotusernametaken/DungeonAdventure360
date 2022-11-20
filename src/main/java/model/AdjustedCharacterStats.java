@@ -1,22 +1,20 @@
 package model;
 
 public class AdjustedCharacterStats {
+
     private int myMinDamage;
     private int myMaxDamage;
     private double myHitChance;
     private double myDebuffChance;
     private int mySpeed;
-    private final double[] myResistances; //***
-
-//    DungeonCharacter theCharacter;
+    private final double[] myResistances;
+    private final DungeonCharacter myCharacter;
 
     AdjustedCharacterStats(DungeonCharacter theCharacter) {
         myResistances = new double[DamageType.values().length];
-//        this.theCharacter = theCharacter;//***
-//        myMinDamage = theCharacter.getMinDamage();
-//        myMaxDamage = theCharacter.getMaxDamage();
-//        mySpeed = theCharacter.getSpeed();
-        resetStats(theCharacter);
+        myCharacter = theCharacter;
+
+        resetStats();
     }
 
     int getMinDamage() {
@@ -44,20 +42,19 @@ public class AdjustedCharacterStats {
     }
 
     void setMinDamage(final int theMinDamage) {
-        this.myMinDamage = theMinDamage;
+        myMinDamage = theMinDamage;
     }
 
     void setMaxDamage(final int theMaxDamage) {
-        this.myMaxDamage = theMaxDamage;
+        myMaxDamage = theMaxDamage;
     }
 
     void setHitChance(final double theHitChance) {
-        this.myHitChance = Util.clampFraction(theHitChance);
-
+        myHitChance = Util.clampFraction(theHitChance);
     }
 
     void setDebuffChance(final double theDebuffChance) {
-        this.myDebuffChance = Util.clampFraction(theDebuffChance);
+        myDebuffChance = Util.clampFraction(theDebuffChance);
 
     }
 
@@ -67,14 +64,15 @@ public class AdjustedCharacterStats {
 
     void setResistance(final DamageType theDamageType,
                        final double theResistance) {
-
-
+        myResistances[theDamageType.ordinal()] = Util.clampFraction(
+                theResistance
+        );
     }
 
-    void resetStats(final DungeonCharacter theCharacter) {
+    void resetStats() {
     }
 
-    void resetResistance(final DungeonCharacter theCharacter) {
+    void resetResistance() {
 
     }
 }

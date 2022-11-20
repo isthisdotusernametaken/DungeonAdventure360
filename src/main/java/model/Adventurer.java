@@ -2,7 +2,7 @@ package model;
 
 public class Adventurer extends DungeonCharacter{
 
-    final SpecialSkill[] mySpecialSkills;
+    private final SpecialSkill mySpecialSkill;
 
     Adventurer(final String theName,
                final int theMaxHP,
@@ -14,7 +14,8 @@ public class Adventurer extends DungeonCharacter{
                final DamageType theDamageType,
                final int theSpeed,
                final double theBlockChance,
-               final SpecialSkill[] theSpecialSkills) {
+               final ResistanceData theResistances,
+               final SpecialSkill theSpecialSkill) {
           super(theName,
                 theMaxHP,
                 theMinDamage,
@@ -24,10 +25,11 @@ public class Adventurer extends DungeonCharacter{
                 theDebuffDuration,
                 theDamageType,
                 theSpeed,
-                theBlockChance
+                theBlockChance,
+                theResistances
           );
 
-          mySpecialSkills = theSpecialSkills;
+          mySpecialSkill = theSpecialSkill;
     }
 
     @Override
@@ -35,22 +37,12 @@ public class Adventurer extends DungeonCharacter{
         return "";
     }
 
-    final double getBlockChance() {
-        return 0;
+    final String getSpecialSkillName() {
+        return mySpecialSkill.toString();
     }
 
-    final String[] getSpecialSkillNames() {
-        return new String[0];
-    }
-
-    final boolean useSpecialSkill(final DungeonCharacter theTarget,
-                                  final int theIndex) {
-        return false;
-    }
-
-    final void move(final int theFloors,
-                    final int theWidth,
-                    final int theHeight) {
-
+    final AttackResult useSpecialSkill(final DungeonCharacter theTarget,
+                                       final int theIndex) {
+        return mySpecialSkill.use(theTarget);
     }
 }
