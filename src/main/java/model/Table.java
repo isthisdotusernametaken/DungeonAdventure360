@@ -6,6 +6,8 @@ public interface Table {
 
     boolean next() throws SQLException;
 
+    int getRow() throws SQLException;
+
     String getString(int theColumn) throws SQLException;
 
     int getInt(int theColumn) throws SQLException;

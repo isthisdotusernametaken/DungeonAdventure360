@@ -105,9 +105,9 @@ public class Dungeon {
                            final int theFloor,
                            final int theRow,
                            final boolean theHideUnknown) {
-        final String[][] rooms = (String[][]) Arrays.stream(viewRowAsArray(
+        final String[][] rooms = Arrays.stream(viewRowAsArray(
                 theFloor, theRow, theHideUnknown
-        )).map((s) -> s.split("\n")).toArray();
+        )).map((s) -> s.split("\n")).toArray(String[][]::new);
 
         for (int i = 0; i < TOTAL_ROOM_SIZE; i++) {
             for (String[] room : rooms) {
