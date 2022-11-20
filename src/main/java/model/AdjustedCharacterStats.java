@@ -1,16 +1,21 @@
 package model;
 
 public class AdjustedCharacterStats {
-
     private int myMinDamage;
     private int myMaxDamage;
     private double myHitChance;
     private double myDebuffChance;
     private int mySpeed;
-    private final double[] myResistances;
+    private final double[] myResistances; //***
+
+//    DungeonCharacter theCharacter;
 
     AdjustedCharacterStats(DungeonCharacter theCharacter) {
         myResistances = new double[DamageType.values().length];
+//        this.theCharacter = theCharacter;//***
+//        myMinDamage = theCharacter.getMinDamage();
+//        myMaxDamage = theCharacter.getMaxDamage();
+//        mySpeed = theCharacter.getSpeed();
         resetStats(theCharacter);
     }
 
@@ -67,7 +72,6 @@ public class AdjustedCharacterStats {
     }
 
     void resetStats(final DungeonCharacter theCharacter) {
-
     }
 
     void resetResistance(final DungeonCharacter theCharacter) {

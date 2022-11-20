@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
@@ -9,9 +8,9 @@ public abstract class DungeonCharacter extends DamageDealer {
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
-    private final ResistanceData myResistances;
-    private final AdjustedCharacterStats myAdjustedStats;
-    private final List<Buff> myBuffs;
+//    private final ResistancesData myResistances; //Need ResistanceData class
+    private final AdjustedCharacterStats myAdjustedStats = null; //Need AdjustedCharacterStats class
+    private final List<Buff> myBuffs = null; //Need Buff class
 
     DungeonCharacter(final String theName,
                      final int theMaxHP,
@@ -22,8 +21,8 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final int theDebuffDuration,
                      final DamageType theDamageType,
                      final int theSpeed,
-                     final double theBlockChance,
-                     final ResistanceData theResistances) {
+                     final double theBlockChance/*,
+                     final ResistanceData theResistances*/) { //Need ResistanceData class
         super(theMinDamage,
               theMaxDamage,
               theHitChance,
@@ -37,9 +36,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         myMaxHP = theMaxHP;
         myHP = myMaxHP;
         myBlockChance = theBlockChance;
-        myResistances = theResistances;
-        myAdjustedStats = new AdjustedCharacterStats(this);
-        myBuffs = new ArrayList<>();
+//        myResistances = theResistances; //Need ResistanceData class
     }
 
     final String getName() {
@@ -54,9 +51,9 @@ public abstract class DungeonCharacter extends DamageDealer {
         return myHP;
     }
 
-    final ResistanceData getResistances() {
-        return myResistances;
-    }
+//    final ResistancesData getMyResistances() { //Need ResistanceData class
+//        return myResistances;
+//    }
 
     @Override
     final int getAdjustedMinDamage() {
@@ -137,9 +134,9 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     }
 
-//    private Buff getBuff(final BuffType theBuffType) { //Need Buff Class
-//        return null;
-//    }
+    private Buff getBuff(final BuffType theBuffType) {
+        return null;
+    }
 
     private void advanceBuffs() {
 

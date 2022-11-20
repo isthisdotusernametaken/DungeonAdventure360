@@ -1,14 +1,8 @@
 package model;
 
-import java.util.Arrays;
-import java.util.function.Function;
+public class Adventurer extends DungeonCharacter{
 
-public class Adventurer extends DungeonCharacter {
-
-    private static final Function<SpecialSkill, String> TO_STRINGS =
-            Object::toString;
-
-    private final SpecialSkill[] mySpecialSkills;
+    final SpecialSkill[] mySpecialSkills;
 
     Adventurer(final String theName,
                final int theMaxHP,
@@ -20,8 +14,7 @@ public class Adventurer extends DungeonCharacter {
                final DamageType theDamageType,
                final int theSpeed,
                final double theBlockChance,
-               final ResistanceData theResistances,
-               final SpecialSkill ... theSpecialSkills) {
+               final SpecialSkill[] theSpecialSkills) {
           super(theName,
                 theMaxHP,
                 theMinDamage,
@@ -31,11 +24,10 @@ public class Adventurer extends DungeonCharacter {
                 theDebuffDuration,
                 theDamageType,
                 theSpeed,
-                theBlockChance,
-                theResistances
+                theBlockChance
           );
 
-          mySpecialSkills = theSpecialSkills.clone();
+          mySpecialSkills = theSpecialSkills;
     }
 
     @Override
@@ -43,14 +35,22 @@ public class Adventurer extends DungeonCharacter {
         return "";
     }
 
-    final String[] getSpecialSkillNames() {
-        return (String[]) Arrays.stream(mySpecialSkills)
-                                .map(TO_STRINGS)
-                                .toArray();
+    final double getBlockChance() {
+        return 0;
     }
 
-    final AttackResult useSpecialSkill(final DungeonCharacter theTarget,
-                                       final int theIndex) {
-        return mySpecialSkills[theIndex].use(theTarget);
+    final String[] getSpecialSkillNames() {
+        return new String[0];
+    }
+
+    final boolean useSpecialSkill(final DungeonCharacter theTarget,
+                                  final int theIndex) {
+        return false;
+    }
+
+    final void move(final int theFloors,
+                    final int theWidth,
+                    final int theHeight) {
+
     }
 }
