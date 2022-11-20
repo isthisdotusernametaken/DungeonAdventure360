@@ -11,7 +11,7 @@ public class TemplateGenerator {
             "Field is null: ";
     private static final String INVALID_RESISTANCE_DATA =
             "Invalid resistance data: ";
-    private static final String CHAR_TOO_LONG =
+    private static final String INVALID_CHAR_LENGTH =
             "Invalid individual char: ";
     private static final String INVALID_PROBABILITY =
             "Probability out of range: ";
@@ -76,7 +76,7 @@ public class TemplateGenerator {
 
     char getChar() throws SQLException, IllegalArgumentException {
         final String field = getString();
-        exceptionOnMultipleChars(field);
+        exceptionOnInvalidCharLength(field);
 
         return field.charAt(0);
     }
@@ -136,11 +136,11 @@ public class TemplateGenerator {
         );
     }
 
-    private void exceptionOnMultipleChars(final String theField)
+    private void exceptionOnInvalidCharLength(final String theField)
             throws SQLException, IllegalArgumentException {
         if (theField.length() != 1) {
             throw new IllegalArgumentException(
-                    CHAR_TOO_LONG + theField + getFieldLocation()
+                    INVALID_CHAR_LENGTH + theField + getFieldLocation()
             );
         }
     }
