@@ -10,7 +10,8 @@ public class MonsterFactory {
     private static final String TABLE_NAME = "Monsters";
     private static final List<Monster> TEMPLATES = new ArrayList<>();
 
-    static void generateTemplates(final DBManager theDBManager)
+    static void generateTemplates(final DBManager theDBManager,
+                                  final Difficulty theDifficulty)
             throws SQLException, IllegalArgumentException {
         TemplateGenerator table = new TemplateGenerator(
                 theDBManager, TABLE_NAME
@@ -19,14 +20,14 @@ public class MonsterFactory {
         while (table.next()) {
             TEMPLATES.add(new Monster(
                     table.getString(),
-                    table.getInt(),
-                    table.getInt(),
-                    table.getInt(),
+                    table.getIntModified(theDifficulty),
+                    table.getIntModified(theDifficulty),
+                    table.getIntModified(theDifficulty),
                     table.getDouble(),
                     table.getDouble(),
                     table.getInt(),
                     DamageType.valueOf(table.getString()),
-                    table.getInt(),
+                    table.getIntModified(theDifficulty),
                     table.getDouble(),
                     table.getDouble(),
                     table.getResistanceData()
