@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Container {
+public class Container implements Serializable {
 
     private static final String UNKNOWN_TYPE = "Unknown item type selected. " +
                                                "Cannot be used.";

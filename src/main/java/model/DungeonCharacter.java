@@ -24,13 +24,13 @@ public abstract class DungeonCharacter extends DamageDealer {
                      final double theBlockChance,
                      final ResistanceData theResistances) {
         super(theName,
-              theMinDamage,
-              theMaxDamage,
-              theHitChance,
-              theDebuffChance,
-              theDebuffDuration,
-              theDamageType,
-              theSpeed
+                theMinDamage,
+                theMaxDamage,
+                theHitChance,
+                theDebuffChance,
+                theDebuffDuration,
+                theDamageType,
+                theSpeed
         );
 
         myMaxHP = theMaxHP;
@@ -149,7 +149,7 @@ public abstract class DungeonCharacter extends DamageDealer {
     }
 
     private boolean applyDamage(final int theBaseDamage,
-                             final DamageType theDamageType) {
+                                final DamageType theDamageType) {
         myHP -= adjustedDamage(theBaseDamage, theDamageType);
 
         return myHP <= 0;
@@ -159,7 +159,7 @@ public abstract class DungeonCharacter extends DamageDealer {
                                final DamageType theDamageType) {
         return (int) (
                 theBaseDamage *
-                inverseAdjustedResistance(theDamageType)
+                        inverseAdjustedResistance(theDamageType)
         );
     }
 
@@ -168,4 +168,3 @@ public abstract class DungeonCharacter extends DamageDealer {
         return theBaseDebuffChance * inverseAdjustedResistance(theDamageType);
     }
 }
-

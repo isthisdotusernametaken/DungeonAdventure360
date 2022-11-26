@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class AdventurerFactory {
+public class AdventurerFactory implements Serializable {
 
     private static final String TABLE_NAME = "Adventurers";
     private static final List<Adventurer> TEMPLATES = new ArrayList<>();
@@ -40,8 +41,8 @@ public class AdventurerFactory {
 
     static Adventurer[] createAllAdventurers() {
         return IntStream.range(0, TEMPLATES.size())
-               .mapToObj(AdventurerFactory::createAdventurer)
-               .toArray(Adventurer[]::new);
+                .mapToObj(AdventurerFactory::createAdventurer)
+                .toArray(Adventurer[]::new);
     }
 
     static Adventurer createAdventurer(final int theTypeIndex) {
