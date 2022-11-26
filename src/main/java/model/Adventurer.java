@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Adventurer extends DungeonCharacter implements Serializable {
+public class Adventurer extends DungeonCharacter {
 
     private final SpecialSkill mySpecialSkill;
 
@@ -18,7 +16,7 @@ public class Adventurer extends DungeonCharacter implements Serializable {
                final double theBlockChance,
                final ResistanceData theResistances,
                final SpecialSkill theSpecialSkill) {
-        super(theName,
+          super(theName,
                 theMaxHP,
                 theMinDamage,
                 theMaxDamage,
@@ -29,9 +27,9 @@ public class Adventurer extends DungeonCharacter implements Serializable {
                 theSpeed,
                 theBlockChance,
                 theResistances
-        );
+          );
 
-        mySpecialSkill = theSpecialSkill;
+          mySpecialSkill = theSpecialSkill;
     }
 
     @Override

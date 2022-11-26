@@ -1,11 +1,10 @@
 package model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-public class Dungeon implements Serializable {
+public class Dungeon {
 
     private static final String UNKNOWN_ROOM = createUnknownRoomString('~');
     // left/top wall + width/height of room contents + right/bottom wall
@@ -321,7 +320,7 @@ public class Dungeon implements Serializable {
             Monster monster = null;
             Trap trap = null;
             if (Util.probabilityTest(theMonsterChance)) {
-//                monster = MonsterFactory.createRandomMonster();
+                monster = MonsterFactory.createRandomMonster();
             } else if (Util.probabilityTest(theTrapChance)) {
                 trap = TrapFactory.createRandomTrap();
             }

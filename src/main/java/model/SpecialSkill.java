@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public interface SpecialSkill extends Serializable {
+public interface SpecialSkill {
 
     AttackResult use(DungeonCharacter theTarget);
 }

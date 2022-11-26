@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class AdjustedCharacterStats implements Serializable {
+public class AdjustedCharacterStats {
 
     private final DungeonCharacter myCharacter;
     private int myMinDamage;

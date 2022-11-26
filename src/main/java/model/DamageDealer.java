@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public abstract class DamageDealer implements Serializable {
+public abstract class DamageDealer {
 
     private final String myName;
     private final int myMinDamage;

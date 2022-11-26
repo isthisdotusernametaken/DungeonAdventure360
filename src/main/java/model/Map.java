@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Map implements Serializable {
+public class Map {
 
     private final boolean[][][] myExplored;
 

@@ -1,11 +1,11 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
-public class MonsterFactory implements Serializable {
+public class MonsterFactory {
 
     private static final String TABLE_NAME = "Monsters";
     private static final List<Monster> TEMPLATES = new ArrayList<>();
@@ -34,32 +34,32 @@ public class MonsterFactory implements Serializable {
         }
     }
 
-//    static Monster createRandomMonster() {
-//        return createMonster(Util.randomIntExc(TEMPLATES.size()));
-//    }
+    static Monster createRandomMonster() {
+        return createMonster(Util.randomIntExc(TEMPLATES.size()));
+    }
 
-//    static Monster[] createAllMonsters() {
-//        return IntStream.range(0, TEMPLATES.size())
-//               .mapToObj(MonsterFactory::createMonster)
-//               .toArray(Monster[]::new);
-//    }
+    static Monster[] createAllMonsters() {
+        return IntStream.range(0, TEMPLATES.size())
+               .mapToObj(MonsterFactory::createMonster)
+               .toArray(Monster[]::new);
+    }
 
-//    static Monster createMonster(final int theTypeIndex) {
-//        final Monster template = TEMPLATES.get(theTypeIndex);
-//
-//        return new Monster(
-//                template.getName(),
-//                template.getMaxHP(),
-//                template.getMinDamage(),
-//                template.getMaxDamage(),
-//                template.getHitChance(),
-//                template.getDebuffChance(),
-//                template.getDebuffDuration(),
-//                template.getDamageType(),
-//                template.getSpeed(),
-//                template.getBlockChance(),
-//                template.getHealChance(),
-//                template.getResistances()
-//        );
-//    }
+    static Monster createMonster(final int theTypeIndex) {
+        final Monster template = TEMPLATES.get(theTypeIndex);
+
+        return new Monster(
+                template.getName(),
+                template.getMaxHP(),
+                template.getMinDamage(),
+                template.getMaxDamage(),
+                template.getHitChance(),
+                template.getDebuffChance(),
+                template.getDebuffDuration(),
+                template.getDamageType(),
+                template.getSpeed(),
+                template.getBlockChance(),
+                template.getHealChance(),
+                template.getResistances()
+        );
+    }
 }

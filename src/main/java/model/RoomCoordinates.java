@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class RoomCoordinates implements Serializable {
+public class RoomCoordinates {
 
     private final int myFloor;
     private final int myX;

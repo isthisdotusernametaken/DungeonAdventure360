@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class BuffPotion extends CharacterApplicableItem implements Serializable {
+public class BuffPotion extends CharacterApplicableItem {
 
     private static final int MIN_DURATION = 2;
     private static final int MAX_DURATION = 5;

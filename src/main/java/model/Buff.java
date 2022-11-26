@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public abstract class Buff implements Serializable {
+public abstract class Buff {
 
     private final BuffType myType;
     private int myDuration;

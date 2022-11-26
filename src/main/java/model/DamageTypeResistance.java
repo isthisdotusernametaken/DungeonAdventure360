@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class DamageTypeResistance implements Serializable {
+public class DamageTypeResistance {
 
     private final DamageType myDamageType;
     private final double myResistance;

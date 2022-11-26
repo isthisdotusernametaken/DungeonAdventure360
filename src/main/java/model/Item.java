@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public abstract class Item implements CharRepresentable, Serializable {
+public abstract class Item implements CharRepresentable {
 
     private final char myRepresentation;
     private final ItemType myType;

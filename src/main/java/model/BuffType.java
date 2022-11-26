@@ -1,9 +1,8 @@
 package model;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
-public enum BuffType implements CharRepresentable, Serializable {
+public enum BuffType implements CharRepresentable {
 
     NONE(false, ' '), // Representation should not be used
     STRENGTH(false, 'S'),
