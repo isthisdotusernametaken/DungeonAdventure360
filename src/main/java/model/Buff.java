@@ -15,7 +15,7 @@ public abstract class Buff {
         return myType;
     }
 
-    final int getMyDuration() {
+    final int getDuration() {
         return myDuration;
     }
 

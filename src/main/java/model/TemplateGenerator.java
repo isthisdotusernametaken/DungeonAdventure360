@@ -102,6 +102,11 @@ public class TemplateGenerator {
         }
     }
 
+    int getIntModified(final Difficulty theDifficulty)
+            throws SQLException, IllegalArgumentException {
+        return (int) (getInt() * theDifficulty.getNegativeMultiplier());
+    }
+
     double getDouble() throws SQLException, IllegalArgumentException {
         try {
             final double field = myTable.getDouble(myColumn++);

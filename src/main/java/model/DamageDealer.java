@@ -88,8 +88,8 @@ public abstract class DamageDealer {
                     myDamageType,
                     Util.randomIntInc(getAdjustedMinDamage(), getAdjustedMaxDamage()),
                     getAdjustedDebuffChance(),
-                    theIsBlockable,
-                    myDebuffDuration
+                    myDebuffDuration,
+                    theIsBlockable
             );
         }
         return AttackResult.MISS;
