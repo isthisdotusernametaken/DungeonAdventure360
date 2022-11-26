@@ -100,8 +100,8 @@ public abstract class DungeonCharacter extends DamageDealer {
     final AttackResult applyDamageAndBuff(final DamageType theDamageType,
                                           final int theDamage,
                                           final double theDebuffChance,
-                                          final boolean theIsBlockable,
-                                          final int theDebuffDuration) {
+                                          final int theDebuffDuration,
+                                          final boolean theIsBlockable) {
         if (!(theIsBlockable && Util.probabilityTest(myBlockChance))) {
             if (applyDamage(theDamage, theDamageType)) {
                 return AttackResult.KILL;
