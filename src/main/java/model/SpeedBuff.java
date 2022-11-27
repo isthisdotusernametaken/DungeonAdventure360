@@ -8,6 +8,12 @@ public class SpeedBuff extends Buff {
 
     @Override
     void adjustStats(AdjustedCharacterStats theStats) {
+        theStats.setSpeed(10);
 
+        while (!isCompleted()) {
+            advance();
+        }
+
+        theStats.resetStats();
     }
 }

@@ -8,6 +8,12 @@ public class BleedingDebuff extends Buff {
 
     @Override
     void adjustStats(AdjustedCharacterStats theStats) {
+        theStats.setResistance(DamageType.SHARP, 0.1);
 
+        while (!isCompleted()) {
+            advance();
+        }
+
+        theStats.resetResistances();
     }
 }

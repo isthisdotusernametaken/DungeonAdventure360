@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class TurnAllocator {
+public class TurnAllocator implements Serializable {
 
     private final boolean[] myTurns;
     private final double myExtraTurnChance;

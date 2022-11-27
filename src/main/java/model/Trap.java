@@ -1,6 +1,8 @@
 package model;
 
-public class Trap extends DamageDealer implements CharRepresentable {
+import java.io.Serializable;
+
+public class Trap extends DamageDealer implements CharRepresentable, Serializable {
 
     private final char myCharRepresentation;
     private final boolean myIsSingleUse;

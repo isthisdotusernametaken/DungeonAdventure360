@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class TemplateGenerator {
+public class TemplateGenerator implements Serializable {
 
     private static final String INVALID_TABLE =
             "No such table exists: ";
