@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class SpecialSkillFactory implements Serializable {
+public class SpecialSkillFactory {
 
     private static final String INVALID_SKILL = "Invalid skill: ";
 

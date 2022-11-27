@@ -6,7 +6,7 @@ public enum DamageType {
     SHARP(BuffType.BLEEDING),
     BLUNT(BuffType.BROKEN_BONE),
     FIRE(BuffType.BURNING),
-    POISON(BuffType.WEAKNESS);
+    POISON(BuffType.POISONED);
 
 
     private final BuffType myDebuffType;

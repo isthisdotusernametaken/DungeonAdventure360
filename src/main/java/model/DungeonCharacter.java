@@ -73,11 +73,6 @@ public abstract class DungeonCharacter extends DamageDealer {
     }
 
     @Override
-    final double getAdjustedDebuffChance() {
-        return myAdjustedStats.getDebuffChance();
-    }
-
-    @Override
     final int getAdjustedSpeed() {
         return myAdjustedStats.getSpeed();
     }
@@ -103,7 +98,7 @@ public abstract class DungeonCharacter extends DamageDealer {
                                           final int theDebuffDuration,
                                           final boolean theIsBlockable) {
         if (!(theIsBlockable && Util.probabilityTest(myBlockChance))) {
-            if (applyDamage(theDamage, theDamageType)) {
+            if (applyAdjustedDamage(theDamage, theDamageType)) {
                 return AttackResult.KILL;
             }
 
@@ -136,31 +131,46 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     }
 
-//    private Buff getBuff(final BuffType theBuffType) { //Need Buff Class
-//        return null;
-//    }
+    private Buff getBuff(final BuffType theBuffType) {
+        for (Buff buff : myBuffs) {
+            if (buff.getType() == theBuffType) {
+                return buff;
+            }
+        }
+
+        return null;
+    }
 
     private void advanceBuffs() {
 
+    }
+
+    private boolean applyDamage(final int theDamage) {
+        myHP -= theDamage;
+
+        return myHP <= 0;
+    }
+
+    private boolean applyDamageFromBuff(final Buff theBuff) {
+        if (theBuff.getDamagePercent() != 0.0) {
+            return applyDamage((int) (
+                    theBuff.getDamagePercent() * myMaxHP
+            ));
+        }
+
+        return false; // No damage applied, so if not dead before, can't be now
     }
 
     private double inverseAdjustedResistance(final DamageType theDamageType) {
         return 1.0 - getAdjustedResistance(theDamageType);
     }
 
-    private boolean applyDamage(final int theBaseDamage,
-                             final DamageType theDamageType) {
-        myHP -= adjustedDamage(theBaseDamage, theDamageType);
-
-        return myHP <= 0;
-    }
-
-    private int adjustedDamage(final int theBaseDamage,
-                               final DamageType theDamageType) {
-        return (int) (
+    private boolean applyAdjustedDamage(final int theBaseDamage,
+                                        final DamageType theDamageType) {
+        return applyDamage((int) (
                 theBaseDamage *
                 inverseAdjustedResistance(theDamageType)
-        );
+        ));
     }
 
     private double adjustedDebuffChance(final double theBaseDebuffChance,

@@ -1,13 +1,13 @@
 package model;
 
-public class BurningDebuff extends Buff {
+public class ResistanceBuff extends Buff {
 
-    BurningDebuff(final int theDuration) {
+    ResistanceBuff(final int theDuration) {
         super(
-                BuffType.BURNING,
+                BuffType.RESISTANCE,
                 "All Resistances",
-                0.8,
-                0.06,
+                2.5,
+                0.0,
                 theDuration
         );
     }

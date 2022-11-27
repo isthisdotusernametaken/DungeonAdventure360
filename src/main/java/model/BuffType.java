@@ -7,9 +7,10 @@ public enum BuffType implements CharRepresentable {
     NONE(false, ' '), // Representation should not be used
     STRENGTH(false, 'S'),
     SPEED(false, '》'),
-    WEAKNESS(true, 'W'),
+    ACCURACY(false, '➹'),
+    RESISTANCE(false, '⌺'),
     BROKEN_BONE(true, '<'),
-    BURNING(true, 'F'),
+    BURNING(true, '♨'),
     BLEEDING(true, 'B'),
     POISONED(true, '☠');
 

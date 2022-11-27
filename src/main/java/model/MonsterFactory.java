@@ -1,12 +1,11 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class MonsterFactory implements Serializable {
+public class MonsterFactory {
 
     private static final String TABLE_NAME = "Monsters";
     private static final List<Monster> TEMPLATES = new ArrayList<>();

@@ -75,10 +75,6 @@ public abstract class DamageDealer implements Serializable {
         return getHitChance();
     }
 
-    double getAdjustedDebuffChance() {
-        return getDebuffChance();
-    }
-
     int getAdjustedSpeed() {
         return getSpeed();
     }
@@ -89,7 +85,7 @@ public abstract class DamageDealer implements Serializable {
             return theTarget.applyDamageAndBuff(
                     myDamageType,
                     Util.randomIntInc(getAdjustedMinDamage(), getAdjustedMaxDamage()),
-                    getAdjustedDebuffChance(),
+                    myDebuffChance,
                     myDebuffDuration,
                     theIsBlockable
             );
