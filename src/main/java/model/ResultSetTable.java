@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ResultSetTable implements Table {
+public class ResultSetTable implements Table, Serializable {
 
     private final ResultSet myResultSet;
 

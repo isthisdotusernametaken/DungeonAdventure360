@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-public class Dungeon {
+public class Dungeon implements Serializable {
 
     private static final String UNKNOWN_ROOM = createUnknownRoomString('~');
     // left/top wall + width/height of room contents + right/bottom wall

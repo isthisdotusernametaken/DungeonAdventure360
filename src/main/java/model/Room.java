@@ -1,8 +1,8 @@
 package model;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Room {
+public class Room implements Serializable {
 
     /**
      * The width and length of the contents of a Room in its String

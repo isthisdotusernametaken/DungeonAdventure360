@@ -1,6 +1,8 @@
 package model;
 
-public class ResistanceData {
+import java.io.Serializable;
+
+public class ResistanceData implements Serializable {
 
     private final double[] myResistances;
 
