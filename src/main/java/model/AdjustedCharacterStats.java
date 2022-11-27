@@ -1,12 +1,13 @@
 package model;
 
-public class AdjustedCharacterStats {
+import java.io.Serializable;
+
+public class AdjustedCharacterStats implements Serializable {
 
     private final DungeonCharacter myCharacter;
     private int myMinDamage;
     private int myMaxDamage;
     private double myHitChance;
-    private double myDebuffChance;
     private int mySpeed;
     private final double[] myResistances;
 
@@ -29,10 +30,6 @@ public class AdjustedCharacterStats {
         return myHitChance;
     }
 
-    double getDebuffChance() {
-        return myDebuffChance;
-    }
-
     int getSpeed() {
         return mySpeed;
     }
@@ -41,38 +38,31 @@ public class AdjustedCharacterStats {
         return myResistances[theDamageType.ordinal()];
     }
 
-    void setMinDamage(final int theMinDamage) {
-        myMinDamage = theMinDamage;
+    void multiplyDamage(final double theMultiplier) {
+        myMinDamage *= theMultiplier;
+        myMaxDamage *= theMultiplier;
     }
 
-    void setMaxDamage(final int theMaxDamage) {
-        myMaxDamage = theMaxDamage;
+    void multiplyHitChance(final double theMultiplier) {
+        myHitChance = Util.clampFraction(myHitChance * theMultiplier);
     }
 
-    void setHitChance(final double theHitChance) {
-        myHitChance = Util.clampFraction(theHitChance);
+    void multiplySpeed(final double theMultiplier) {
+        mySpeed = Util.clampPositiveInt((int) (mySpeed * theMultiplier));
     }
 
-    void setDebuffChance(final double theDebuffChance) {
-        myDebuffChance = Util.clampFraction(theDebuffChance);
-    }
-
-    void setSpeed(final int theSpeed) {
-        mySpeed = Util.clampPositiveInt(theSpeed);
-    }
-
-    void setResistance(final DamageType theDamageType,
-                       final double theResistance) {
-        myResistances[theDamageType.ordinal()] = Util.clampFraction(
-                theResistance
-        );
+    void multiplyResistances(final double theMultiplier) {
+        for (int i = 0; i < myResistances.length; i++) {
+            myResistances[i] = Util.clampFraction(
+                    myResistances[i] * theMultiplier
+            );
+        }
     }
 
     void resetStats() {
         myMinDamage = myCharacter.getMinDamage();
         myMaxDamage = myCharacter.getMaxDamage();
         myHitChance = myCharacter.getHitChance();
-        myDebuffChance = myCharacter.getDebuffChance();
         mySpeed = myCharacter.getSpeed();
 
         resetResistances();

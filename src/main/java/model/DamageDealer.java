@@ -1,6 +1,8 @@
 package model;
 
-public abstract class DamageDealer {
+import java.io.Serializable;
+
+public abstract class DamageDealer implements Serializable {
 
     private final String myName;
     private final int myMinDamage;
@@ -73,10 +75,6 @@ public abstract class DamageDealer {
         return getHitChance();
     }
 
-    double getAdjustedDebuffChance() {
-        return getDebuffChance();
-    }
-
     int getAdjustedSpeed() {
         return getSpeed();
     }
@@ -87,7 +85,7 @@ public abstract class DamageDealer {
             return theTarget.applyDamageAndBuff(
                     myDamageType,
                     Util.randomIntInc(getAdjustedMinDamage(), getAdjustedMaxDamage()),
-                    getAdjustedDebuffChance(),
+                    myDebuffChance,
                     myDebuffDuration,
                     theIsBlockable
             );
