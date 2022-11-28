@@ -7,6 +7,10 @@ import java.util.Stack;
 
 public class Dungeon implements Serializable {
 
+    private static final double MONSTER_CHANCE_PER_ROOM = 0.3;
+    private static final double TRAP_CHANCE_PER_ROOM = 0.2;
+    private static final double ITEM_CHANCE_PER_ROOM = 0.4;
+
     private static final String UNKNOWN_ROOM = createUnknownRoomString('~');
     // left/top wall + width/height of room contents + right/bottom wall
     private static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;
@@ -31,22 +35,17 @@ public class Dungeon implements Serializable {
      * The probability of a Room having an Item is theItemChancePerRoom.
      *
      * @param theDimensions The floor, row, and column count for the Dungeon.
-     * @param theMonsterChancePerRoom The probability of a Room having a Monster
-     * @param theTrapChancePerRoom The probability of a Room having a Trap,
-     *                             given that the Room does not have a Monster
-     * @param theItemChancePerRoom The probability of a Room having an Item
      */
     Dungeon(final RoomCoordinates theDimensions,
-            final double theMonsterChancePerRoom,
-            final double theTrapChancePerRoom,
-            final double theItemChancePerRoom) {
+            final Difficulty theDifficulty) {
         myStairs = MazeGenerator.generateStairs(theDimensions);
         myTerminalPoints = new RoomCoordinates[2];
         myRooms = MazeGenerator.generateMaze(
                 theDimensions,
-                theMonsterChancePerRoom,
-                theTrapChancePerRoom,
-                theItemChancePerRoom,
+                theDifficulty.modifyNegative(MONSTER_CHANCE_PER_ROOM),
+                theDifficulty.modifyNegative(TRAP_CHANCE_PER_ROOM),
+                theDifficulty.modifyPositive(ITEM_CHANCE_PER_ROOM),
+                theDifficulty,
                 myTerminalPoints
         );
 
@@ -156,6 +155,7 @@ public class Dungeon implements Serializable {
                                                final double theMonsterChance,
                                                final double theTrapChance,
                                                final double theItemChance,
+                                               final Difficulty theDifficulty,
                                                final RoomCoordinates[] theTerminalPoints) {
             final Room[][][] maze = new Room[theDimensions.getFloor()]
                                             [theDimensions.getX()]
@@ -165,7 +165,8 @@ public class Dungeon implements Serializable {
             for (int i = 0; i < theDimensions.getFloor(); i++) {
                 addFloor(
                         maze, theDimensions, i,
-                        theMonsterChance, theTrapChance, theItemChance
+                        theMonsterChance, theTrapChance, theItemChance,
+                        theDifficulty
                 );
             }
 
@@ -177,7 +178,8 @@ public class Dungeon implements Serializable {
                                      final int theFloor,
                                      final double theMonsterChance,
                                      final double theTrapChance,
-                                     final double theItemChance) {
+                                     final double theItemChance,
+                                     final Difficulty theDifficulty) {
             final boolean[][][] layout = generateFloorLayout(
                     theDimensions, theFloor
             );
@@ -189,7 +191,8 @@ public class Dungeon implements Serializable {
                                 layout[i][j],
                                 theMonsterChance,
                                 theTrapChance,
-                                theItemChance
+                                theItemChance,
+                                theDifficulty
                         );
                     }
                 }
@@ -317,13 +320,18 @@ public class Dungeon implements Serializable {
         private static Room randomRoom(final boolean[] theDoors,
                                        final double theMonsterChance,
                                        final double theTrapChance,
-                                       final double theItemChance) {
+                                       final double theItemChance,
+                                       final Difficulty theDifficulty) {
             Monster monster = null;
             Trap trap = null;
             if (Util.probabilityTest(theMonsterChance)) {
-                monster = MonsterFactory.createRandomMonster();
+                monster = MonsterFactory.getInstance().createRandom(
+                        theDifficulty
+                );
             } else if (Util.probabilityTest(theTrapChance)) {
-                trap = TrapFactory.createRandomTrap();
+                trap = TrapFactory.getInstance().createRandom(
+                        theDifficulty
+                );
             }
 
             return new Room(

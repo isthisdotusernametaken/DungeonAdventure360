@@ -13,6 +13,8 @@ public class TemplateGenerator {
             "Field is null";
     private static final String INVALID_RESISTANCE_DATA =
             "Invalid resistance data: ";
+    private static final String INVALID_DAMAGE_TYPE =
+            "Invalid damage type: ";
     private static final String INVALID_CHAR_LENGTH =
             "Invalid individual char: ";
     private static final String INVALID_PROBABILITY =
@@ -69,6 +71,17 @@ public class TemplateGenerator {
         return new ResistanceData(resistanceValues);
     }
 
+    DamageType getDamageType() throws SQLException, IllegalArgumentException {
+        final String field = getString();
+        try {
+            return DamageType.valueOf(field);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    INVALID_DAMAGE_TYPE + field + getFieldLocation()
+            );
+        }
+    }
+
     String getString() throws SQLException, IllegalArgumentException {
         try {
             final String field = myTable.getString(myColumn++);
@@ -100,11 +113,6 @@ public class TemplateGenerator {
         } catch (SQLException e) {
             throw invalidFieldException();
         }
-    }
-
-    int getIntModified(final Difficulty theDifficulty)
-            throws SQLException, IllegalArgumentException {
-        return (int) (getInt() * theDifficulty.getNegativeMultiplier());
     }
 
     double getDouble() throws SQLException, IllegalArgumentException {

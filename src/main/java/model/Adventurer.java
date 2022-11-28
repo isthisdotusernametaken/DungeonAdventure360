@@ -5,6 +5,7 @@ public class Adventurer extends DungeonCharacter {
     private final SpecialSkill mySpecialSkill;
 
     Adventurer(final String theName,
+               final String theClass,
                final int theMaxHP,
                final int theMinDamage,
                final int theMaxDamage,
@@ -16,17 +17,19 @@ public class Adventurer extends DungeonCharacter {
                final double theBlockChance,
                final ResistanceData theResistances,
                final SpecialSkill theSpecialSkill) {
-          super(theName,
-                theMaxHP,
-                theMinDamage,
-                theMaxDamage,
-                theHitChance,
-                theDebuffChance,
-                theDebuffDuration,
-                theDamageType,
-                theSpeed,
-                theBlockChance,
-                theResistances
+          super(
+                  theName,
+                  theClass,
+                  theMaxHP,
+                  theMinDamage,
+                  theMaxDamage,
+                  theHitChance,
+                  theDebuffChance,
+                  theDebuffDuration,
+                  theDamageType,
+                  theSpeed,
+                  theBlockChance,
+                  theResistances
           );
 
           mySpecialSkill = theSpecialSkill;

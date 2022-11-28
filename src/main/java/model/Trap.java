@@ -7,7 +7,7 @@ public class Trap extends DamageDealer implements CharRepresentable {
     private boolean myIsBroken;
     private final boolean myIsBoardable;
 
-    Trap(final String theName,
+    Trap(final String theClass,
          final boolean theIsSingleUse,
          final boolean theIsBoardable,
          final int theMinDamage,
@@ -19,14 +19,15 @@ public class Trap extends DamageDealer implements CharRepresentable {
          final int theSpeed,
          final char theCharRepresentation) {
 
-        super(theName,
-              theMinDamage,
-              theMaxDamage,
-              theHitChance,
-              theDebuffChance,
-              theDebuffDuration,
-              theDamageType,
-              theSpeed
+        super(
+                theClass,
+                theMinDamage,
+                theMaxDamage,
+                theHitChance,
+                theDebuffChance,
+                theDebuffDuration,
+                theDamageType,
+                theSpeed
         );
 
         myCharRepresentation = theCharRepresentation;

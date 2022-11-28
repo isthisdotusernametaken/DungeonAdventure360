@@ -1,65 +1,89 @@
 package model;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 
-public class AdventurerFactory {
+public class AdventurerFactory extends DungeonCharacterFactory<Adventurer> {
 
-    private static final String TABLE_NAME = "Adventurers";
-    private static final List<Adventurer> TEMPLATES = new ArrayList<>();
+    private static final String STATS_TABLE = "Adventurers";
+    private static final String FIRST_NAME_TABLE = "AdventurerFirstNames";
+    private static final String LAST_NAME_TABLE = "AdventurerLastNames";
 
-    static void generateTemplates(final DBManager theDBManager)
+    private static AdventurerFactory INSTANCE;
+
+    private AdventurerFactory(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
-        TemplateGenerator table = new TemplateGenerator(
-                theDBManager, TABLE_NAME
-        );
+        super(theDBManager, STATS_TABLE, FIRST_NAME_TABLE, LAST_NAME_TABLE);
+    }
 
-        while (table.next()) {
-            TEMPLATES.add(new Adventurer(
-                    table.getString(),
-                    table.getInt(),
-                    table.getInt(),
-                    table.getInt(),
-                    table.getDouble(),
-                    table.getDouble(),
-                    table.getInt(),
-                    DamageType.valueOf(table.getString()),
-                    table.getInt(),
-                    table.getDouble(),
-                    table.getResistanceData(),
-                    table.getSpecialSkill()
-            ));
+    static void buildInstance(final DBManager theDBManager)
+            throws SQLException, IllegalArgumentException {
+        if (INSTANCE == null) {
+            INSTANCE = new AdventurerFactory(theDBManager);
         }
     }
 
-    static Adventurer createRandomAdventurer() {
-        return createAdventurer(Util.randomIntExc(TEMPLATES.size()));
+    static AdventurerFactory getInstance() {
+        return INSTANCE;
     }
 
-    static Adventurer[] createAllAdventurers() {
-        return IntStream.range(0, TEMPLATES.size())
-               .mapToObj(AdventurerFactory::createAdventurer)
-               .toArray(Adventurer[]::new);
-    }
-
-    static Adventurer createAdventurer(final int theTypeIndex) {
-        final Adventurer template = TEMPLATES.get(theTypeIndex);
-
+    @Override
+    Adventurer buildTemplate(final TemplateGenerator theTable)
+            throws SQLException, IllegalArgumentException {
         return new Adventurer(
-                template.getName(),
-                template.getMaxHP(),
-                template.getMinDamage(),
-                template.getMaxDamage(),
-                template.getHitChance(),
-                template.getDebuffChance(),
-                template.getDebuffDuration(),
-                template.getDamageType(),
-                template.getSpeed(),
-                template.getBlockChance(),
-                template.getResistances(),
-                template.getSpecialSkill()
+                "",
+                theTable.getString(),
+                theTable.getInt(),
+                theTable.getInt(),
+                theTable.getInt(),
+                theTable.getDouble(),
+                theTable.getDouble(),
+                theTable.getInt(),
+                theTable.getDamageType(),
+                theTable.getInt(),
+                theTable.getDouble(),
+                theTable.getResistanceData(),
+                theTable.getSpecialSkill()
+        );
+    }
+
+    @Override
+    Adventurer buildModifiedTemplate(final Adventurer theTemplate,
+                                     final Difficulty theDifficulty) {
+        // Difficulty level changes Trap and Monster stats but not Adventurer
+        // stats
+        return new Adventurer(
+                theTemplate.getName(),
+                theTemplate.getClassName(),
+                theTemplate.getMaxHP(),
+                theTemplate.getMinDamage(),
+                theTemplate.getMaxDamage(),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theTemplate.getSpeed(),
+                theTemplate.getBlockChance(),
+                theTemplate.getResistances(),
+                theTemplate.getSpecialSkill()
+        );
+    }
+
+    @Override
+    Adventurer createFromTemplate(final Adventurer theTemplate) {
+        return new Adventurer(
+                generateName(),
+                theTemplate.getClassName(),
+                theTemplate.getMaxHP(),
+                theTemplate.getMinDamage(),
+                theTemplate.getMaxDamage(),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theTemplate.getSpeed(),
+                theTemplate.getBlockChance(),
+                theTemplate.getResistances(),
+                theTemplate.getSpecialSkill()
         );
     }
 }

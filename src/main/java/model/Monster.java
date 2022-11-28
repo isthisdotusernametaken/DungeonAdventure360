@@ -5,6 +5,7 @@ public class Monster extends DungeonCharacter {
     private final double myHealChance;
 
     Monster(final String theName,
+            final String theClass,
             final int theMaxHP,
             final int theMinDamage,
             final int theMaxDamage,
@@ -18,6 +19,7 @@ public class Monster extends DungeonCharacter {
             final ResistanceData theResistances) {
         super(
                 theName,
+                theClass,
                 theMaxHP,
                 theMinDamage,
                 theMaxDamage,

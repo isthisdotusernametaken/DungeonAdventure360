@@ -1,64 +1,79 @@
 package model;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 
-public class TrapFactory {
+public class TrapFactory extends DamageDealerFactory<Trap> {
 
-    private static final String TABLE_NAME = "Traps";
-    private static final List<Trap> TEMPLATES = new ArrayList<>();
+    private static final String STATS_TABLE = "Traps";
 
-    static void generateTemplates(final DBManager theDBManager,
-                                  final Difficulty theDifficulty)
+    private static TrapFactory INSTANCE;
+
+    private TrapFactory(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
-        TemplateGenerator table = new TemplateGenerator(
-                theDBManager, TABLE_NAME
-        );
+        super(theDBManager, STATS_TABLE);
+    }
 
-        while (table.next()) {
-            TEMPLATES.add(new Trap(
-                    table.getString(),
-                    table.getBoolean(),
-                    table.getBoolean(),
-                    table.getIntModified(theDifficulty),
-                    table.getIntModified(theDifficulty),
-                    table.getDouble(),
-                    table.getDouble(),
-                    table.getInt(),
-                    DamageType.valueOf(table.getString()),
-                    table.getIntModified(theDifficulty),
-                    table.getChar()
-            ));
+    static void buildInstance(final DBManager theDBManager)
+            throws SQLException, IllegalArgumentException {
+        if (INSTANCE == null) {
+            INSTANCE = new TrapFactory(theDBManager);
         }
     }
 
-    static Trap createRandomTrap() {
-        return createTrap(Util.randomIntExc(TEMPLATES.size()));
+    static TrapFactory getInstance() {
+        return INSTANCE;
     }
 
-    static Trap[] createAllTraps() {
-        return IntStream.range(0, TEMPLATES.size())
-               .mapToObj(TrapFactory::createTrap)
-               .toArray(Trap[]::new);
-    }
-
-    static Trap createTrap(final int theTypeIndex) {
-        final Trap template = TEMPLATES.get(theTypeIndex);
-
+    @Override
+    Trap buildTemplate(final TemplateGenerator theTable)
+            throws SQLException, IllegalArgumentException {
         return new Trap(
-                template.getName(),
-                template.isSingleUse(),
-                template.isBoardable(),
-                template.getMinDamage(),
-                template.getMaxDamage(),
-                template.getHitChance(),
-                template.getDebuffChance(),
-                template.getDebuffDuration(),
-                template.getDamageType(),
-                template.getSpeed(),
-                template.charRepresentation()
+                theTable.getString(),
+                theTable.getBoolean(),
+                theTable.getBoolean(),
+                theTable.getInt(),
+                theTable.getInt(),
+                theTable.getDouble(),
+                theTable.getDouble(),
+                theTable.getInt(),
+                theTable.getDamageType(),
+                theTable.getInt(),
+                theTable.getChar()
+        );
+    }
+
+    @Override
+    Trap buildModifiedTemplate(final Trap theTemplate,
+                               final Difficulty theDifficulty) {
+        return new Trap(
+                theTemplate.getClassName(),
+                theTemplate.isSingleUse(),
+                theTemplate.isBoardable(),
+                theDifficulty.modifyNegative(theTemplate.getMinDamage()),
+                theDifficulty.modifyNegative(theTemplate.getMaxDamage()),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theDifficulty.modifyNegative(theTemplate.getSpeed()),
+                theTemplate.charRepresentation()
+        );
+    }
+
+    @Override
+    Trap createFromTemplate(final Trap theTemplate) {
+        return new Trap(
+                theTemplate.getClassName(),
+                theTemplate.isSingleUse(),
+                theTemplate.isBoardable(),
+                theTemplate.getMinDamage(),
+                theTemplate.getMaxDamage(),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theTemplate.getSpeed(),
+                theTemplate.charRepresentation()
         );
     }
 }

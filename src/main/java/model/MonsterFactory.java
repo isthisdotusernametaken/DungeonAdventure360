@@ -1,66 +1,87 @@
 package model;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 
-public class MonsterFactory {
+public class MonsterFactory extends DungeonCharacterFactory<Monster> {
 
-    private static final String TABLE_NAME = "Monsters";
-    private static final List<Monster> TEMPLATES = new ArrayList<>();
+    private static final String STATS_TABLE = "Monsters";
+    private static final String FIRST_NAME_TABLE = "MonsterFirstNames";
+    private static final String LAST_NAME_TABLE = "MonsterLastNames";
 
-    static void generateTemplates(final DBManager theDBManager,
-                                  final Difficulty theDifficulty)
+    private static MonsterFactory INSTANCE;
+
+    private MonsterFactory(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
-        TemplateGenerator table = new TemplateGenerator(
-                theDBManager, TABLE_NAME
-        );
+        super(theDBManager, STATS_TABLE, FIRST_NAME_TABLE, LAST_NAME_TABLE);
+    }
 
-        while (table.next()) {
-            TEMPLATES.add(new Monster(
-                    table.getString(),
-                    table.getIntModified(theDifficulty),
-                    table.getIntModified(theDifficulty),
-                    table.getIntModified(theDifficulty),
-                    table.getDouble(),
-                    table.getDouble(),
-                    table.getInt(),
-                    DamageType.valueOf(table.getString()),
-                    table.getIntModified(theDifficulty),
-                    table.getDouble(),
-                    table.getDouble(),
-                    table.getResistanceData()
-            ));
+    static void buildInstance(final DBManager theDBManager)
+            throws SQLException, IllegalArgumentException {
+        if (INSTANCE == null) {
+            INSTANCE = new MonsterFactory(theDBManager);
         }
     }
 
-    static Monster createRandomMonster() {
-        return createMonster(Util.randomIntExc(TEMPLATES.size()));
+    static MonsterFactory getInstance() {
+        return INSTANCE;
     }
 
-    static Monster[] createAllMonsters() {
-        return IntStream.range(0, TEMPLATES.size())
-               .mapToObj(MonsterFactory::createMonster)
-               .toArray(Monster[]::new);
-    }
-
-    static Monster createMonster(final int theTypeIndex) {
-        final Monster template = TEMPLATES.get(theTypeIndex);
-
+    @Override
+    Monster buildTemplate(final TemplateGenerator theTable)
+            throws SQLException, IllegalArgumentException {
         return new Monster(
-                template.getName(),
-                template.getMaxHP(),
-                template.getMinDamage(),
-                template.getMaxDamage(),
-                template.getHitChance(),
-                template.getDebuffChance(),
-                template.getDebuffDuration(),
-                template.getDamageType(),
-                template.getSpeed(),
-                template.getBlockChance(),
-                template.getHealChance(),
-                template.getResistances()
+                "",
+                theTable.getString(),
+                theTable.getInt(),
+                theTable.getInt(),
+                theTable.getInt(),
+                theTable.getDouble(),
+                theTable.getDouble(),
+                theTable.getInt(),
+                theTable.getDamageType(),
+                theTable.getInt(),
+                theTable.getDouble(),
+                theTable.getDouble(),
+                theTable.getResistanceData()
+        );
+    }
+
+    @Override
+    Monster buildModifiedTemplate(final Monster theTemplate,
+                                  final Difficulty theDifficulty) {
+        return new Monster(
+                theTemplate.getName(),
+                theTemplate.getClassName(),
+                theDifficulty.modifyNegative(theTemplate.getMaxHP()),
+                theDifficulty.modifyNegative(theTemplate.getMinDamage()),
+                theDifficulty.modifyNegative(theTemplate.getMaxDamage()),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theDifficulty.modifyNegative(theTemplate.getSpeed()),
+                theTemplate.getBlockChance(),
+                theTemplate.getHealChance(),
+                theTemplate.getResistances()
+        );
+    }
+
+    @Override
+    Monster createFromTemplate(final Monster theTemplate) {
+        return new Monster(
+                generateName(),
+                theTemplate.getClassName(),
+                theTemplate.getMaxHP(),
+                theTemplate.getMinDamage(),
+                theTemplate.getMaxDamage(),
+                theTemplate.getHitChance(),
+                theTemplate.getDebuffChance(),
+                theTemplate.getDebuffDuration(),
+                theTemplate.getDamageType(),
+                theTemplate.getSpeed(),
+                theTemplate.getBlockChance(),
+                theTemplate.getHealChance(),
+                theTemplate.getResistances()
         );
     }
 }
