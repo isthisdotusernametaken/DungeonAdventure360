@@ -23,24 +23,25 @@ public class ArrayDungeon extends Dungeon {
      * and columns, including a Map of the same size.
      *
      * Each room can have a Monster, a Trap, or neither (but not both).
-     * The probability of a Room having a Monster is theMonsterChancePerRoom.
+     * The probability of a Room having a Monster is monsterChancePerRoom.
      * The probability of a Room having a Trap is
-     * (1 - theMonsterChancePerRoom) * theTrapChancePerRoom.
+     * (1 - monsterChancePerRoom) * trapChancePerRoom.
      * The probability of a Room having neither a Monster nor a Trap is
-     * (1 - theMonsterChancePerRoom) * (1 - theTrapChancePerRoom)
+     * (1 - monsterChancePerRoom) * (1 - trapChancePerRoom)
      *
-     * The probability of a Room having an Item is theItemChancePerRoom.
+     * The probability of a Room having an Item is independent of Monster and
+     * Trap probabilities.
      *
-     * @param theDimensions The floor, row, and column count for the Dungeon.
+     * @param theDifficulty Used to set the parameters of the dungeon
      */
-    ArrayDungeon(final RoomCoordinates theDimensions,
-                 final Difficulty theDifficulty) {
-        super(MapFactory.create(theDimensions));
+    ArrayDungeon(final Difficulty theDifficulty) {
+        super(MapFactory.create(theDifficulty.getDimensions()));
 
-        myStairs = MazeGenerator.generateStairs(theDimensions);
+        final RoomCoordinates dimensions = theDifficulty.getDimensions();
+        myStairs = MazeGenerator.generateStairs(dimensions);
         myTerminalPoints = new RoomCoordinates[2];
         myRooms = MazeGenerator.generateMaze(
-                theDimensions,
+                dimensions,
                 theDifficulty.modifyNegative(MONSTER_CHANCE_PER_ROOM),
                 theDifficulty.modifyNegative(TRAP_CHANCE_PER_ROOM),
                 theDifficulty.modifyPositive(ITEM_CHANCE_PER_ROOM),
@@ -346,7 +347,7 @@ public class ArrayDungeon extends Dungeon {
                     false,
                     false,
                     Util.probabilityTest(theItemChance) ?
-                            new Item[]{randomItem()} :
+                            new Item[]{ItemFactory.createRandom()} :
                             new Item[0]
             );
         }
@@ -370,22 +371,6 @@ public class ArrayDungeon extends Dungeon {
             }
 
             return doorDirections.toArray(new Direction[0]);
-        }
-
-        private static Item randomItem() {
-            // Health potion, vision potion, planks, and buff potions
-            final int selected = Util.randomIntExc(
-                    3 + BuffType.positiveTypeCount()
-            );
-
-            return switch (selected) {
-                case 0 -> new HealthPotion(1);
-                case 1 -> new VisionPotion(1);
-                case 2 -> new Planks(1);
-                default -> new BuffPotion(
-                        1, BuffType.randomPositiveBuffType()
-                );
-            };
         }
 
         private static void addTerminalPointsAndPillars(final RoomCoordinates theDimensions,

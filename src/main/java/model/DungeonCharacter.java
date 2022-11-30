@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
-    private final String myName;
+    private String myName;
     private final int myMaxHP;
     private int myHP;
     private final double myBlockChance;
@@ -86,6 +86,10 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     final double getAdjustedResistance(final DamageType theDamageType) {
         return myAdjustedStats.getResistance(theDamageType);
+    }
+
+    final void setName(final String theNewName) {
+        myName = theNewName;
     }
 
     final int heal(final int theAmount) {
