@@ -53,7 +53,7 @@ public class Room implements Serializable {
         return theBuilder.toString();
     }
 
-    Container getContents() {
+    Container getContainer() {
         return myContainer;
     }
 

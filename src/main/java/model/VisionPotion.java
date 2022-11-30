@@ -2,6 +2,7 @@ package model;
 
 public class VisionPotion extends MapApplicableItem {
 
+    private static final String NAME = createNameFromType(new VisionPotion(0));
     private static final char REPRESENTATION = 'V';
 
     VisionPotion(int theCount) {
@@ -25,5 +26,10 @@ public class VisionPotion extends MapApplicableItem {
     @Override
     Item copy() {
         return new VisionPotion(getCount());
+    }
+
+    @Override
+    String getName() {
+        return NAME;
     }
 }

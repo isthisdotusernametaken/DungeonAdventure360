@@ -16,6 +16,15 @@ public class RoomCoordinates implements Serializable {
         myY = theY;
     }
 
+    @Override
+    public String toString() {
+        return new StringBuilder()
+               .append("Floor: ").append(myFloor)
+               .append("; X: ").append(myX)
+               .append("; Y: ").append(myY)
+               .toString();
+    }
+
     int getFloor() {
         return myFloor;
     }

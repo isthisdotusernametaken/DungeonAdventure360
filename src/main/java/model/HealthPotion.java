@@ -2,6 +2,9 @@ package model;
 
 public class HealthPotion extends CharacterApplicableItem {
 
+    private static final String NAME = createNameFromType(
+            new HealthPotion(0)
+    );
     private static final char REPRESENTATION = 'H';
 
     private static final int MIN_HEAL = 15;
@@ -26,5 +29,10 @@ public class HealthPotion extends CharacterApplicableItem {
     @Override
     Item copy() {
         return new HealthPotion(getCount());
+    }
+
+    @Override
+    String getName() {
+        return NAME;
     }
 }

@@ -16,6 +16,19 @@ public class Container implements Serializable {
         myItems = new ArrayList<>(Arrays.asList(theItems));
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append('[');
+        for (Item item : myItems) {
+            builder.append(item.toString()).append(", ");
+        }
+        builder.delete(builder.length() - 2, builder.length());
+        builder.append(']');
+
+        return builder.toString();
+    }
+
     Item[] viewItems() {
         Item[] items = new Item[myItems.size()];
 

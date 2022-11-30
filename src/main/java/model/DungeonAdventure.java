@@ -8,7 +8,7 @@ public class DungeonAdventure implements Serializable {
     private final Adventurer myAdventurer;
     private final Container myInventory;
     private RoomCoordinates myAdventurerCoordinates;
-    private boolean myInCombat;
+    private boolean myIsInCombat;
     private TurnAllocator myTurnAllocator;
 
     public DungeonAdventure(final String theAdventurerName,
@@ -26,8 +26,40 @@ public class DungeonAdventure implements Serializable {
         // myInCombat false and myTurnAllocator null
     }
 
-    String getAdventurer() {
+    public String getAdventurer() {
         return myAdventurer.toString();
     }
 
+    public String getAdventurerCoords() {
+        return myAdventurerCoordinates.toString();
+    }
+
+    public String getRoom() {
+        return myDungeon.getRoom(myAdventurerCoordinates).toString();
+    }
+
+    public String getRoomItems() {
+        return myDungeon.getRoom(myAdventurerCoordinates)
+                        .getContainer().toString();
+    }
+
+    public String getInventoryItems() {
+        return myInventory.toString();
+    }
+
+    public String getMap() {
+        return myDungeon.view(true);
+    }
+
+    public boolean isInCombat() {
+        return myIsInCombat;
+    }
+
+    public String getSpecialSkill() {
+        return myAdventurer.viewSpecialSkill();
+    }
+
+    public boolean canUseSpecialSkill() {
+        return myAdventurer.getSpecialSkill().canUse();
+    }
 }

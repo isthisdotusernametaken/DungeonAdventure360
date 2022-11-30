@@ -44,7 +44,12 @@ public class Adventurer extends DungeonCharacter {
         return mySpecialSkill;
     }
 
-    final AttackResult useSpecialSkill(final DungeonCharacter theTarget) {
-        return mySpecialSkill.use(theTarget);
+    final String viewSpecialSkill() {
+        return mySpecialSkill.toString();
+    }
+
+    final AttackResult useSpecialSkill(final DungeonCharacter theSelf,
+                                       final DungeonCharacter theEnemy) {
+        return mySpecialSkill.use(theSelf, theEnemy);
     }
 }

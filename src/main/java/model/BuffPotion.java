@@ -1,6 +1,13 @@
 package model;
 
+import java.util.Arrays;
+
 public class BuffPotion extends CharacterApplicableItem {
+
+    private static final String[] NAMES =
+            Arrays.stream(BuffType.getAllPositiveBuffTypes())
+            .map(buffType -> buffType.toString() + " Potion")
+            .toArray(String[]::new);
 
     private static final int MIN_DURATION = 2;
     private static final int MAX_DURATION = 5;
@@ -33,5 +40,10 @@ public class BuffPotion extends CharacterApplicableItem {
     @Override
     Item copy() {
         return new BuffPotion(getCount(), myBuffType);
+    }
+
+    @Override
+    String getName() {
+        return NAMES[myBuffType.ordinal() + 1];
     }
 }

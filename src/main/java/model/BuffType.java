@@ -32,6 +32,13 @@ public enum BuffType implements CharRepresentable {
     }
 
     @Override
+    public String toString() {
+        final String name = super.toString();
+
+        return name.charAt(0) + name.substring(1).toLowerCase();
+    }
+
+    @Override
     public char charRepresentation() {
         return myRepresentation;
     }
