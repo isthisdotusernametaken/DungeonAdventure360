@@ -35,12 +35,11 @@ public class DungeonAdventure implements Serializable {
     }
 
     public String getRoom() {
-        return myDungeon.getRoom(myAdventurerCoordinates).toString();
+        return getCurrentRoom().toString();
     }
 
     public String getRoomItems() {
-        return myDungeon.getRoom(myAdventurerCoordinates)
-                        .getContainer().toString();
+        return getCurrentRoom().getContainer().toString();
     }
 
     public String getInventoryItems() {
@@ -61,5 +60,26 @@ public class DungeonAdventure implements Serializable {
 
     public boolean canUseSpecialSkill() {
         return myAdventurer.getSpecialSkill().canUse();
+    }
+
+    public String getMonster() {
+        return getCurrentRoom().getMonster().toString();
+    }
+
+    public boolean moveAdventurer(final Direction theDirection) {
+        final RoomCoordinates newCoords = myAdventurerCoordinates.add(
+                theDirection, myDungeon.getDimensions()
+        );
+
+        if (newCoords.isSameRoom(myAdventurerCoordinates)) {
+            return false;
+        }
+
+        myAdventurerCoordinates = newCoords;
+        return true;
+    }
+
+    private Room getCurrentRoom() {
+        return myDungeon.getRoom(myAdventurerCoordinates);
     }
 }

@@ -17,6 +17,7 @@ public class ArrayDungeon extends Dungeon {
     private final Room[][][] myRooms;
     private final RoomCoordinates[] myStairs;
     private final RoomCoordinates[] myTerminalPoints;
+    private final RoomCoordinates myDimensions;
 
     /**
      * Creates a new Dungeon of Rooms with the provided number of floors, rows,
@@ -48,6 +49,10 @@ public class ArrayDungeon extends Dungeon {
                 theDifficulty,
                 myTerminalPoints
         );
+
+        myDimensions = new RoomCoordinates(
+                myRooms.length, myRooms[0].length, myRooms[0][0].length
+        );
     }
 
     private static String createUnknownRoomString(final char theUnknown) {
@@ -77,6 +82,11 @@ public class ArrayDungeon extends Dungeon {
         }
 
         return dungeon.toString();
+    }
+
+    @Override
+    RoomCoordinates getDimensions() {
+        return myDimensions;
     }
 
     @Override

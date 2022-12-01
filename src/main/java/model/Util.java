@@ -37,6 +37,13 @@ public class Util {
         return Math.max(1, theValue);
     }
 
+    static int clampInt(final int theMin, final int theMax, final int theValue) {
+        return Math.max(
+                theMin,
+                Math.min(theValue, theMax)
+        );
+    }
+
     static class LinearEquation {
 
         private final double mySlope;

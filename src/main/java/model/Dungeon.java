@@ -30,6 +30,8 @@ public abstract class Dungeon implements Serializable {
 
     abstract String view(boolean theHideUnknown);
 
+    abstract RoomCoordinates getDimensions();
+
     abstract Room getRoom(RoomCoordinates theCoords);
 
     abstract boolean hasStairs(RoomCoordinates theCoords);
