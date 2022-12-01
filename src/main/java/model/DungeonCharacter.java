@@ -88,6 +88,12 @@ public abstract class DungeonCharacter extends DamageDealer {
         return myAdjustedStats.getResistance(theDamageType);
     }
 
+    final String viewBuff(final BuffType theBuffType) {
+        final Buff buff = getBuff(theBuffType);
+
+        return buff == null ? Util.NONE : buff.toString();
+    }
+
     final void setName(final String theNewName) {
         myName = theNewName;
     }
@@ -142,6 +148,14 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     }
 
+    final void advanceBuffsAndDebuffs() {
+
+    }
+
+    final void advanceDebuffs() {
+
+    }
+
     private Buff getBuff(final BuffType theBuffType) {
         for (Buff buff : myBuffs) {
             if (buff.getType() == theBuffType) {
@@ -150,10 +164,6 @@ public abstract class DungeonCharacter extends DamageDealer {
         }
 
         return null;
-    }
-
-    private void advanceBuffs() {
-
     }
 
     private boolean applyDamage(final int theDamage) {

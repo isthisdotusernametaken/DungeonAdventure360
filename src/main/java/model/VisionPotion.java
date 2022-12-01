@@ -15,12 +15,17 @@ public class VisionPotion extends MapApplicableItem {
     }
 
     @Override
-    void applyEffect(final Map theTarget, final RoomCoordinates theCoords) {
+    boolean applyEffect(final Map theTarget, final RoomCoordinates theCoords) {
+        boolean anyUnexplored = false;
         for (int i = theCoords.getX() - 1; i <= theCoords.getX() + 1; i++) {
             for (int j = theCoords.getY() - 1; j <= theCoords.getY() + 1; j++) {
+                anyUnexplored = anyUnexplored ||
+                                theTarget.isExplored(theCoords.getFloor(), i, j);
                 theTarget.explore(theCoords.getFloor(), i, j);
             }
         }
+
+        return anyUnexplored;
     }
 
     @Override

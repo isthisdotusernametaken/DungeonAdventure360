@@ -9,6 +9,7 @@ public class TurnAllocator implements Serializable {
     private final double myExtraTurnChance;
     private final int myExtraTurnIndex;
     private int myCurrentTurn;
+    private boolean myIsCompleted;
 
     TurnAllocator(final int theAdventurerSpeed, final int theMonsterSpeed) {
         final boolean adventurerAsFastOrFaster =
@@ -21,6 +22,7 @@ public class TurnAllocator implements Serializable {
         myExtraTurnIndex = (int) speedRatio;
         myExtraTurnChance = speedRatio - myExtraTurnIndex;
         myTurns = assignTurns(adventurerAsFastOrFaster);
+        // myIsCompleted is false;
     }
 
     private static double calculateSpeedRatio(final boolean theAdventurerAsFastOrFaster,
@@ -31,24 +33,29 @@ public class TurnAllocator implements Serializable {
                 ((double) theMonsterSpeed) / theAdventurerSpeed;
     }
 
-    boolean nextTurn() {
-        final boolean turn = myTurns[myCurrentTurn];
+    boolean isCompleted() {
+        return myIsCompleted;
+    }
 
+    boolean peekNextTurn() {
+        return myTurns[myCurrentTurn];
+    }
+
+    void nextTurn() {
         incrementTurn();
         incrementTurnIfSkippingExtra();
-
-        return turn;
     }
 
     private void incrementTurn() {
         if (++myCurrentTurn >= myTurns.length) {
+            myIsCompleted = true;
             myCurrentTurn = 0;
         }
     }
 
     private void incrementTurnIfSkippingExtra() {
         if (myCurrentTurn == myExtraTurnIndex &&
-            Util.probabilityTest(myExtraTurnChance)
+            !Util.probabilityTest(myExtraTurnChance)
         ) {
             incrementTurn();
         }

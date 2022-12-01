@@ -2,7 +2,7 @@ package model;
 
 public abstract class MapApplicableItem extends Item {
 
-    private static final String MAP_UPDATED = "Map updated";
+    private static final String MAP_UPDATED = "Map updated.";
 
     MapApplicableItem(final char theRepresentation,
                       final ItemType theType,
@@ -18,12 +18,14 @@ public abstract class MapApplicableItem extends Item {
 
     final String use(final Map theTarget,
                      final RoomCoordinates theCoords) {
-        consume();
-        applyEffect(theTarget, theCoords);
+        if (applyEffect(theTarget, theCoords)) {
+            consume();
+            return MAP_UPDATED;
+        }
 
-        return MAP_UPDATED;
+        return Util.NONE;
     }
 
-    abstract void applyEffect(final Map theTarget,
-                              final RoomCoordinates theCoords);
+    abstract boolean applyEffect(final Map theTarget,
+                                 final RoomCoordinates theCoords);
 }

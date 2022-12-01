@@ -97,14 +97,15 @@ public class ArrayDungeon extends Dungeon {
     }
 
     @Override
-    boolean hasStairs(final RoomCoordinates theCoords) {
-        for (RoomCoordinates stairs : myStairs) {
-            if (theCoords.isSameRoom(stairs)) {
-                return true;
-            }
-        }
+    boolean hasStairsUp(final RoomCoordinates theCoords) {
+        return theCoords.getFloor() != 0 &&
+                theCoords.isSameRoom(myStairs[theCoords.getFloor() - 1]);
+    }
 
-        return false;
+    @Override
+    boolean hasStairsDown(final RoomCoordinates theCoords) {
+        return theCoords.getFloor() != myDimensions.getFloor() - 1 &&
+               theCoords.isSameRoom(myStairs[theCoords.getFloor()]);
     }
 
     @Override
@@ -141,7 +142,7 @@ public class ArrayDungeon extends Dungeon {
         for (int i = 0; i < rooms.length; i++) {
             rooms[i] = (
                     theHideUnknown &&
-                    !isExplored(theFloor, theRow, i)
+                    !getMap().isExplored(theFloor, theRow, i)
             ) ?
                     UNKNOWN_ROOM :
                     myRooms[theFloor][theRow][i].toString();
@@ -351,7 +352,7 @@ public class ArrayDungeon extends Dungeon {
             }
 
             return new Room(
-                    toDirections(theDoors),
+                    theDoors,
                     trap,
                     monster,
                     false,
@@ -360,27 +361,6 @@ public class ArrayDungeon extends Dungeon {
                             new Item[]{ItemFactory.createRandom()} :
                             new Item[0]
             );
-        }
-
-        private static Direction[] toDirections(final boolean[] theDoors) {
-            final ArrayList<Direction> doorDirections = new ArrayList<>(
-                    theDoors.length
-            );
-
-            if (theDoors[Direction.NORTH.ordinal()]) {
-                doorDirections.add(Direction.NORTH);
-            }
-            if (theDoors[Direction.SOUTH.ordinal()]) {
-                doorDirections.add(Direction.SOUTH);
-            }
-            if (theDoors[Direction.WEST.ordinal()]) {
-                doorDirections.add(Direction.WEST);
-            }
-            if (theDoors[Direction.EAST.ordinal()]) {
-                doorDirections.add(Direction.EAST);
-            }
-
-            return doorDirections.toArray(new Direction[0]);
         }
 
         private static void addTerminalPointsAndPillars(final RoomCoordinates theDimensions,
@@ -409,10 +389,13 @@ public class ArrayDungeon extends Dungeon {
                                          final boolean theIsEntrance,
                                          final boolean theIsExit,
                                          final Item ... theItems) {
+            final boolean[] allDoors = new boolean[Direction.values().length];
+            Arrays.fill(allDoors, true);
+
             theMaze[theCoords.getFloor()]
                    [theCoords.getX()]
                    [theCoords.getY()] = new Room(
-                           Direction.values(),
+                           allDoors,
                            null, null,
                            theIsEntrance, theIsExit,
                            theItems

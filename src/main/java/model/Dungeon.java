@@ -12,20 +12,8 @@ public abstract class Dungeon implements Serializable {
 
     public abstract String toString();
 
-    void explore(final RoomCoordinates theCoords) {
-        myMap.explore(theCoords);
-    }
-
-    boolean isExplored(final RoomCoordinates theCoords) {
-        return myMap.isExplored(theCoords);
-    }
-
-    void explore(final int theFloor, final int theX, final int theY) {
-        myMap.explore(theFloor, theX, theY);
-    }
-
-    boolean isExplored(final int theFloor, final int theX, final int theY) {
-        return myMap.isExplored(theFloor, theX, theY);
+    Map getMap() {
+        return myMap;
     }
 
     abstract String view(boolean theHideUnknown);
@@ -34,7 +22,9 @@ public abstract class Dungeon implements Serializable {
 
     abstract Room getRoom(RoomCoordinates theCoords);
 
-    abstract boolean hasStairs(RoomCoordinates theCoords);
+    abstract boolean hasStairsUp(RoomCoordinates theCoords);
+
+    abstract boolean hasStairsDown(RoomCoordinates theCoords);
 
     abstract RoomCoordinates getEntrance();
 

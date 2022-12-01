@@ -9,7 +9,7 @@ public abstract class SpecialSkill implements Serializable {
     private int myRemainingCooldown;
 
     SpecialSkill(final int theCooldown) {
-        myName = createNameFromClassName();
+        myName = Util.createNameFromClassName(this);
         myCooldown = theCooldown;
     }
 
@@ -46,9 +46,4 @@ public abstract class SpecialSkill implements Serializable {
 
     abstract AttackResult apply(DungeonCharacter theSelf,
                                 DungeonCharacter theEnemy);
-
-    private String createNameFromClassName() {
-        return getClass().getSimpleName()
-               .replaceAll("(.)([A-Z])", "\\1 \\2");
-    }
 }

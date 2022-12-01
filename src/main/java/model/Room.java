@@ -20,14 +20,14 @@ public class Room implements Serializable {
     private static final char HORIZONTAL_DOOR = '-';
     private static final char VERTICAL_DOOR = '|';
 
-    private final Direction[] myDoors;
+    private final boolean[] myDoors;
     private final Container myContainer;
     private final Trap myTrap;
     private Monster myMonster;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
-    Room(final Direction[] theDoors,
+    Room(final boolean[] theDoors,
          final Trap theTrap,
          final Monster theMonster,
          final boolean theIsEntrance,
@@ -57,18 +57,8 @@ public class Room implements Serializable {
         return myContainer;
     }
 
-    Direction[] getDoors() {
-        return myDoors.clone();
-    }
-
     boolean hasDoor(final Direction theDirection) {
-        for (Direction door : myDoors) {
-            if (theDirection == door) {
-                return true;
-            }
-        }
-
-        return false;
+        return myDoors[theDirection.ordinal()];
     }
 
     boolean isEntrance() {
@@ -98,20 +88,20 @@ public class Room implements Serializable {
     }
 
     AttackResult attackMonster(final DungeonCharacter theAttacker) {
-        if (myMonster == null) {
-            return AttackResult.NO_ACTION;
-        } else {
-            final AttackResult result = theAttacker.attemptDamage(
+        return myMonster == null ?
+                AttackResult.NO_ACTION :
+                killMonsterOnKillResult(theAttacker.attemptDamage(
                     myMonster,true
-            );
+                ));
+    }
 
-            if (result == AttackResult.KILL) {
-                // Send drops to Room's Container
-                myMonster = null;
-            }
-
-            return result;
+    AttackResult killMonsterOnKillResult(final AttackResult theResult) {
+        if (theResult == AttackResult.KILL) {
+            // Send drops to Room's Container
+            myMonster = null;
         }
+
+        return theResult;
     }
 
 

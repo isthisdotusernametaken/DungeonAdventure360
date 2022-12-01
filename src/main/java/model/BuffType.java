@@ -21,10 +21,13 @@ public enum BuffType implements CharRepresentable {
 
     private final boolean myIsDebuff;
     private final char myRepresentation;
+    private final String myName;
 
-    BuffType(final boolean theIsDebuff, final char theRepresentation) {
+    BuffType(final boolean theIsDebuff,
+             final char theRepresentation) {
         myIsDebuff = theIsDebuff;
         myRepresentation = theRepresentation;
+        myName = Util.createNameFromClassName(this);
     }
 
     static BuffType[] getAllPositiveBuffTypes() {
@@ -33,9 +36,7 @@ public enum BuffType implements CharRepresentable {
 
     @Override
     public String toString() {
-        final String name = super.toString();
-
-        return name.charAt(0) + name.substring(1).toLowerCase();
+        return myName;
     }
 
     @Override

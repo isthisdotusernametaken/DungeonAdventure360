@@ -4,6 +4,8 @@ import java.util.SplittableRandom;
 
 public class Util {
 
+    public static final String NONE = "";
+
     private static final SplittableRandom RANDOM = new SplittableRandom();
 
     static boolean probabilityTest(final double theProbability) {
@@ -42,6 +44,11 @@ public class Util {
                 theMin,
                 Math.min(theValue, theMax)
         );
+    }
+
+    static String createNameFromClassName(final Object theObject) {
+        return theObject.getClass().getSimpleName()
+               .replaceAll("(.)([A-Z])", "\\1 \\2");
     }
 
     static class LinearEquation {
