@@ -6,6 +6,7 @@ public enum Difficulty {
     NORMAL(0.0, 2, 5),
     HARD(0.25, 3, 5);
 
+    private final String myName;
     private final double myPositiveMultiplier;
     private final double myNegativeMultiplier;
     private final RoomCoordinates myDimensions;
@@ -19,6 +20,13 @@ public enum Difficulty {
         myDimensions = new RoomCoordinates(
                 theFloors, theWidthAndLength, theWidthAndLength
         );
+
+        myName = Util.createNameFromEnumName(this);
+    }
+
+    @Override
+    public String toString() {
+        return myName;
     }
 
     double getPositiveMultiplier() {

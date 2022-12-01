@@ -5,8 +5,13 @@ import java.util.SplittableRandom;
 public class Util {
 
     public static final String NONE = "";
+    public static final String NEW = "n";
 
     private static final SplittableRandom RANDOM = new SplittableRandom();
+
+    static boolean isValidIndex(final int theIndex, final int theSize) {
+        return theIndex >= 0 && theIndex < theSize;
+    }
 
     static boolean probabilityTest(final double theProbability) {
         return randomDouble() < theProbability;
@@ -51,40 +56,15 @@ public class Util {
                .replaceAll("(.)([A-Z])", "\\1 \\2");
     }
 
-    static class LinearEquation {
-
-        private final double mySlope;
-        private final double myOffset;
-
-        LinearEquation(final double theFirstX,
-                       final double theFirstY,
-                       final double theSecondX,
-                       final double theSecondY) {
-            mySlope = calculateSlope(
-                    theFirstX, theFirstY,
-                    theSecondX, theSecondY
-            );
-            myOffset = calculateOffset(
-                    theFirstX, theFirstY,
-                    mySlope
-            );
+    static String createNameFromEnumName(final Enum theEnum) {
+        final StringBuilder builder = new StringBuilder();
+        for (String word : theEnum.toString().split("_")) {
+            builder.append(word.charAt(0))
+                   .append(word.substring(1).toLowerCase())
+                   .append(' ');
         }
+        builder.deleteCharAt(builder.length() - 1);
 
-        double evaluate(final double theX) {
-            return mySlope * theX + myOffset;
-        }
-
-        private static double calculateSlope(final double theFirstX,
-                                             final double theFirstY,
-                                             final double theSecondX,
-                                             final double theSecondY) {
-            return (theSecondY - theFirstY) / (theSecondX - theFirstX);
-        }
-
-        private static double calculateOffset(final double theFirstX,
-                                              final double theFirstY,
-                                              final double theSlope) {
-            return theFirstY - theSlope * theFirstX;
-        }
+        return builder.toString();
     }
 }

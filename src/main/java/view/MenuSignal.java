@@ -11,5 +11,7 @@ public enum MenuSignal {
     EXPLORATION,
     COMBAT,
     WIN,
-    LOSE
+    LOSE,
+    CONFIRM_EXIT,
+    EXIT
 }

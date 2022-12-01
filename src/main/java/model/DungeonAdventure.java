@@ -28,6 +28,25 @@ public class DungeonAdventure implements Serializable {
         // myInCombat false (myTurnAllocator irrelevant)
     }
 
+    public static boolean buildFactories() {
+        try {
+            DBManager dbManager = new SQLiteDBManager();
+            AdventurerFactory.buildInstance();
+        }
+    }
+
+    public static String[] getAdventurerClasses() {
+        return AdventurerFactory.getInstance().getClasses();
+    }
+
+    public static boolean isValidAdventurerClass(final int theIndex) {
+        return AdventurerFactory.getInstance().isValidIndex(theIndex);
+    }
+
+    public static boolean isValidDifficulty(final int theIndex) {
+        return Util.isValidIndex(theIndex, Difficulty.values().length);
+    }
+
     public String getAdventurer() {
         return myAdventurer.toString();
     }
@@ -51,13 +70,16 @@ public class DungeonAdventure implements Serializable {
     public String useInventoryItem(final int theIndex) {
         requireAlive();
 
-        return myInventory.useItem(
-                theIndex,
-                myAdventurer,
-                myDungeon.getMap(),
-                getCurrentRoom(),
-                myAdventurerCoordinates
-        );
+        return (Util.isValidIndex(theIndex, myInventory.size())) ?
+                myInventory.useItem(
+                        theIndex,
+                        myAdventurer,
+                        myDungeon.getMap(),
+                        getCurrentRoom(),
+                        myAdventurerCoordinates,
+                        myIsInCombat
+                ) :
+                Util.NONE;
     }
 
     public boolean isInCombat() {
@@ -67,11 +89,15 @@ public class DungeonAdventure implements Serializable {
     public String tryNextCombatTurn() {
         requireAlive();
 
-        if (myTurnAllocator.peekNextTurn()) {
-            return Util.NONE; // Adventurer's turn
+        if (myIsInCombat) {
+            if (myTurnAllocator.peekNextTurn()) {
+                return Util.NONE; // Adventurer's turn
+            }
+
+            return runMonsterTurn().toString();
         }
 
-        return runMonsterTurn().toString();
+        return Util.NONE; // Also waiting for input
     }
 
     public String getMonster() {
@@ -94,10 +120,26 @@ public class DungeonAdventure implements Serializable {
         return runAdventurerAttack(false);
     }
 
-    public String flee() {
+    public boolean flee(final Direction theDirection) {
         requireAlive();
 
-        // Move SpeedTest to Util and use here and in Trap
+        if (
+                myIsInCombat && myTurnAllocator.peekNextTurn() &&
+                isValidDirection(theDirection)
+        ) {
+            if (Util.probabilityTest(SpeedTest.evaluate(
+                    myAdventurer, getCurrentRoom().getMonster()
+            ))) {
+                myIsInCombat = false;
+                moveAdventurerUnchecked(theDirection);
+
+                return true;
+            }
+
+            nextTurn();
+        }
+
+        return false;
     }
 
     public boolean isValidDirection(final Direction theDirection) {
@@ -107,19 +149,8 @@ public class DungeonAdventure implements Serializable {
     public boolean moveAdventurer(final Direction theDirection) {
         requireAlive();
 
-        if (!myIsInCombat && isValidDirection(theDirection)) {
-            final RoomCoordinates newCoords = myAdventurerCoordinates.add(
-                    theDirection, myDungeon.getDimensions()
-            );
-
-            if (!newCoords.isSameRoom(myAdventurerCoordinates)) {
-                myAdventurerCoordinates = newCoords;
-
-                return advanceOutOfCombat();
-            }
-        }
-
-        return false;
+        return (!myIsInCombat && isValidDirection(theDirection)) &&
+               moveAdventurerUnchecked(theDirection);
     }
 
     public boolean hasStairs(final boolean theIsUp) {
@@ -148,6 +179,20 @@ public class DungeonAdventure implements Serializable {
 
     private RoomCoordinates getDimensions() {
         return myDungeon.getDimensions();
+    }
+
+    private boolean moveAdventurerUnchecked(final Direction theDirection) {
+        final RoomCoordinates newCoords = myAdventurerCoordinates.add(
+                theDirection, myDungeon.getDimensions()
+        );
+
+        if (!newCoords.isSameRoom(myAdventurerCoordinates)) {
+            myAdventurerCoordinates = newCoords;
+
+            return advanceOutOfCombat();
+        }
+
+        return false;
     }
 
     private AttackResult runMonsterTurn() {

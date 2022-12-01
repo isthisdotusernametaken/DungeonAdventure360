@@ -27,7 +27,7 @@ public enum BuffType implements CharRepresentable {
              final char theRepresentation) {
         myIsDebuff = theIsDebuff;
         myRepresentation = theRepresentation;
-        myName = Util.createNameFromClassName(this);
+        myName = Util.createNameFromEnumName(this);
     }
 
     static BuffType[] getAllPositiveBuffTypes() {

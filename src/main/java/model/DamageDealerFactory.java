@@ -15,6 +15,16 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
         )));
     }
 
+    String[] getClasses() {
+        return myTemplates.get(0).stream()
+               .map(DamageDealer::getClassName)
+               .toArray(String[]::new);
+    }
+
+    boolean isValidIndex(final int theIndex) {
+        return Util.isValidIndex(theIndex, myTemplates.get(0).size());
+    }
+
     T createRandom(final Difficulty theDifficulty) {
         return create(
                 Util.randomIntExc(
