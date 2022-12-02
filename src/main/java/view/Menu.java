@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class Menu {
@@ -19,10 +20,10 @@ public class Menu {
     private final String myTitle;
     private final String[] myMenuDescriptions;
     private final String[] myMenuOptions;
-
-    private final String[] mySortedMenuDescriptions;
-    private final String[] mySortedMenuOptions;
     private final boolean myIncludeBack;
+
+    private final List<String> myLowerCaseDescriptions;
+    private final List<String> myLowerCaseOptions;
 
     Menu(final String theTitle,
          final String[] theMenuDescriptions,
@@ -33,10 +34,8 @@ public class Menu {
         myMenuDescriptions = theMenuDescriptions;
         myMenuOptions = theMenuOptions;
 
-        mySortedMenuOptions = theMenuOptions.clone();
-        Arrays.sort(mySortedMenuOptions, String.CASE_INSENSITIVE_ORDER);
-        mySortedMenuDescriptions = theMenuDescriptions.clone();
-        Arrays.sort(mySortedMenuDescriptions, String.CASE_INSENSITIVE_ORDER);
+        myLowerCaseDescriptions = toLower(myMenuDescriptions);
+        myLowerCaseOptions = toLower(myMenuOptions);
 
         myIncludeBack = theIncludeBack;
     }
@@ -62,13 +61,8 @@ public class Menu {
         return EXIT_MENU.equalsIgnoreCase(theSelection);
     }
 
-    private static int binarySearch(final String[] theOptions,
-                                    final String theSelection) {
-        return Arrays.binarySearch(
-                theOptions,
-                theSelection,
-                String.CASE_INSENSITIVE_ORDER
-        );
+    private static List<String> toLower(final String[] theStrings) {
+        return Arrays.stream(theStrings).map(String::toLowerCase).toList();
     }
 
     int select() {
@@ -115,15 +109,15 @@ public class Menu {
 
     private int readOption(final boolean theAllIncluded,
                            final boolean[] theIncludedOptions) {
-        final String input = InputReader.readLine();
+        final String input = InputReader.readLine().toLowerCase();
 
         if (myIncludeBack && EXIT_MENU.equalsIgnoreCase(input)) {
             return BACK;
         }
 
-        int index = binarySearch(mySortedMenuOptions, input);
+        int index = myLowerCaseOptions.indexOf(input);
         if (index < 0) {
-            index = binarySearch(mySortedMenuDescriptions, input);
+            index = myLowerCaseDescriptions.indexOf(input);
         }
 
         if (

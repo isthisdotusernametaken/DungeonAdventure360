@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 
 public class ExplorationView {
+
     private static final Menu ROOM_MENU = null;
     private static final Menu MOVE_MENU = null;
 

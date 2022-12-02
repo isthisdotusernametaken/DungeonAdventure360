@@ -34,6 +34,7 @@ public class TemplateGenerator {
     }
 
     boolean next() throws SQLException {
+        myColumn = 1;
         return myTable.next();
     }
 

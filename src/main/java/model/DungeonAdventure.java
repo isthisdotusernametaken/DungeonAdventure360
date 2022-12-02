@@ -1,8 +1,16 @@
 package model;
 
-import java.io.Serializable;
+import org.sqlite.core.DB;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.util.Date;
 
 public class DungeonAdventure implements Serializable {
+
+    private static final String DB_ERROR =
+            "An error occurred while accessing the database, and the " +
+            "application could not recover.\n";
 
     private final Dungeon myDungeon;
     private final Adventurer myAdventurer;
@@ -28,11 +36,32 @@ public class DungeonAdventure implements Serializable {
         // myInCombat false (myTurnAllocator irrelevant)
     }
 
-    public static boolean buildFactories() {
+    public static boolean buildFactories(final String theLogFile) {
+        DBManager dbManager = null;
         try {
-            DBManager dbManager = new SQLiteDBManager();
-            AdventurerFactory.buildInstance();
+            dbManager = new SQLiteDBManager();
+
+            AdventurerFactory.buildInstance(dbManager);
+            MonsterFactory.buildInstance(dbManager);
+            TrapFactory.buildInstance(dbManager);
+
+            dbManager.close();
+        } catch (SQLException | IllegalArgumentException e1) {
+            logDBException(e1, theLogFile);
+
+            if (dbManager != null) {
+                try {
+                    dbManager.close();
+                } catch (SQLException e2) {
+                    logDBException(e2, theLogFile);
+                    // Still need to exit, so nothing else here
+                }
+            }
+
+            return false;
         }
+
+        return true;
     }
 
     public static String[] getAdventurerClasses() {
@@ -46,6 +75,25 @@ public class DungeonAdventure implements Serializable {
     public static boolean isValidDifficulty(final int theIndex) {
         return Util.isValidIndex(theIndex, Difficulty.values().length);
     }
+
+    private static void logDBException(final Exception theException,
+                                       final String theLogFile) {
+        try (FileWriter fw = new FileWriter(theLogFile, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter pw = new PrintWriter(bw)) {
+            pw.println();
+
+            pw.print(new Date());
+            pw.println(':');
+
+            pw.println(DB_ERROR);
+
+            theException.printStackTrace(pw);
+        } catch (IOException e2) {
+            System.out.println(DB_ERROR);
+        }
+    }
+
 
     public String getAdventurer() {
         return myAdventurer.toString();

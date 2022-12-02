@@ -53,12 +53,12 @@ public class Util {
 
     static String createNameFromClassName(final Object theObject) {
         return theObject.getClass().getSimpleName()
-               .replaceAll("(.)([A-Z])", "\\1 \\2");
+               .replaceAll("(.)([A-Z])", "$1 $2");
     }
 
     static String createNameFromEnumName(final Enum theEnum) {
         final StringBuilder builder = new StringBuilder();
-        for (String word : theEnum.toString().split("_")) {
+        for (String word : theEnum.name().split("_")) {
             builder.append(word.charAt(0))
                    .append(word.substring(1).toLowerCase())
                    .append(' ');

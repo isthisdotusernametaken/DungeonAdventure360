@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 
 public class ConsoleUI {
+
     private final Controller myController;
 
     public ConsoleUI(Controller theController) {
