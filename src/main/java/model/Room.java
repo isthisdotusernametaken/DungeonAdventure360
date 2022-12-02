@@ -10,6 +10,7 @@ public class Room implements Serializable {
      * Should be >= 2
      */
     static final int ROOM_SIZE = 3;
+    private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
     private static final char EMPTY = ' ';
     private static final char MORE = '…';
@@ -109,22 +110,39 @@ public class Room implements Serializable {
     private void appendHorizontalWall(final StringBuilder theBuilder,
                                       final Direction theDirection) {
         theBuilder.append(WALL).append(WALL)
-                .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
-                .append(WALL).append(WALL);
+                  .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
+                  .append(WALL).append(WALL)
+                  .append('\n');
     }
 
     // * co*
     // |nte|
     // *nts*
-    private void appendVerticalWallsAndContents(final StringBuilder theBuilder
-    ) {
+    private void appendVerticalWallsAndContents(final StringBuilder theBuilder) {
         char[][] contents = roomContents();
 
-        theBuilder.append(WALL).append(contents[0]).append(WALL)
-                .append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
-                .append(contents[1])
-                .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
-                .append(WALL).append(contents[2]).append(WALL);
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, 0, HALF_ROOM_SIZE
+        );
+        theBuilder.append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
+                  .append(contents[HALF_ROOM_SIZE])
+                  .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
+                  .append('\n');
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, HALF_ROOM_SIZE + 1, ROOM_SIZE
+        );
+    }
+
+    private void appendWallAndContentsLine(final StringBuilder theBuilder,
+                                           final char[][] theContents,
+                                           final int theStart,
+                                           final int theEnd) {
+        for (int i = theStart; i < theEnd; i++) {
+            theBuilder.append(WALL).append(theContents[i]).append(WALL)
+                      .append('\n');
+        }
     }
 
     private char[][] roomContents() {

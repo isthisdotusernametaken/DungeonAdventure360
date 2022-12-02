@@ -8,7 +8,7 @@ public class CombatView {
     private static final Menu COMBAT_ACTIONS_MENU = null;
 
     static MenuSignal open(Controller theController) {
-        return null;
+        return MenuSignal.EXPLORATION;
     }
 
     private static void listSpecialSkills(Controller theController) {
