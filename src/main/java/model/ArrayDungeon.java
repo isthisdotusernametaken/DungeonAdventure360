@@ -161,7 +161,7 @@ public class ArrayDungeon extends Dungeon {
             final RoomCoordinates[] stairs = new RoomCoordinates[
                     theDimensions.getFloor() - 1
             ];
-            for (int i = 0; i < theDimensions.getFloor(); i++) {
+            for (int i = 0; i < theDimensions.getFloor() - 1; i++) {
                 stairs[i] = randomCoordsOnWall(theDimensions, i);
             }
 
