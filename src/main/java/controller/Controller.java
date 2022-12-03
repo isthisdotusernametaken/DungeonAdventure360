@@ -3,7 +3,6 @@ package controller;
 import model.Difficulty;
 import model.DungeonAdventure;
 import view.ConsoleUI;
-import view.UISelection;
 
 import java.io.File;
 
@@ -22,23 +21,14 @@ public class Controller {
     private DungeonAdventure myGame;
     private final ConsoleUI myUI;
 
-    private Controller(final int theUIChoice) {
-        myUI = theUIChoice == UISelection.CONSOLE_UI ?
-                new ConsoleUI(this) :
-                null/*new GUI(this)*/;
+    private Controller() {
+        myUI = new ConsoleUI(this);
     }
 
     public static void main(String[] args) {
         new File(LOG_DIR_PATH).mkdirs();
         if (DungeonAdventure.buildFactories(LOG_PATH)) {
-            final int uiChoice = UISelection.select();
-
-            if (
-                    uiChoice == UISelection.CONSOLE_UI ||
-                            uiChoice == UISelection.GUI
-            ) {
-                new Controller(uiChoice).myUI.run();
-            } // else, exit
+            new Controller().myUI.run();
         } else {
             System.out.println(COULD_NOT_START);
         }
