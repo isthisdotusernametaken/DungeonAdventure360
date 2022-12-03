@@ -31,7 +31,10 @@ public class ConsoleUI {
             case NEW_GAME -> NewGameView.open(myController);
             case LOAD_GAME -> LoadGameView.open(myController);
             case SAVE_GAME -> SaveGameView.open(myController);
+            case SAVE_AND_QUIT_TO_TITLE -> SaveAndQuitView.open(myController);
             case EXPLORATION -> ExplorationView.open(myController);
+            case MAP -> MapView.open(myController);
+            case INVENTORY -> InventoryView.open(myController);
             case COMBAT -> CombatView.open(myController);
             case WIN -> MenuSignal.EXIT; // incomplete
             case LOSE -> MenuSignal.EXIT; // incomplete

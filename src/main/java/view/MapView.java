@@ -6,8 +6,8 @@ public class MapView {
 
     private static final String PROMPT = null;
 
-    static void open(final Controller theController) {
-
+    static MenuSignal open(final Controller theController) {
+        return MenuSignal.EXPLORATION;
     }
 
     private static void displayMap(final Controller theController) {

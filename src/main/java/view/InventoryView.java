@@ -7,8 +7,8 @@ public class InventoryView {
     private static final String SELECT_PROMPT = null;
     private static final Menu ITEM_ACTION_MENU = null;
 
-    static void open(final Controller theController) {
-
+    static MenuSignal open(final Controller theController) {
+        return MenuSignal.EXPLORATION;
     }
 
     private static void displayItems(final Controller theController) {
