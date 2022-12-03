@@ -279,12 +279,12 @@ public class DungeonAdventure implements Serializable {
     }
 
     private void advanceInCombat() {
-        myAdventurer.advanceBuffsAndDebuffs();
+        myAdventurer.advanceBuffsAndDebuffs(); // USE RETURN
         myAdventurer.getSpecialSkill().advance();
     }
 
     private boolean advanceOutOfCombat() {
-        myAdventurer.advanceDebuffs();
+        myAdventurer.advanceDebuffs(); // USE RETURN
 
         return testEnterCombat();
     }

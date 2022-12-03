@@ -37,18 +37,9 @@ public class Monster extends DungeonCharacter {
 
     @Override
     public final String toString() {
-        String text = getName() + ":\n"
-                + " HP: " + getHP() + "\n"
-                + " Minimum Damage:" + getMinDamage() + "\n"
-                + " Maximum Damage: " + getMaxDamage() + "\n"
-                + " Hit Chance: " + getHP() + "\n"
-                + " Speed: " + getSpeed() + "\n"
-                + " Heal Chance: " + getHealChance() + "\n"
-                + " Debuff Chance: " + getDebuffChance() + "\n"
-                + " Debuff Duration: " + getDebuffDuration() + "\n"
-                + " Block Chance: " + getBlockChance() + "\n"
-                ;
-        return text;
+        return new StringBuilder(super.toString())
+                .append(" Heal Chance (per turn): ").append(myHealChance).append('\n')
+                .toString();
     }
 
     double getHealChance() {

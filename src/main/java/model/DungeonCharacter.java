@@ -44,6 +44,25 @@ public abstract class DungeonCharacter extends DamageDealer {
         myBuffs = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return new StringBuilder(getName()).append('\n')
+                .append(" Class: ").append(getClassName()).append('\n')
+                .append(" HP: ").append(getHP()).append('\n')
+                .append(" Max HP: ").append(getMaxHP()).append('\n')
+                .append(" Base Damage: ").append(getMinDamage())
+                .append('-')
+                .append(getMaxDamage()).append('\n')
+                .append(" Hit Chance: ").append(getHitChance()).append('\n')
+                .append(" Damage Type: ").append(getDamageType()).append('\n')
+                .append(" Debuff Chance: ").append(getDebuffChance()).append('\n')
+                .append(" Debuff Duration: ").append(getDebuffDuration()).append('\n')
+                .append(" Speed: ").append(getSpeed()).append('\n')
+                .append(" Block Chance: ").append(getBlockChance()).append('\n')
+                .append(getResistances())
+                .toString();
+    }
+
     final String getName() {
         return myName;
     }
@@ -137,7 +156,10 @@ public abstract class DungeonCharacter extends DamageDealer {
         if (buff != null) {
             buff.changeDuration(theDuration);
         } else {
+            buff = BuffFactory.create(theBuffType, theDuration);
 
+            myBuffs.add(buff);
+            buff.adjustStats(myAdjustedStats);
         }
     }
 
@@ -148,16 +170,55 @@ public abstract class DungeonCharacter extends DamageDealer {
 
 
     final void clearDebuffs() {
-        myBuffs.removeIf(c-> c.getType().isDebuff());
+        int buffCount = myBuffs.size();
+        myBuffs.removeIf(buff -> buff.getType().isDebuff());
+
+        if (myBuffs.size() != buffCount) {
+            reapplyBuffs();
+        }
+    }
+
+    final AttackResult advanceBuffsAndDebuffs() {
+        return advanceBuffs(true);
+    }
+
+    final AttackResult advanceDebuffs() {
+        return advanceBuffs(false);
+    }
+
+    private AttackResult advanceBuffs(final boolean theAllBuffs) {
+        List<Buff> toRemove = new ArrayList<>();
+
+        int myPreviousHP = myHP;
+        boolean dead = false;
+        for (Buff buff : myBuffs) {
+            if (theAllBuffs || buff.getType().isDebuff()) {
+                buff.advance();
+                dead = applyDamageFromBuff(buff) || dead;
+
+                if (buff.isCompleted()) {
+                    toRemove.add(buff);
+                }
+            }
+        }
+
+        myBuffs.removeAll(toRemove);
+        if (!toRemove.isEmpty()) {
+            reapplyBuffs();
+        }
+
+        return dead ?
+               AttackResult.KILL : myPreviousHP != myHP ?
+               AttackResult.BUFF_DAMAGE :
+               AttackResult.NO_ACTION;
+    }
+
+    private void reapplyBuffs() {
         myAdjustedStats.resetStats();
-    }
 
-    final void advanceBuffsAndDebuffs() {
-
-    }
-
-    final void advanceDebuffs() {
-
+        for (Buff buff : myBuffs) {
+            buff.adjustStats(myAdjustedStats);
+        }
     }
 
     private Buff getBuff(final BuffType theBuffType) {
