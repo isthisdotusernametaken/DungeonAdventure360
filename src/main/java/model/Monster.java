@@ -2,6 +2,8 @@ package model;
 
 public class Monster extends DungeonCharacter {
 
+    private static final double HEAL_PERCENT = 0.1;
+
     private final double myHealChance;
 
     Monster(final String theName,
@@ -44,5 +46,11 @@ public class Monster extends DungeonCharacter {
 
     double getHealChance() {
         return myHealChance;
+    }
+
+    int attemptHeal() {
+        return Util.probabilityTest(myHealChance) ?
+               heal((int) (HEAL_PERCENT * getMaxHP())) :
+               0;
     }
 }
