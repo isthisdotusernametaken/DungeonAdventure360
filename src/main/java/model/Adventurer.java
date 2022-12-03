@@ -36,8 +36,19 @@ public class Adventurer extends DungeonCharacter {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public final String toString() {
+        String text = getName() + ":\n"
+                + " HP: " + getHP() + "\n"
+                + " Minimum Damage:" + getMinDamage() + "\n"
+                + " Maximum Damage: " + getMaxDamage() + "\n"
+                + " Hit Chance: " + getHP() + "\n"
+                + " Speed: " + getSpeed() + "\n"
+                + " Special Skill: " + getSpecialSkill() + "\n"
+                + " Debuff Chance: " + getDebuffChance() + "\n"
+                + " Debuff Duration: " + getDebuffDuration() + "\n"
+                + " Block Chance: " + getBlockChance() + "\n"
+                ;
+        return text;
     }
 
     final SpecialSkill getSpecialSkill() {

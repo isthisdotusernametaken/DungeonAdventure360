@@ -35,6 +35,22 @@ public class Monster extends DungeonCharacter {
         myHealChance = theHealChance;
     }
 
+    @Override
+    public final String toString() {
+        String text = getName() + ":\n"
+                + " HP: " + getHP() + "\n"
+                + " Minimum Damage:" + getMinDamage() + "\n"
+                + " Maximum Damage: " + getMaxDamage() + "\n"
+                + " Hit Chance: " + getHP() + "\n"
+                + " Speed: " + getSpeed() + "\n"
+                + " Heal Chance: " + getHealChance() + "\n"
+                + " Debuff Chance: " + getDebuffChance() + "\n"
+                + " Debuff Duration: " + getDebuffDuration() + "\n"
+                + " Block Chance: " + getBlockChance() + "\n"
+                ;
+        return text;
+    }
+
     double getHealChance() {
         return myHealChance;
     }

@@ -133,19 +133,23 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     final void applyBuff(final BuffType theBuffType,
                          final int theDuration) {
+        Buff buff = getBuff(theBuffType);
+        if (buff != null) {
+            buff.changeDuration(theDuration);
+        } else {
 
+        }
     }
 
     final void clearBuffsAndDebuffs() {
-
+        myBuffs.clear();
+        myAdjustedStats.resetStats();
     }
 
-    final void clearBuffs() {
-
-    }
 
     final void clearDebuffs() {
-
+        myBuffs.removeIf(c-> c.getType().isDebuff());
+        myAdjustedStats.resetStats();
     }
 
     final void advanceBuffsAndDebuffs() {
