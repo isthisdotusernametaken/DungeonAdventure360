@@ -5,5 +5,17 @@ public enum Direction {
     NORTH,
     EAST,
     SOUTH,
-    WEST
+    WEST;
+
+
+    private String myName;
+
+    @Override
+    public String toString() {
+        if (myName == null) {
+            myName = Util.createNameFromEnumName(this);
+        }
+
+        return myName;
+    }
 }

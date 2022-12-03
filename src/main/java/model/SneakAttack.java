@@ -1,12 +1,18 @@
 package model;
 
-public class SneakAttack implements SpecialSkill {
+public class SneakAttack extends SpecialSkill {
 
-    private final static double SUCCESS_CHANCE = 0;
-    private final static double NORMAL_ATTACK_CHANCE = 0;
+    private static final int COOLDOWN = 5;
+    private static final double SUCCESS_CHANCE = 0.4;
+    private static final double NORMAL_ATTACK_CHANCE = 0.4;
+
+    SneakAttack() {
+        super(COOLDOWN);
+    }
 
     @Override
-    public AttackResult use(DungeonCharacter theTarget) {
+    public AttackResult apply(final DungeonCharacter theSelf,
+                              final DungeonCharacter theEnemy) {
         return null;
     }
 }

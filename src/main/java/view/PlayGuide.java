@@ -4,8 +4,8 @@ public class PlayGuide {
 
     private static final Menu GUIDE_MENU = null;
 
-    static void open() {
-
+    static MenuSignal open() {
+        return MenuSignal.PREVIOUS;
     }
 
     private static String printControlGuide() {

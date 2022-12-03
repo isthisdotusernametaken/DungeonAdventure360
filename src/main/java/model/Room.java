@@ -10,6 +10,7 @@ public class Room implements Serializable {
      * Should be >= 2
      */
     static final int ROOM_SIZE = 3;
+    private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
     private static final char EMPTY = ' ';
     private static final char MORE = '…';
@@ -20,14 +21,14 @@ public class Room implements Serializable {
     private static final char HORIZONTAL_DOOR = '-';
     private static final char VERTICAL_DOOR = '|';
 
-    private final Direction[] myDoors;
+    private final boolean[] myDoors;
     private final Container myContainer;
     private final Trap myTrap;
     private Monster myMonster;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
-    Room(final Direction[] theDoors,
+    Room(final boolean[] theDoors,
          final Trap theTrap,
          final Monster theMonster,
          final boolean theIsEntrance,
@@ -53,22 +54,12 @@ public class Room implements Serializable {
         return theBuilder.toString();
     }
 
-    Container getContents() {
+    Container getContainer() {
         return myContainer;
     }
 
-    Direction[] getDoors() {
-        return myDoors.clone();
-    }
-
     boolean hasDoor(final Direction theDirection) {
-        for (Direction door : myDoors) {
-            if (theDirection == door) {
-                return true;
-            }
-        }
-
-        return false;
+        return myDoors[theDirection.ordinal()];
     }
 
     boolean isEntrance() {
@@ -98,20 +89,20 @@ public class Room implements Serializable {
     }
 
     AttackResult attackMonster(final DungeonCharacter theAttacker) {
-        if (myMonster == null) {
-            return AttackResult.NO_ACTION;
-        } else {
-            final AttackResult result = theAttacker.attemptDamage(
+        return myMonster == null ?
+                AttackResult.NO_ACTION :
+                killMonsterOnKillResult(theAttacker.attemptDamage(
                     myMonster,true
-            );
+                ));
+    }
 
-            if (result == AttackResult.KILL) {
-                // Send drops to Room's Container
-                myMonster = null;
-            }
-
-            return result;
+    AttackResult killMonsterOnKillResult(final AttackResult theResult) {
+        if (theResult == AttackResult.KILL) {
+            // Send drops to Room's Container
+            myMonster = null;
         }
+
+        return theResult;
     }
 
 
@@ -119,22 +110,39 @@ public class Room implements Serializable {
     private void appendHorizontalWall(final StringBuilder theBuilder,
                                       final Direction theDirection) {
         theBuilder.append(WALL).append(WALL)
-                .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
-                .append(WALL).append(WALL);
+                  .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
+                  .append(WALL).append(WALL)
+                  .append('\n');
     }
 
     // * co*
     // |nte|
     // *nts*
-    private void appendVerticalWallsAndContents(final StringBuilder theBuilder
-    ) {
+    private void appendVerticalWallsAndContents(final StringBuilder theBuilder) {
         char[][] contents = roomContents();
 
-        theBuilder.append(WALL).append(contents[0]).append(WALL)
-                .append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
-                .append(contents[1])
-                .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
-                .append(WALL).append(contents[2]).append(WALL);
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, 0, HALF_ROOM_SIZE
+        );
+        theBuilder.append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
+                  .append(contents[HALF_ROOM_SIZE])
+                  .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
+                  .append('\n');
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, HALF_ROOM_SIZE + 1, ROOM_SIZE
+        );
+    }
+
+    private void appendWallAndContentsLine(final StringBuilder theBuilder,
+                                           final char[][] theContents,
+                                           final int theStart,
+                                           final int theEnd) {
+        for (int i = theStart; i < theEnd; i++) {
+            theBuilder.append(WALL).append(theContents[i]).append(WALL)
+                      .append('\n');
+        }
     }
 
     private char[][] roomContents() {

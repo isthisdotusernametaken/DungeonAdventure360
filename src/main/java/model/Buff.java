@@ -26,7 +26,8 @@ public abstract class Buff implements Serializable {
 
     @Override
     public final String toString() {
-        return myChangedStats + " x " + myStatMultiplier +
+        return myType.toString() + ": " +
+               myChangedStats + " x " + myStatMultiplier +
                " (" + myDuration + " turns)";
     }
 

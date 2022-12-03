@@ -16,6 +16,15 @@ public class RoomCoordinates implements Serializable {
         myY = theY;
     }
 
+    @Override
+    public String toString() {
+        return new StringBuilder()
+               .append("Floor: ").append(myFloor)
+               .append("; X: ").append(myX)
+               .append("; Y: ").append(myY)
+               .toString();
+    }
+
     int getFloor() {
         return myFloor;
     }
@@ -28,9 +37,44 @@ public class RoomCoordinates implements Serializable {
         return myY;
     }
 
+    RoomCoordinates add(final Direction theDirection,
+                        final RoomCoordinates theDimensions) {
+        return switch (theDirection) {
+            case NORTH -> addY(-1, theDimensions.getY());
+            case SOUTH -> addY(1, theDimensions.getY());
+            case WEST -> addX(-1, theDimensions.getX());
+            case EAST -> addX(1, theDimensions.getX());
+        };
+    }
+
+    RoomCoordinates addFloor(final boolean theIsUp,
+                             final int theFloorCount) {
+        return new RoomCoordinates(
+                Util.clampInt(0, theFloorCount, myFloor + (theIsUp ? -1 : 1)),
+                myX,
+                myY
+        );
+    }
+
     boolean isSameRoom(final RoomCoordinates theOther) {
         return myFloor == theOther.myFloor &&
                myX == theOther.myX &&
                myY == theOther.myY;
+    }
+
+    private RoomCoordinates addX(final int theChange, final int theMaxX) {
+        return new RoomCoordinates(
+                myFloor,
+                Util.clampInt(0, theMaxX, myX + theChange),
+                myY
+        );
+    }
+
+    private RoomCoordinates addY(final int theChange, final int theMaxY) {
+        return new RoomCoordinates(
+                myFloor,
+                myX,
+                Util.clampInt(0, theMaxY, myY + theChange)
+        );
     }
 }

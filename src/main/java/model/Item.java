@@ -19,7 +19,20 @@ public abstract class Item implements CharRepresentable, Serializable {
         myCount = theCount;
     }
 
-    public char charRepresentation() {
+    static String createNameFromType(final Item theItem) {
+        return Util.createNameFromEnumName(theItem.myType);
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+               .append(getName())
+               .append(": ")
+               .append(myCount)
+               .toString();
+    }
+
+    public final char charRepresentation() {
         return myRepresentation;
     }
 
@@ -56,4 +69,6 @@ public abstract class Item implements CharRepresentable, Serializable {
     }
 
     abstract Item copy();
+
+    abstract String getName();
 }

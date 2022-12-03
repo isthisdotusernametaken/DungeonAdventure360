@@ -7,7 +7,7 @@ public class LoadGameView {
     private static final String PROMPT = null;
 
     static MenuSignal open(final Controller theController) {
-        return null;
+        return MenuSignal.PREVIOUS;
     }
 
     private static void displayFiles(final Controller theController) {

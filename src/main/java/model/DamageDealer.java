@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class DamageDealer implements Serializable {
 
-    private final String myName;
+    private final String myClass;
     private final int myMinDamage;
     private final int myMaxDamage;
     private final double myHitChance;
@@ -13,7 +13,7 @@ public abstract class DamageDealer implements Serializable {
     private final DamageType myDamageType;
     private final int mySpeed;
 
-    DamageDealer(final String theName,
+    DamageDealer(final String theClass,
                  final int theMinDamage,
                  final int theMaxDamage,
                  final double theHitChance,
@@ -21,7 +21,7 @@ public abstract class DamageDealer implements Serializable {
                  final int theDebuffDuration,
                  final DamageType theDamageType,
                  final int theSpeed) {
-        myName = theName;
+        myClass = theClass;
         myMinDamage = theMinDamage;
         myMaxDamage = theMaxDamage;
         myHitChance = theHitChance;
@@ -31,8 +31,8 @@ public abstract class DamageDealer implements Serializable {
         mySpeed = theSpeed;
     }
 
-    final String getName() {
-        return myName;
+    final String getClassName() {
+        return myClass;
     }
 
     final int getMinDamage() {

@@ -15,14 +15,13 @@ public abstract class RoomApplicableItem extends Item {
     }
 
     final String use(final Room theTarget) {
-        if (applyEffect(theTarget)) {
+        final String result = applyEffect(theTarget);
+        if (!Util.NONE.equals(result)) {
             consume();
         }
 
-        return getResult();
+        return result;
     }
 
-    abstract boolean applyEffect(final Room theTarget);
-
-    abstract String getResult();
+    abstract String applyEffect(final Room theTarget);
 }
