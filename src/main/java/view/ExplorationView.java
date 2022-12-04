@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import model.Direction;
+import model.Util;
 
 import java.util.Arrays;
 
@@ -76,8 +77,8 @@ public class ExplorationView {
 
     private static MenuSignal move(final Direction theDirection,
                                    final Controller theController) {
-        return theController.getGame().moveAdventurer(theDirection) ?
+        return theController.getGame().moveAdventurer(theDirection) == null ?
                MenuSignal.COMBAT :
-               MenuSignal.EXPLORATION;
+               MenuSignal.EXPLORATION; // Fix to use AttackResultAndAmount formatting from Controller
     }
 }

@@ -10,8 +10,11 @@ public class Heal extends SpecialSkill {
     }
 
     @Override
-    public AttackResult apply(final DungeonCharacter theSelf,
+    AttackResultAndAmount apply(final DungeonCharacter theSelf,
                               final DungeonCharacter theEnemy) {
-        return null;
+        return new AttackResultAndAmount(
+                AttackResult.HEAL,
+                theSelf.heal(theSelf.percentOfMaxHP(HEAL_PERCENT))
+        );
     }
 }

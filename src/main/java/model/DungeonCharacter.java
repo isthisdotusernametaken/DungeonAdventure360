@@ -117,9 +117,14 @@ public abstract class DungeonCharacter extends DamageDealer {
         myName = theNewName;
     }
 
-    final int heal(final int theAmount) {
-        final int theSum = myHP + theAmount;
+    final int percentOfMaxHP(final double thePercent) {
+        return (int) (myMaxHP * thePercent);
+    }
 
+    final int heal(final int theAmount) {
+        clearDebuffs();
+
+        final int theSum = myHP + theAmount;
         if (theSum > myMaxHP) {
             myHP = myMaxHP;
             return theAmount - (theSum - myMaxHP);
@@ -128,26 +133,30 @@ public abstract class DungeonCharacter extends DamageDealer {
         return theAmount;
     }
 
-    final AttackResult applyDamageAndBuff(final DamageType theDamageType,
-                                          final int theDamage,
-                                          final double theDebuffChance,
-                                          final int theDebuffDuration,
-                                          final boolean theIsBlockable) {
+    final AttackResultAndAmount applyDamageAndBuff(final DamageType theDamageType,
+                                                   final int theDamage,
+                                                   final double theDebuffChance,
+                                                   final int theDebuffDuration,
+                                                   final boolean theIsBlockable) {
         if (!(theIsBlockable && Util.probabilityTest(myBlockChance))) {
-            if (applyAdjustedDamage(theDamage, theDamageType)) {
-                return AttackResult.KILL;
-            }
+            final int damage = applyAdjustedDamage(theDamage, theDamageType);
 
-            if (Util.probabilityTest(
+            AttackResult result;
+            if (isDead()) {
+                result = AttackResult.KILL;
+            } else if (Util.probabilityTest(
                     adjustedDebuffChance(theDebuffChance, theDamageType))
             ) {
                 applyBuff(theDamageType.getDebuffType(), theDebuffDuration);
-                return AttackResult.HIT_DEBUFF;
+                result = AttackResult.HIT_DEBUFF;
+            } else {
+                result = AttackResult.HIT_NO_DEBUFF;
             }
 
-            return AttackResult.HIT_NO_DEBUFF;
+            return new AttackResultAndAmount(result, damage);
         }
-        return AttackResult.BLOCK;
+
+        return AttackResultAndAmount.getNoAmount(AttackResult.BLOCK);
     }
 
     final void applyBuff(final BuffType theBuffType,
@@ -168,28 +177,18 @@ public abstract class DungeonCharacter extends DamageDealer {
         myAdjustedStats.resetStats();
     }
 
-
-    final void clearDebuffs() {
-        int buffCount = myBuffs.size();
-        myBuffs.removeIf(buff -> buff.getType().isDebuff());
-
-        if (myBuffs.size() != buffCount) {
-            reapplyBuffs();
-        }
-    }
-
-    final AttackResult advanceBuffsAndDebuffs() {
+    final AttackResultAndAmount advanceBuffsAndDebuffs() {
         return advanceBuffs(true);
     }
 
-    final AttackResult advanceDebuffs() {
+    final AttackResultAndAmount advanceDebuffs() {
         return advanceBuffs(false);
     }
 
-    private AttackResult advanceBuffs(final boolean theAllBuffs) {
+    private AttackResultAndAmount advanceBuffs(final boolean theAllBuffs) {
         List<Buff> toRemove = new ArrayList<>();
 
-        int myPreviousHP = myHP;
+        final int previousHP = myHP;
         boolean dead = false;
         for (Buff buff : myBuffs) {
             if (theAllBuffs || buff.getType().isDebuff()) {
@@ -207,10 +206,16 @@ public abstract class DungeonCharacter extends DamageDealer {
             reapplyBuffs();
         }
 
-        return dead ?
-               AttackResult.KILL : myPreviousHP != myHP ?
-               AttackResult.BUFF_DAMAGE :
-               AttackResult.NO_ACTION;
+        final int damage = previousHP - myHP;
+        return damage == 0 ?
+               AttackResultAndAmount.getNoAmount(
+                       AttackResult.NO_ACTION
+               ) :
+               dead ?
+                       new AttackResultAndAmount(AttackResult.KILL, damage) :
+                       new AttackResultAndAmount(
+                               AttackResult.BUFF_DAMAGE, damage
+                       );
     }
 
     private void reapplyBuffs() {
@@ -231,17 +236,28 @@ public abstract class DungeonCharacter extends DamageDealer {
         return null;
     }
 
+    private void clearDebuffs() {
+        int buffCount = myBuffs.size();
+        myBuffs.removeIf(buff -> buff.getType().isDebuff());
+
+        if (myBuffs.size() != buffCount) {
+            reapplyBuffs();
+        }
+    }
+
     private boolean applyDamage(final int theDamage) {
         myHP -= theDamage;
 
+        return isDead();
+    }
+
+    private boolean isDead() {
         return myHP <= 0;
     }
 
     private boolean applyDamageFromBuff(final Buff theBuff) {
         if (theBuff.getDamagePercent() != 0.0) {
-            return applyDamage((int) (
-                    theBuff.getDamagePercent() * myMaxHP
-            ));
+            return applyDamage(percentOfMaxHP(theBuff.getDamagePercent()));
         }
 
         return false; // No damage applied, so if not dead before, can't be now
@@ -251,12 +267,14 @@ public abstract class DungeonCharacter extends DamageDealer {
         return 1.0 - getAdjustedResistance(theDamageType);
     }
 
-    private boolean applyAdjustedDamage(final int theBaseDamage,
-                                        final DamageType theDamageType) {
-        return applyDamage((int) (
-                theBaseDamage *
-                inverseAdjustedResistance(theDamageType)
-        ));
+    private int applyAdjustedDamage(final int theBaseDamage,
+                                    final DamageType theDamageType) {
+        final int damage = (int) (
+                theBaseDamage * inverseAdjustedResistance(theDamageType)
+        );
+        applyDamage(damage);
+
+        return damage;
     }
 
     private double adjustedDebuffChance(final double theBaseDebuffChance,

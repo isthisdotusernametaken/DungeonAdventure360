@@ -60,9 +60,9 @@ public class Trap extends DamageDealer implements CharRepresentable {
         return false;
     }
 
-    final AttackResult activate(final DungeonCharacter theTarget) {
+    final AttackResultAndAmount activate(final DungeonCharacter theTarget) {
         if (myIsBroken) {
-            return AttackResult.NO_ACTION;
+            return AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
         }
         if (myIsSingleUse) {
             myIsBroken = true;
@@ -70,6 +70,6 @@ public class Trap extends DamageDealer implements CharRepresentable {
 
         return Util.probabilityTest(SpeedTest.evaluate(theTarget, this)) ?
                attemptDamage(theTarget, false) :
-               AttackResult.DODGE;
+               AttackResultAndAmount.getNoAmount(AttackResult.DODGE);
     }
 }

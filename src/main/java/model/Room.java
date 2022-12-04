@@ -80,9 +80,9 @@ public class Room implements Serializable {
         return myTrap != null;
     }
 
-    AttackResult activateTrap(final DungeonCharacter theTarget) {
+    AttackResultAndAmount activateTrap(final DungeonCharacter theTarget) {
         return myTrap == null ?
-               AttackResult.NO_ACTION :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
                myTrap.activate(theTarget);
     }
 
@@ -94,16 +94,16 @@ public class Room implements Serializable {
         return myMonster;
     }
 
-    AttackResult attackMonster(final DungeonCharacter theAttacker) {
+    AttackResultAndAmount attackMonster(final DungeonCharacter theAttacker) {
         return myMonster == null ?
-                AttackResult.NO_ACTION :
+                AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
                 killMonsterOnKillResult(theAttacker.attemptDamage(
                     myMonster,true
                 ));
     }
 
-    AttackResult killMonsterOnKillResult(final AttackResult theResult) {
-        if (theResult == AttackResult.KILL) {
+    AttackResultAndAmount killMonsterOnKillResult(final AttackResultAndAmount theResult) {
+        if (theResult.getResult() == AttackResult.KILL) {
             // Send drops to Room's Container
             myMonster = null;
         }
