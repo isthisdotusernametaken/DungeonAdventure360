@@ -62,6 +62,12 @@ public class RoomCoordinates implements Serializable {
                myY == theOther.myY;
     }
 
+    boolean isSameRoom(final int theFloor, final int theX, final int theY) {
+        return myFloor == theFloor &&
+               myX == theX &&
+               myY == theY;
+    }
+
     private RoomCoordinates addX(final int theChange, final int theMaxX) {
         return new RoomCoordinates(
                 myFloor,

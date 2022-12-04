@@ -23,6 +23,7 @@ public class DungeonAdventure implements Serializable {
                             final Difficulty theDifficulty) {
         myDungeon = DungeonFactory.create(theDifficulty);
         myAdventurerCoordinates = myDungeon.getEntrance();
+        myDungeon.getMap().explore(myAdventurerCoordinates);
 
         myAdventurer = AdventurerFactory.getInstance()
                 .create(theAdventurerClass, theDifficulty);
@@ -101,8 +102,8 @@ public class DungeonAdventure implements Serializable {
         return myAdventurerCoordinates.toString();
     }
 
-    public String getMap() {
-        return myDungeon.view(true);
+    public String getMap(final boolean theLimitView) {
+        return myDungeon.toString(myAdventurerCoordinates, theLimitView);
     }
 
     public String getRoom() {
@@ -234,6 +235,7 @@ public class DungeonAdventure implements Serializable {
 
         if (!newCoords.isSameRoom(myAdventurerCoordinates)) {
             myAdventurerCoordinates = newCoords;
+            myDungeon.getMap().explore(myAdventurerCoordinates);
 
             return advanceOutOfCombat();
         }

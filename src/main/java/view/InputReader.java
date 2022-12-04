@@ -13,12 +13,15 @@ public class InputReader {
     private static final String INVALID_INPUT = "Invalid input. Try again.\n";
 
     static String readLine() {
+        String input = Util.NONE;
         try {
-            return CONSOLE_INPUT.nextLine();
+            input = CONSOLE_INPUT.nextLine();
         } catch (NoSuchElementException e) {
             CONSOLE_INPUT = new Scanner(System.in);
-            return Util.NONE;
         }
+        System.out.println();
+
+        return input;
     }
 
     static String readNameUntilValid() {

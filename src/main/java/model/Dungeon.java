@@ -16,7 +16,8 @@ public abstract class Dungeon implements Serializable {
         return myMap;
     }
 
-    abstract String view(boolean theHideUnknown);
+    abstract String toString(RoomCoordinates theAdventurerCoords,
+                             boolean theHideUnknown);
 
     abstract RoomCoordinates getDimensions();
 

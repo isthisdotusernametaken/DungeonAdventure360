@@ -66,16 +66,13 @@ public class Menu {
     }
 
     int select() {
-        printMenu(true, ALL_INCLUDED);
-
-        return readOptionUntilValid(true, ALL_INCLUDED);
+        return promptAndReadOptionUntilValid(true, ALL_INCLUDED);
     }
 
     int select(final int[] theExcludedOptions) {
-        final boolean[] includedOptions = includedOptions(theExcludedOptions);
-        printMenu(false, includedOptions);
-
-        return readOptionUntilValid(false, includedOptions);
+        return promptAndReadOptionUntilValid(
+                false, includedOptions(theExcludedOptions)
+        );
     }
 
     private void printMenu(final boolean theAllIncluded,
@@ -97,10 +94,12 @@ public class Menu {
         }
     }
 
-    private int readOptionUntilValid(final boolean theAllIncluded,
-                                     final boolean[] theIncludedOptions) {
+    private int promptAndReadOptionUntilValid(final boolean theAllIncluded,
+                                              final boolean[] theIncludedOptions) {
         int selection;
         do {
+            printMenu(theAllIncluded, theIncludedOptions);
+
             selection = readOption(theAllIncluded, theIncludedOptions);
         } while (INVALID_SELECTION == selection);
 
@@ -112,6 +111,7 @@ public class Menu {
         final String input = InputReader.readLine().toLowerCase();
 
         if (myIncludeBack && EXIT_MENU.equalsIgnoreCase(input)) {
+            System.out.println();
             return BACK;
         }
 

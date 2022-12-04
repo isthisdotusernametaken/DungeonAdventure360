@@ -66,17 +66,17 @@ public class ArrayDungeon extends Dungeon {
 
     @Override
     public String toString() {
-        return view(false);
+        return toString(null, false);
     }
 
-    @Override
-    String view(final boolean theHideUnknown) {
+    String toString(final RoomCoordinates theAdventurerCoords,
+                    final boolean theHideUnknown) {
         final StringBuilder dungeon = new StringBuilder();
 
         for (int i = 0; i < myRooms.length; i++) {
-            dungeon.append("Floor ").append(i).append(":\n");
+            dungeon.append("Floor ").append(i + 1).append(":\n");
             for (int j = 0; j < myRooms[0].length; j++) {
-                appendRow(dungeon, i, j, theHideUnknown);
+                appendRow(dungeon, i, j, theAdventurerCoords, theHideUnknown);
             }
             dungeon.append('\n');
         }
@@ -121,9 +121,10 @@ public class ArrayDungeon extends Dungeon {
     private void appendRow(final StringBuilder theStringBuilder,
                            final int theFloor,
                            final int theRow,
+                           final RoomCoordinates theAdventurerCoords,
                            final boolean theHideUnknown) {
         final String[][] rooms = Arrays.stream(viewRowAsArray(
-                theFloor, theRow, theHideUnknown
+                theFloor, theRow, theAdventurerCoords, theHideUnknown
         )).map((s) -> s.split("\n")).toArray(String[][]::new);
 
         for (int i = 0; i < TOTAL_ROOM_SIZE; i++) {
@@ -136,16 +137,19 @@ public class ArrayDungeon extends Dungeon {
 
     private String[] viewRowAsArray(final int theFloor,
                                     final int theRow,
+                                    final RoomCoordinates theAdventurerCoords,
                                     final boolean theHideUnknown) {
         final String[] rooms = new String[myRooms[0][0].length];
 
         for (int i = 0; i < rooms.length; i++) {
             rooms[i] = (
                     theHideUnknown &&
-                    !getMap().isExplored(theFloor, theRow, i)
+                    !getMap().isExplored(theFloor, i, theRow)
             ) ?
                     UNKNOWN_ROOM :
-                    myRooms[theFloor][theRow][i].toString();
+                    myRooms[theFloor][i][theRow].toString(
+                            theAdventurerCoords.isSameRoom(theFloor, i, theRow)
+                    );
         }
 
         return rooms;
