@@ -48,9 +48,12 @@ public class Monster extends DungeonCharacter {
         return myHealChance;
     }
 
-    int attemptHeal() {
+    AttackResultAndAmount attemptHeal() {
         return Util.probabilityTest(myHealChance) ?
-               heal((int) (HEAL_PERCENT * getMaxHP())) :
-               0;
+               new AttackResultAndAmount(
+                       AttackResult.HEAL,
+                       heal((int) (HEAL_PERCENT * getMaxHP()))
+               ) :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
     }
 }

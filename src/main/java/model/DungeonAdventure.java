@@ -278,15 +278,29 @@ public class DungeonAdventure implements Serializable {
     }
 
     private String[] runMonsterTurn() {
-        final AttackResultAndAmount attackResult =
-                getCurrentRoom().getMonster().attemptDamage(
-                        myAdventurer, true
+        final AttackResultAndAmount monsterBuffResult =
+                getCurrentRoom().killMonsterOnKillResult(
+                        getCurrentRoom().getMonster().advanceBuffsAndDebuffs()
                 );
-        testDead(attackResult);
 
-        nextTurn();
+        if (testCombat()) {
+            final AttackResultAndAmount healResult =
+                    getCurrentRoom().getMonster().attemptHeal();
+            final AttackResultAndAmount attackResult =
+                    getCurrentRoom().getMonster().attemptDamage(
+                            myAdventurer, true
+                    );
+            testDead(attackResult);
 
-        return advanceInCombatAndCompileResults(attackResult);
+            nextTurn();
+
+            return new String[]{
+                    monsterBuffResult.toString(),
+                    healResult.toString(),
+                    attackResult.toString()
+            };
+        }
+        return new String[]{monsterBuffResult.toString()};
     }
 
     private String[] runAdventurerTurn(final boolean theIsBasicAttack) {
