@@ -69,9 +69,10 @@ public class ArrayDungeon extends Dungeon {
 
     @Override
     public String toString() {
-        return toString(null, false);
+        return toString(new RoomCoordinates(-1, -1, -1), false);
     }
 
+    @Override
     String toString(final RoomCoordinates theAdventurerCoords,
                     final boolean theHideUnknown) {
         final StringBuilder dungeon = new StringBuilder();
