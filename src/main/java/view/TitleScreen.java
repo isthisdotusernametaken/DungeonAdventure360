@@ -10,6 +10,7 @@ public class TitleScreen {
             new String[]{
                 "N", "G", "Q"
             },
+            false,
             false
     );
 

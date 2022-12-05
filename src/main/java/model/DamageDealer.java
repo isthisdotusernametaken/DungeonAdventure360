@@ -79,8 +79,8 @@ public abstract class DamageDealer implements Serializable {
         return getSpeed();
     }
 
-    final AttackResult attemptDamage(final DungeonCharacter theTarget,
-                                     final boolean theIsBlockable) {
+    final AttackResultAndAmount attemptDamage(final DungeonCharacter theTarget,
+                                              final boolean theIsBlockable) {
         if (Util.probabilityTest(getAdjustedHitChance())) {
             return theTarget.applyDamageAndBuff(
                     myDamageType,
@@ -90,6 +90,7 @@ public abstract class DamageDealer implements Serializable {
                     theIsBlockable
             );
         }
-        return AttackResult.MISS;
+
+        return AttackResultAndAmount.getNoAmount(AttackResult.MISS);
     }
 }

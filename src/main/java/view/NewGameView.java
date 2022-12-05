@@ -11,14 +11,16 @@ public class NewGameView {
     private static final Menu CLASS_MENU = new Menu(
             "Choose an Adventurer class",
             DungeonAdventure.getAdventurerClasses(),
-            true
+            true,
+            false
     );
     private static final Menu DIFFICULTY_MENU = new Menu(
             "Choose a difficulty",
             Arrays.stream(Difficulty.values())
                   .map(Difficulty::toString)
                   .toArray(String[]::new),
-            true
+            true,
+            false
     );
 
     private static final String GAME_NAME_PROMPT =
@@ -26,7 +28,7 @@ public class NewGameView {
     private static final String ADVENTURER_NAME_PROMPT =
             "Enter the name of the Adventurer";
     private static final String BACK_PROMPT =
-            " (or " + Menu.EXIT_MENU + " to return to the previous screen):";
+            " (or " + Menu.EXIT_OPTION + " to return to the previous screen):";
 
     static MenuSignal open(final Controller theController) {
         displayFiles(theController);

@@ -6,13 +6,23 @@ public class SneakAttack extends SpecialSkill {
     private static final double SUCCESS_CHANCE = 0.4;
     private static final double NORMAL_ATTACK_CHANCE = 0.4;
 
+    private static final double NORMAL_ATTACK_CUTOFF =
+            SUCCESS_CHANCE + NORMAL_ATTACK_CHANCE;
+
     SneakAttack() {
         super(COOLDOWN);
     }
 
     @Override
-    public AttackResult apply(final DungeonCharacter theSelf,
-                              final DungeonCharacter theEnemy) {
-        return null;
+    AttackResultAndAmount apply(final DungeonCharacter theSelf,
+                                final DungeonCharacter theEnemy) {
+        final double test = Util.randomDouble();
+        return test <= SUCCESS_CHANCE ?
+               new AttackResultAndAmount(
+                       AttackResult.EXTRA_TURN,
+                       theSelf.attemptDamage(theEnemy, true).getAmount()
+               ) : test <= NORMAL_ATTACK_CUTOFF ?
+               theSelf.attemptDamage(theEnemy, true) :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
     }
 }

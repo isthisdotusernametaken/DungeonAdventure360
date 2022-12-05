@@ -16,16 +16,18 @@ public class ConsoleUI {
         MenuSignal nextMenu;
 
         while (currentMenu != MenuSignal.EXIT) {
-            nextMenu = callFromSignal(currentMenu, previousMenu);
+            nextMenu = callFromSignal(currentMenu);
+
+            if (nextMenu == MenuSignal.PREVIOUS) {
+                nextMenu = previousMenu; // Only swap prev and curr
+            }
             previousMenu = currentMenu;
             currentMenu = nextMenu;
         }
     }
 
-    private MenuSignal callFromSignal(final MenuSignal theSignal,
-                                      final MenuSignal thePrevious) {
+    private MenuSignal callFromSignal(final MenuSignal theSignal) {
         return switch (theSignal) {
-            case PREVIOUS -> callFromSignal(thePrevious, theSignal);
             case TITLE_SCREEN -> TitleScreen.open();
             case PLAY_GUIDE -> PlayGuide.open();
             case NEW_GAME -> NewGameView.open(myController);
@@ -40,6 +42,9 @@ public class ConsoleUI {
             case LOSE -> MenuSignal.EXIT; // incomplete
             case CONFIRM_EXIT -> ConfirmExitView.open(myController);
             case EXIT -> MenuSignal.EXIT; // incomplete
+            default -> throw new IllegalStateException(
+                    "Unknown menu: " + theSignal
+            );
         };
     }
 }

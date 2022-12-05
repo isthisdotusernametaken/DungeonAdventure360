@@ -6,21 +6,25 @@ import java.util.stream.IntStream;
 
 public class Menu {
 
-    static final String EXIT_MENU = "Q";
+    static final String EXIT_OPTION = "Q";
 
-    private static final boolean[] ALL_INCLUDED = new boolean[0];
+    static final int SECRET = -3;
+
+    private static final int BACK = -2;
+
+    private static final String SECRET_OPTION = "oop";
 
     private final int INVALID_SELECTION = -1;
     private static final String INVALID_SELECTION_MESSAGE =
             "Invalid menu option selected.";
 
-    private static final int BACK = -2;
-
+    private static final boolean[] ALL_INCLUDED = new boolean[0];
 
     private final String myTitle;
     private final String[] myMenuDescriptions;
     private final String[] myMenuOptions;
     private final boolean myIncludeBack;
+    private final boolean myIncludeSecret;
 
     private final List<String> myLowerCaseDescriptions;
     private final List<String> myLowerCaseOptions;
@@ -28,7 +32,8 @@ public class Menu {
     Menu(final String theTitle,
          final String[] theMenuDescriptions,
          final String[] theMenuOptions,
-         final boolean theIncludeBack) {
+         final boolean theIncludeBack,
+         final boolean theIncludeSecret) {
         myTitle = theTitle;
 
         myMenuDescriptions = theMenuDescriptions;
@@ -38,18 +43,21 @@ public class Menu {
         myLowerCaseOptions = toLower(myMenuOptions);
 
         myIncludeBack = theIncludeBack;
+        myIncludeSecret = theIncludeSecret;
     }
 
     Menu(final String theTitle,
          final String[] theMenuDescriptions,
-         final boolean theIncludeBack) {
+         final boolean theIncludeBack,
+         final boolean theIncludeSecret) {
         this(
                 theTitle,
                 theMenuDescriptions,
                 IntStream.rangeClosed(1, theMenuDescriptions.length)
                          .mapToObj(index -> "" + index)
                          .toArray(String[]::new),
-                theIncludeBack
+                theIncludeBack,
+                theIncludeSecret
         );
     }
 
@@ -58,7 +66,11 @@ public class Menu {
     }
 
     static boolean isBack(final String theSelection) {
-        return EXIT_MENU.equalsIgnoreCase(theSelection);
+        return EXIT_OPTION.equalsIgnoreCase(theSelection);
+    }
+
+    static boolean isSecret(final int theSelection) {
+        return SECRET == theSelection;
     }
 
     private static List<String> toLower(final String[] theStrings) {
@@ -66,16 +78,13 @@ public class Menu {
     }
 
     int select() {
-        printMenu(true, ALL_INCLUDED);
-
-        return readOptionUntilValid(true, ALL_INCLUDED);
+        return promptAndReadOptionUntilValid(true, ALL_INCLUDED);
     }
 
     int select(final int[] theExcludedOptions) {
-        final boolean[] includedOptions = includedOptions(theExcludedOptions);
-        printMenu(false, includedOptions);
-
-        return readOptionUntilValid(false, includedOptions);
+        return promptAndReadOptionUntilValid(
+                false, includedOptions(theExcludedOptions)
+        );
     }
 
     private void printMenu(final boolean theAllIncluded,
@@ -92,15 +101,17 @@ public class Menu {
         }
 
         if (myIncludeBack) {
-            System.out.print(EXIT_MENU);
+            System.out.print(EXIT_OPTION);
             System.out.println(": Back");
         }
     }
 
-    private int readOptionUntilValid(final boolean theAllIncluded,
-                                     final boolean[] theIncludedOptions) {
+    private int promptAndReadOptionUntilValid(final boolean theAllIncluded,
+                                              final boolean[] theIncludedOptions) {
         int selection;
         do {
+            printMenu(theAllIncluded, theIncludedOptions);
+
             selection = readOption(theAllIncluded, theIncludedOptions);
         } while (INVALID_SELECTION == selection);
 
@@ -111,8 +122,13 @@ public class Menu {
                            final boolean[] theIncludedOptions) {
         final String input = InputReader.readLine().toLowerCase();
 
-        if (myIncludeBack && EXIT_MENU.equalsIgnoreCase(input)) {
+        if (myIncludeBack && EXIT_OPTION.equalsIgnoreCase(input)) {
+            System.out.println();
             return BACK;
+        }
+        if (myIncludeSecret && SECRET_OPTION.equalsIgnoreCase(input)) {
+            System.out.println();
+            return SECRET;
         }
 
         int index = myLowerCaseOptions.indexOf(input);

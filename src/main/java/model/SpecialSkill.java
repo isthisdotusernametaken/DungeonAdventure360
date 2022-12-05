@@ -33,17 +33,19 @@ public abstract class SpecialSkill implements Serializable {
         return myRemainingCooldown == 0;
     }
 
-    AttackResult use(final DungeonCharacter theSelf,
+    AttackResultAndAmount use(final DungeonCharacter theSelf,
                      final DungeonCharacter theEnemy) {
         if (myRemainingCooldown == 0) {
             myRemainingCooldown = myCooldown;
 
-            return apply(theSelf, theEnemy);
+            return theEnemy == null ?
+                   AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
+                   apply(theSelf, theEnemy);
         }
 
-        return AttackResult.NO_ACTION;
+        return AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
     }
 
-    abstract AttackResult apply(DungeonCharacter theSelf,
-                                DungeonCharacter theEnemy);
+    abstract AttackResultAndAmount apply(DungeonCharacter theSelf,
+                                         DungeonCharacter theEnemy);
 }

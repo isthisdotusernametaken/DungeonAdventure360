@@ -7,15 +7,17 @@ public class Room implements Serializable {
     /**
      * The width and length of the contents of a Room in its String
      * representation.
-     * Should be >= 2
+     * Should be >= 3
      */
     static final int ROOM_SIZE = 3;
     private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
+    private static final char ADVENTURER = '@';
+    private static final char MONSTER = 'M';
     private static final char EMPTY = ' ';
     private static final char MORE = '…';
     private static final char ENTRANCE = 'i';
-    private static final char EXIT = '0';
+    private static final char EXIT = 'o';
     private static final char BROKEN_TRAP = 'X';
     private static final char WALL = '*';
     private static final char HORIZONTAL_DOOR = '-';
@@ -45,10 +47,14 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    String toString(final boolean theHasAdventurer) {
         StringBuilder theBuilder = new StringBuilder();
 
         appendHorizontalWall(theBuilder, Direction.NORTH);
-        appendVerticalWallsAndContents(theBuilder);
+        appendVerticalWallsAndContents(theBuilder, theHasAdventurer);
         appendHorizontalWall(theBuilder, Direction.SOUTH);
 
         return theBuilder.toString();
@@ -74,9 +80,9 @@ public class Room implements Serializable {
         return myTrap != null;
     }
 
-    AttackResult activateTrap(final DungeonCharacter theTarget) {
+    AttackResultAndAmount activateTrap(final DungeonCharacter theTarget) {
         return myTrap == null ?
-               AttackResult.NO_ACTION :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
                myTrap.activate(theTarget);
     }
 
@@ -88,16 +94,16 @@ public class Room implements Serializable {
         return myMonster;
     }
 
-    AttackResult attackMonster(final DungeonCharacter theAttacker) {
+    AttackResultAndAmount attackMonster(final DungeonCharacter theAttacker) {
         return myMonster == null ?
-                AttackResult.NO_ACTION :
+                AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
                 killMonsterOnKillResult(theAttacker.attemptDamage(
                     myMonster,true
                 ));
     }
 
-    AttackResult killMonsterOnKillResult(final AttackResult theResult) {
-        if (theResult == AttackResult.KILL) {
+    AttackResultAndAmount killMonsterOnKillResult(final AttackResultAndAmount theResult) {
+        if (theResult.getResult() == AttackResult.KILL) {
             // Send drops to Room's Container
             myMonster = null;
         }
@@ -118,8 +124,9 @@ public class Room implements Serializable {
     // * co*
     // |nte|
     // *nts*
-    private void appendVerticalWallsAndContents(final StringBuilder theBuilder) {
-        char[][] contents = roomContents();
+    private void appendVerticalWallsAndContents(final StringBuilder theBuilder,
+                                                final boolean theHasAdventurer) {
+        char[][] contents = roomContents(theHasAdventurer);
 
         appendWallAndContentsLine(
                 theBuilder,
@@ -145,11 +152,17 @@ public class Room implements Serializable {
         }
     }
 
-    private char[][] roomContents() {
+    private char[][] roomContents(final boolean theHasAdventurer) {
         char[][] contents = new char[ROOM_SIZE][ROOM_SIZE];
         int[] position = new int[2]; // row, col
         position[0] = position[1] = ROOM_SIZE - 1;
 
+        if (theHasAdventurer) {
+            addToContents(ADVENTURER, contents, position);
+        }
+        if (myMonster != null) {
+            addToContents(MONSTER, contents, position);
+        }
         if (myIsEntrance) {
             addToContents(ENTRANCE, contents, position);
         }

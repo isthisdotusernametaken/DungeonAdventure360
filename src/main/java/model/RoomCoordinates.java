@@ -50,10 +50,18 @@ public class RoomCoordinates implements Serializable {
     RoomCoordinates addFloor(final boolean theIsUp,
                              final int theFloorCount) {
         return new RoomCoordinates(
-                Util.clampInt(0, theFloorCount, myFloor + (theIsUp ? -1 : 1)),
+                Util.clampIntUpExc(
+                        0, theFloorCount, myFloor + (theIsUp ? -1 : 1)
+                ),
                 myX,
                 myY
         );
+    }
+
+    boolean isOneBelow(final RoomCoordinates theOther) {
+        return myFloor == theOther.myFloor + 1 &&
+               myX == theOther.myX &&
+               myY == theOther.myY;
     }
 
     boolean isSameRoom(final RoomCoordinates theOther) {
@@ -62,10 +70,16 @@ public class RoomCoordinates implements Serializable {
                myY == theOther.myY;
     }
 
+    boolean isSameRoom(final int theFloor, final int theX, final int theY) {
+        return myFloor == theFloor &&
+               myX == theX &&
+               myY == theY;
+    }
+
     private RoomCoordinates addX(final int theChange, final int theMaxX) {
         return new RoomCoordinates(
                 myFloor,
-                Util.clampInt(0, theMaxX, myX + theChange),
+                Util.clampIntUpExc(0, theMaxX, myX + theChange),
                 myY
         );
     }
@@ -74,7 +88,7 @@ public class RoomCoordinates implements Serializable {
         return new RoomCoordinates(
                 myFloor,
                 myX,
-                Util.clampInt(0, theMaxY, myY + theChange)
+                Util.clampIntUpExc(0, theMaxY, myY + theChange)
         );
     }
 }

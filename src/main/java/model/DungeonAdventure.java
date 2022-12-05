@@ -2,7 +2,9 @@ package model;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public class DungeonAdventure implements Serializable {
 
@@ -18,11 +20,14 @@ public class DungeonAdventure implements Serializable {
     private boolean myIsInCombat;
     private TurnAllocator myTurnAllocator;
 
+    private boolean myIsUnexploredHidden;
+
     public DungeonAdventure(final String theAdventurerName,
                             final int theAdventurerClass,
                             final Difficulty theDifficulty) {
         myDungeon = DungeonFactory.create(theDifficulty);
         myAdventurerCoordinates = myDungeon.getEntrance();
+        myDungeon.getMap().explore(myAdventurerCoordinates);
 
         myAdventurer = AdventurerFactory.getInstance()
                 .create(theAdventurerClass, theDifficulty);
@@ -32,6 +37,8 @@ public class DungeonAdventure implements Serializable {
 
         myIsDead = false;
         // myInCombat false (myTurnAllocator irrelevant)
+
+        myIsUnexploredHidden = true;
     }
 
     public static boolean buildFactories(final String theLogFile) {
@@ -102,7 +109,17 @@ public class DungeonAdventure implements Serializable {
     }
 
     public String getMap() {
-        return myDungeon.view(true);
+        return myDungeon.toString(
+                myAdventurerCoordinates, myIsUnexploredHidden
+        );
+    }
+
+    public boolean isUnexploredHidden() {
+        return myIsUnexploredHidden;
+    }
+
+    public void toggleIsUnexploredHidden() {
+        myIsUnexploredHidden = !myIsUnexploredHidden;
     }
 
     public String getRoom() {
@@ -132,26 +149,26 @@ public class DungeonAdventure implements Serializable {
         return myIsInCombat;
     }
 
-    public String tryNextCombatTurn() {
+    public String[] tryNextCombatTurn() {
         requireAlive();
 
         if (myIsInCombat) {
             if (myTurnAllocator.peekNextTurn()) {
-                return Util.NONE; // Adventurer's turn
+                return null; // Adventurer's turn
             }
 
-            return runMonsterTurn().toString();
+            return runMonsterTurn();
         }
 
-        return Util.NONE; // Also waiting for input
+        return null; // Also waiting for input
     }
 
     public String getMonster() {
         return getCurrentRoom().getMonster().toString();
     }
 
-    public String attack() {
-        return runAdventurerAttack(true);
+    public String[] attack() {
+        return runAdventurerTurn(true);
     }
 
     public String getSpecialSkill() {
@@ -162,11 +179,11 @@ public class DungeonAdventure implements Serializable {
         return myAdventurer.getSpecialSkill().canUse();
     }
 
-    public String useSpecialSkill() {
-        return runAdventurerAttack(false);
+    public String[] useSpecialSkill() {
+        return runAdventurerTurn(false);
     }
 
-    public boolean flee(final Direction theDirection) {
+    public String[] flee(final Direction theDirection) {
         requireAlive();
 
         if (
@@ -177,26 +194,34 @@ public class DungeonAdventure implements Serializable {
                     myAdventurer, getCurrentRoom().getMonster()
             ))) {
                 myIsInCombat = false;
-                moveAdventurerUnchecked(theDirection);
 
-                return true;
+                return Stream.concat(
+                        Arrays.stream(moveAdventurerUnchecked(theDirection)),
+                        Stream.of(AttackResult.FLED_SUCCESSFULLY.toString())
+                ).toArray(String[]::new);
             }
 
             nextTurn();
+            return advanceInCombatAndCompileResults(
+                    AttackResultAndAmount.getNoAmount(
+                            AttackResult.COULD_NOT_FLEE
+                    )
+            );
         }
 
-        return false;
+        return null;
     }
 
     public boolean isValidDirection(final Direction theDirection) {
         return getCurrentRoom().hasDoor(theDirection);
     }
 
-    public boolean moveAdventurer(final Direction theDirection) {
+    public String[] moveAdventurer(final Direction theDirection) {
         requireAlive();
 
-        return (!myIsInCombat && isValidDirection(theDirection)) &&
-               moveAdventurerUnchecked(theDirection);
+        return !myIsInCombat && isValidDirection(theDirection) ?
+               moveAdventurerUnchecked(theDirection) :
+               null;
     }
 
     public boolean hasStairs(final boolean theIsUp) {
@@ -205,18 +230,16 @@ public class DungeonAdventure implements Serializable {
                myDungeon.hasStairsDown(myAdventurerCoordinates);
     }
 
-    public boolean useStairs(final boolean theIsUp) {
+    public String[] useStairs(final boolean theIsUp) {
         requireAlive();
 
         if (!myIsInCombat && hasStairs(theIsUp)) {
-            myAdventurerCoordinates = myAdventurerCoordinates.addFloor(
+            return moveToCoordsUnchecked(myAdventurerCoordinates.addFloor(
                     theIsUp, getDimensions().getFloor()
-            );
-
-            return advanceOutOfCombat();
+            ));
         }
 
-        return false;
+        return null;
     }
 
     private Room getCurrentRoom() {
@@ -227,74 +250,108 @@ public class DungeonAdventure implements Serializable {
         return myDungeon.getDimensions();
     }
 
-    private boolean moveAdventurerUnchecked(final Direction theDirection) {
-        final RoomCoordinates newCoords = myAdventurerCoordinates.add(
+    private String[] moveAdventurerUnchecked(final Direction theDirection) {
+        return moveToCoordsUnchecked(myAdventurerCoordinates.add(
                 theDirection, myDungeon.getDimensions()
-        );
-
-        if (!newCoords.isSameRoom(myAdventurerCoordinates)) {
-            myAdventurerCoordinates = newCoords;
-
-            return advanceOutOfCombat();
-        }
-
-        return false;
+        ));
     }
 
-    private AttackResult runMonsterTurn() {
-        final AttackResult result =
-                getCurrentRoom().getMonster().attemptDamage(
-                        myAdventurer, true
-                );
-        if (result == AttackResult.KILL) {
+    private String[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
+        if (!theCoords.isSameRoom(myAdventurerCoordinates)) {
+            myAdventurerCoordinates = theCoords;
+            myDungeon.getMap().explore(myAdventurerCoordinates);
+            getCurrentRoom().activateTrap(myAdventurer);
+
+            return new String[]{
+                    advanceOutOfCombat(),
+                    getCurrentRoom().activateTrap(myAdventurer).toString()
+            };
+        }
+
+        return null;
+    }
+
+    private void testDead(final AttackResultAndAmount theResult) {
+        if (theResult.getResult() == AttackResult.KILL) {
             myIsDead = true;
         }
-
-        nextTurn();
-
-        return result;
     }
 
-    private String runAdventurerAttack(final boolean theIsBasicAttack) {
+    private String[] runMonsterTurn() {
+        final AttackResultAndAmount monsterBuffResult =
+                getCurrentRoom().killMonsterOnKillResult(
+                        getCurrentRoom().getMonster().advanceBuffsAndDebuffs()
+                );
+
+        if (testCombat()) {
+            final AttackResultAndAmount healResult =
+                    getCurrentRoom().getMonster().attemptHeal();
+            final AttackResultAndAmount attackResult =
+                    getCurrentRoom().getMonster().attemptDamage(
+                            myAdventurer, true
+                    );
+            testDead(attackResult);
+
+            nextTurn();
+
+            return new String[]{
+                    monsterBuffResult.toString(),
+                    healResult.toString(),
+                    attackResult.toString()
+            };
+        }
+        return new String[]{monsterBuffResult.toString()};
+    }
+
+    private String[] runAdventurerTurn(final boolean theIsBasicAttack) {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn()) {
-            AttackResult result;
+            AttackResultAndAmount attackResult;
             if (theIsBasicAttack) {
-                result = getCurrentRoom().attackMonster(myAdventurer);
+                attackResult = getCurrentRoom().attackMonster(myAdventurer);
             } else {
-                result = getCurrentRoom().killMonsterOnKillResult(
+                attackResult = getCurrentRoom().killMonsterOnKillResult(
                         myAdventurer.useSpecialSkill(
                                 myAdventurer, getCurrentRoom().getMonster()
                         )
                 );
             }
 
-            nextTurn();
+            if (attackResult.getResult() != AttackResult.EXTRA_TURN) {
+                nextTurn();
+            }
 
-            return result.toString();
+            return advanceInCombatAndCompileResults(attackResult);
         }
 
-        return Util.NONE;
+        return null;
     }
 
-    private void advanceInCombat() {
-        myAdventurer.advanceBuffsAndDebuffs(); // USE RETURN
+    private String[] advanceInCombatAndCompileResults(final AttackResultAndAmount theAttackResult) {
+        return new String[]{advanceInCombat(), theAttackResult.toString()};
+    }
+
+    private String advanceOutOfCombat() {
+        testEnterCombat();
+
+        return myAdventurer.advanceDebuffs().toString();
+    }
+
+    private String advanceInCombat() {
         myAdventurer.getSpecialSkill().advance();
+
+        final AttackResultAndAmount result =
+                myAdventurer.advanceBuffsAndDebuffs();
+        testDead(result);
+
+        return result.toString();
     }
 
-    private boolean advanceOutOfCombat() {
-        myAdventurer.advanceDebuffs(); // USE RETURN
-
-        return testEnterCombat();
-    }
-
-    private boolean testEnterCombat() {
+    private void testEnterCombat() {
         if (testCombat()) {
             recalculateTurnAllocation();
         }
-
-        return myIsInCombat;
     }
 
     private boolean testCombat() {
