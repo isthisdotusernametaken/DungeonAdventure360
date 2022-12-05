@@ -20,6 +20,8 @@ public class DungeonAdventure implements Serializable {
     private boolean myIsInCombat;
     private TurnAllocator myTurnAllocator;
 
+    private boolean myIsUnexploredHidden;
+
     public DungeonAdventure(final String theAdventurerName,
                             final int theAdventurerClass,
                             final Difficulty theDifficulty) {
@@ -35,6 +37,8 @@ public class DungeonAdventure implements Serializable {
 
         myIsDead = false;
         // myInCombat false (myTurnAllocator irrelevant)
+
+        myIsUnexploredHidden = true;
     }
 
     public static boolean buildFactories(final String theLogFile) {
@@ -104,8 +108,18 @@ public class DungeonAdventure implements Serializable {
         return myAdventurerCoordinates.toString();
     }
 
-    public String getMap(final boolean theLimitView) {
-        return myDungeon.toString(myAdventurerCoordinates, theLimitView);
+    public String getMap() {
+        return myDungeon.toString(
+                myAdventurerCoordinates, myIsUnexploredHidden
+        );
+    }
+
+    public boolean isUnexploredHidden() {
+        return myIsUnexploredHidden;
+    }
+
+    public void toggleIsUnexploredHidden() {
+        myIsUnexploredHidden = !myIsUnexploredHidden;
     }
 
     public String getRoom() {
