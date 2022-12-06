@@ -34,7 +34,7 @@ public abstract class SpecialSkill implements Serializable {
     }
 
     AttackResultAndAmount use(final DungeonCharacter theSelf,
-                     final DungeonCharacter theEnemy) {
+                              final DungeonCharacter theEnemy) {
         if (myRemainingCooldown == 0) {
             myRemainingCooldown = myCooldown;
 

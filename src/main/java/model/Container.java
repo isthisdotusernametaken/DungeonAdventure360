@@ -35,6 +35,10 @@ public class Container implements Serializable {
         return items;
     }
 
+    boolean canUseInCombat(final int theIndex) {
+        return myItems.get(theIndex) instanceof CharacterApplicableItem;
+    }
+
     String useItem(final int theIndex,
                    final DungeonCharacter theTarget,
                    final Map theMap,
@@ -71,7 +75,9 @@ public class Container implements Serializable {
         myItems.add(theItem.copy());
     }
 
-    Item removeItem(final int theIndex) {
-        return myItems.remove(theIndex);
+    void addItems(final Item[] theItems) {
+        for (Item item : theItems) {
+            addItem(item);
+        }
     }
 }

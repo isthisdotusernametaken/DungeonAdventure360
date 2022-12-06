@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public abstract class Item implements CharRepresentable, Serializable {
 
+    static final int MAX_STACK_SIZE = 999;
+
     private final char myRepresentation;
     private final ItemType myType;
     private final boolean myCanChangeCount;
@@ -50,7 +52,10 @@ public abstract class Item implements CharRepresentable, Serializable {
 
     final void addToStack(final int theCount) {
         if (myCanChangeCount) {
-            myCount += theCount;
+            myCount = Util.addAndClampInt(
+                    0, MAX_STACK_SIZE,
+                    myCount, theCount
+            );
         }
     }
 

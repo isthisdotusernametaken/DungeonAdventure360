@@ -1,9 +1,9 @@
 package view;
 
+import java.util.Arrays;
+
 import controller.Controller;
 import model.Direction;
-
-import java.util.Arrays;
 
 public class ExplorationView {
 
@@ -31,9 +31,9 @@ public class ExplorationView {
                   .map(dir -> dir.toString().substring(0, 1))
                   .toArray(String[]::new),
             true,
-            true
+            false
     );
-    private static final Menu SECRET_ROOM_MENU = new Menu(
+    private static final Menu SECRET_MENU = new Menu(
             "Choose a secret option",
             new String[]{
                     "Toggle hiding of unexplored rooms on map"
@@ -46,7 +46,8 @@ public class ExplorationView {
             "Unexplored rooms hidden: ";
 
     static MenuSignal open(final Controller theController) {
-        System.out.println(theController.getGame().getRoom());
+        System.out.println(theController.getRoom());
+        System.out.println(theController.getAdventurer());
 
         MenuSignal internalSignal = MenuSignal.PREVIOUS;
         while (internalSignal == MenuSignal.PREVIOUS) {
@@ -72,8 +73,8 @@ public class ExplorationView {
     }
 
     private static int[] getInvalidStairs(final Controller theController) {
-        return theController.getGame().hasStairs(true) ?
-               new int[]{1} : theController.getGame().hasStairs(false) ?
+        return theController.hasStairs(true) ?
+               new int[]{1} : theController.hasStairs(false) ?
                new int[]{0} :
                new int[]{0, 1};
     }
@@ -81,9 +82,9 @@ public class ExplorationView {
     private static MenuSignal useStairs(final Controller theController,
                                         final boolean theIsUp) {
         // Print with AttackResultAndAmount formatting from Controller
-        theController.getGame().useStairs(theIsUp);
+        theController.useStairs(theIsUp);
 
-        return theController.getGame().isInCombat() ?
+        return theController.isInCombat() ?
                MenuSignal.COMBAT :
                MenuSignal.EXPLORATION;
     }
@@ -92,9 +93,13 @@ public class ExplorationView {
         final int choice = MOVE_MENU.select(
                 getInvalidDirections(theController)
         );
+        System.out.println(
+                theController.moveAdventurer(Direction.values()[choice])
+        );
 
         return switch (choice) {
-            case 0, 1, 2, 3 -> move(Direction.values()[choice], theController);
+            case 0, 1, 2, 3 -> theController.isInCombat() ?
+                    MenuSignal.COMBAT : MenuSignal.EXPLORATION;
             default -> MenuSignal.PREVIOUS;
         };
     }
@@ -104,7 +109,7 @@ public class ExplorationView {
         int index = 0;
 
         for (Direction direction : Direction.values()) {
-            if (!theController.getGame().isValidDirection(direction)) {
+            if (!theController.isValidDirection(direction)) {
                 invalidDirections[index++] = direction.ordinal();
             }
         }
@@ -112,22 +117,12 @@ public class ExplorationView {
         return Arrays.copyOfRange(invalidDirections, 0, index);
     }
 
-    private static MenuSignal move(final Direction theDirection,
-                                   final Controller theController) {
-        // Print with AttackResultAndAmount formatting from Controller
-        theController.getGame().moveAdventurer(theDirection);
-
-        return theController.getGame().isInCombat() ?
-               MenuSignal.COMBAT :
-               MenuSignal.EXPLORATION;
-    }
-
     private static void openSecretMenu(final Controller theController) {
         System.out.print(UNEXPLORED_HIDDEN);
-        System.out.println(theController.getGame().isUnexploredHidden());
+        System.out.println(theController.isUnexploredHidden());
 
-        if (SECRET_ROOM_MENU.select() == 0) {
-            theController.getGame().toggleIsUnexploredHidden();
+        if (SECRET_MENU.select() == 0) {
+            theController.toggleIsUnexploredHidden();
         }
     }
 }

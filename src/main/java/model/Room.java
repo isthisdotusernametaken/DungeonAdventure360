@@ -90,16 +90,26 @@ public class Room implements Serializable {
         return myTrap != null && myTrap.board();
     }
 
+    String getTrapClass() {
+        return myTrap == null ? Util.NONE : myTrap.getClassName();
+    }
+
+    String getTrapDebuffType() {
+        return myTrap == null ?
+               Util.NONE :
+               myTrap.getDamageType().getDebuffType().toString();
+    }
+
     Monster getMonster() {
         return myMonster;
     }
 
     AttackResultAndAmount attackMonster(final DungeonCharacter theAttacker) {
         return myMonster == null ?
-                AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
-                killMonsterOnKillResult(theAttacker.attemptDamage(
-                    myMonster,true
-                ));
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
+               killMonsterOnKillResult(theAttacker.attemptDamage(
+                   myMonster,true
+               ));
     }
 
     AttackResultAndAmount killMonsterOnKillResult(final AttackResultAndAmount theResult) {

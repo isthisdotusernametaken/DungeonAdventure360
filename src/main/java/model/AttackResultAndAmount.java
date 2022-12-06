@@ -23,20 +23,11 @@ public class AttackResultAndAmount {
         return NO_AMOUNTS[theResult.ordinal()];
     }
 
-    @Override
-    public String toString() {
-        return myAmount == 0 ?
-               myResult.toString() :
-               new StringBuilder(myResult.toString())
-                       .append(", ").append(myAmount).append('\n')
-                       .toString();
-    }
-
-    AttackResult getResult() {
+    public AttackResult getResult() {
         return myResult;
     }
 
-    int getAmount() {
+    public int getAmount() {
         return myAmount;
     }
 }

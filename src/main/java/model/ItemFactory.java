@@ -5,13 +5,27 @@ import java.util.List;
 
 public class ItemFactory {
 
-    private static final Item[] ALL_ITEMS = createAllItems();
+    private static final Item[] ALL_ITEMS = createAllItemsWeighted();
 
     static Item createRandom() {
         return ALL_ITEMS[Util.randomIntExc(ALL_ITEMS.length)].copy();
     }
 
-    private static Item[] createAllItems() {
+    static Item[] createAllItemsMaxed() {
+        final List<Item> items = new ArrayList<>(List.of(
+                new HealthPotion(Item.MAX_STACK_SIZE),
+                new VisionPotion(Item.MAX_STACK_SIZE),
+                new Planks(Item.MAX_STACK_SIZE)
+        ));
+
+        for (BuffType buffType : BuffType.getAllPositiveBuffTypes()) {
+            items.add(new BuffPotion(Item.MAX_STACK_SIZE, buffType));
+        }
+
+        return items.toArray(new Item[0]);
+    }
+
+    private static Item[] createAllItemsWeighted() {
         final List<Item> items = new ArrayList<>(List.of(
                 new HealthPotion(1),
                 new HealthPotion(1),

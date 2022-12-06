@@ -25,7 +25,9 @@ public class HealthPotion extends CharacterApplicableItem {
                 Util.randomIntInc(MIN_HEAL, MAX_HEAL)
         );
 
-        return amountHealed == 0 ? Util.NONE : "" + amountHealed;
+        return amountHealed == 0 ?
+               Util.NONE :
+               "Healed " + amountHealed + " hp.";
     }
 
     @Override

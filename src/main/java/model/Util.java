@@ -44,10 +44,22 @@ public class Util {
         return Math.max(1, theValue);
     }
 
-    static int clampIntUpExc(final int theMin, final int theMax, final int theValue) {
+    static int clampIntUpExc(final int theMin,
+                             final int theMax,
+                             final int theValue) {
         return Math.max(
                 theMin,
                 Math.min(theValue, theMax - 1)
+        );
+    }
+
+    static int addAndClampInt(final int theMin,
+                              final int theMax,
+                              final int theAddend,
+                              final int theAugend) {
+        return (int) Math.max(
+                theMin,
+                Math.min(((long) theAddend) + theAugend, theMax - 1)
         );
     }
 

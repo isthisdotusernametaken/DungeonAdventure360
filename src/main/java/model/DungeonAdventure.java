@@ -104,8 +104,12 @@ public class DungeonAdventure implements Serializable {
         return myAdventurer.toString();
     }
 
-    public String getAdventurerCoords() {
-        return myAdventurerCoordinates.toString();
+    public String getAdventurerName() {
+        return myAdventurer.getName();
+    }
+
+    public String getAdventurerDebuffType() {
+        return myAdventurer.getDamageType().getDebuffType().toString();
     }
 
     public String getMap() {
@@ -130,6 +134,15 @@ public class DungeonAdventure implements Serializable {
         return myInventory.viewItemsAsStrings();
     }
 
+    public void addMaxItems() {
+        myInventory.addItems(ItemFactory.createAllItemsMaxed());
+    }
+
+    public boolean canUseInventoryItem(final int theIndex) {
+        return Util.isValidIndex(theIndex, myInventory.size()) &&
+               (!myIsInCombat || myInventory.canUseInCombat(theIndex));
+    }
+
     public String useInventoryItem(final int theIndex) {
         requireAlive();
 
@@ -149,7 +162,7 @@ public class DungeonAdventure implements Serializable {
         return myIsInCombat;
     }
 
-    public String[] tryNextCombatTurn() {
+    public AttackResultAndAmount[] tryNextCombatTurn() {
         requireAlive();
 
         if (myIsInCombat) {
@@ -167,7 +180,16 @@ public class DungeonAdventure implements Serializable {
         return getCurrentRoom().getMonster().toString();
     }
 
-    public String[] attack() {
+    public String getMonsterName() {
+        return getCurrentRoom().getMonster().getName();
+    }
+
+    public String getMonsterDebuffType() {
+        return getCurrentRoom().getMonster().getDamageType().getDebuffType()
+                .toString();
+    }
+
+    public AttackResultAndAmount[] attack() {
         return runAdventurerTurn(true);
     }
 
@@ -179,11 +201,11 @@ public class DungeonAdventure implements Serializable {
         return myAdventurer.getSpecialSkill().canUse();
     }
 
-    public String[] useSpecialSkill() {
+    public AttackResultAndAmount[] useSpecialSkill() {
         return runAdventurerTurn(false);
     }
 
-    public String[] flee(final Direction theDirection) {
+    public AttackResultAndAmount[] flee(final Direction theDirection) {
         requireAlive();
 
         if (
@@ -197,8 +219,10 @@ public class DungeonAdventure implements Serializable {
 
                 return Stream.concat(
                         Arrays.stream(moveAdventurerUnchecked(theDirection)),
-                        Stream.of(AttackResult.FLED_SUCCESSFULLY.toString())
-                ).toArray(String[]::new);
+                        Stream.of(AttackResultAndAmount.getNoAmount(
+                                AttackResult.FLED_SUCCESSFULLY
+                        ))
+                ).toArray(AttackResultAndAmount[]::new);
             }
 
             nextTurn();
@@ -216,7 +240,15 @@ public class DungeonAdventure implements Serializable {
         return getCurrentRoom().hasDoor(theDirection);
     }
 
-    public String[] moveAdventurer(final Direction theDirection) {
+    public String getTrap() {
+        return getCurrentRoom().getTrapClass();
+    }
+
+    public String getTrapDebuffType() {
+        return getCurrentRoom().getTrapDebuffType();
+    }
+
+    public AttackResultAndAmount[] moveAdventurer(final Direction theDirection) {
         requireAlive();
 
         return !myIsInCombat && isValidDirection(theDirection) ?
@@ -230,7 +262,7 @@ public class DungeonAdventure implements Serializable {
                myDungeon.hasStairsDown(myAdventurerCoordinates);
     }
 
-    public String[] useStairs(final boolean theIsUp) {
+    public AttackResultAndAmount[] useStairs(final boolean theIsUp) {
         requireAlive();
 
         if (!myIsInCombat && hasStairs(theIsUp)) {
@@ -250,21 +282,21 @@ public class DungeonAdventure implements Serializable {
         return myDungeon.getDimensions();
     }
 
-    private String[] moveAdventurerUnchecked(final Direction theDirection) {
+    private AttackResultAndAmount[] moveAdventurerUnchecked(final Direction theDirection) {
         return moveToCoordsUnchecked(myAdventurerCoordinates.add(
                 theDirection, myDungeon.getDimensions()
         ));
     }
 
-    private String[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
+    private AttackResultAndAmount[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
         if (!theCoords.isSameRoom(myAdventurerCoordinates)) {
             myAdventurerCoordinates = theCoords;
             myDungeon.getMap().explore(myAdventurerCoordinates);
-            getCurrentRoom().activateTrap(myAdventurer);
+            final AttackResultAndAmount buffDamage = advanceOutOfCombat();
 
-            return new String[]{
-                    advanceOutOfCombat(),
-                    getCurrentRoom().activateTrap(myAdventurer).toString()
+            return new AttackResultAndAmount[]{
+                    buffDamage,
+                    getCurrentRoom().activateTrap(myAdventurer)
             };
         }
 
@@ -277,7 +309,7 @@ public class DungeonAdventure implements Serializable {
         }
     }
 
-    private String[] runMonsterTurn() {
+    private AttackResultAndAmount[] runMonsterTurn() {
         final AttackResultAndAmount monsterBuffResult =
                 getCurrentRoom().killMonsterOnKillResult(
                         getCurrentRoom().getMonster().advanceBuffsAndDebuffs()
@@ -294,16 +326,14 @@ public class DungeonAdventure implements Serializable {
 
             nextTurn();
 
-            return new String[]{
-                    monsterBuffResult.toString(),
-                    healResult.toString(),
-                    attackResult.toString()
+            return new AttackResultAndAmount[]{
+                    monsterBuffResult, healResult, attackResult
             };
         }
-        return new String[]{monsterBuffResult.toString()};
+        return new AttackResultAndAmount[]{monsterBuffResult};
     }
 
-    private String[] runAdventurerTurn(final boolean theIsBasicAttack) {
+    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack) {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn()) {
@@ -328,24 +358,25 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
-    private String[] advanceInCombatAndCompileResults(final AttackResultAndAmount theAttackResult) {
-        return new String[]{advanceInCombat(), theAttackResult.toString()};
+    private AttackResultAndAmount[] advanceInCombatAndCompileResults(
+            final AttackResultAndAmount theAttackResult) {
+        return new AttackResultAndAmount[]{advanceInCombat(), theAttackResult};
     }
 
-    private String advanceOutOfCombat() {
+    private AttackResultAndAmount advanceOutOfCombat() {
         testEnterCombat();
 
-        return myAdventurer.advanceDebuffs().toString();
+        return myAdventurer.advanceDebuffs();
     }
 
-    private String advanceInCombat() {
+    private AttackResultAndAmount advanceInCombat() {
         myAdventurer.getSpecialSkill().advance();
 
         final AttackResultAndAmount result =
                 myAdventurer.advanceBuffsAndDebuffs();
         testDead(result);
 
-        return result.toString();
+        return result;
     }
 
     private void testEnterCombat() {
