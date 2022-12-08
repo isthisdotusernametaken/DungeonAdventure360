@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ResistanceData implements Serializable {
 
-    private final double[] myResistances;
+    final double[] myResistances;
     private final String myToString;
 
     ResistanceData(final double[] theResistances) {
