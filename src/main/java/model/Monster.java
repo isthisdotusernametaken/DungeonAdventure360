@@ -2,9 +2,12 @@ package model;
 
 public class Monster extends DungeonCharacter {
 
+    private static final double HEAL_PERCENT = 0.1;
+
     private final double myHealChance;
 
     Monster(final String theName,
+            final String theClass,
             final int theMaxHP,
             final int theMinDamage,
             final int theMaxDamage,
@@ -18,6 +21,7 @@ public class Monster extends DungeonCharacter {
             final ResistanceData theResistances) {
         super(
                 theName,
+                theClass,
                 theMaxHP,
                 theMinDamage,
                 theMaxDamage,
@@ -33,7 +37,23 @@ public class Monster extends DungeonCharacter {
         myHealChance = theHealChance;
     }
 
+    @Override
+    public final String toString() {
+        return new StringBuilder(super.toString())
+                .append(" Heal Chance (per turn): ").append(myHealChance).append('\n')
+                .toString();
+    }
+
     double getHealChance() {
         return myHealChance;
+    }
+
+    AttackResultAndAmount attemptHeal() {
+        return Util.probabilityTest(myHealChance) ?
+               new AttackResultAndAmount(
+                       AttackResult.HEAL,
+                       heal((int) (HEAL_PERCENT * getMaxHP()))
+               ) :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
     }
 }

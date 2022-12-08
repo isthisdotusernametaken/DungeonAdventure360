@@ -2,47 +2,13 @@ package model;
 
 import java.io.Serializable;
 
-public class Map implements Serializable {
+public abstract class Map implements Serializable {
 
-    private final boolean[][][] myExplored;
+    abstract boolean isExplored(int theFloor, int theX, int theY);
 
-    Map(final RoomCoordinates theDimensions) {
-        myExplored = new boolean[theDimensions.getFloor()]
-                                [theDimensions.getX()]
-                                [theDimensions.getY()];
-    }
+    abstract boolean isExplored(RoomCoordinates theCoords);
 
-    boolean isExplored(final int theFloor,
-                       final int theX,
-                       final int theY) {
-        return myExplored[theFloor][theX][theY];
-    }
+    abstract void explore(int theFloor, int theX, int theY);
 
-    boolean isExplored(final RoomCoordinates theCoords) {
-        return isExplored(
-                theCoords.getFloor(),
-                theCoords.getX(),
-                theCoords.getY()
-        );
-    }
-
-    void explore(final int theFloor,
-                 final int theX,
-                 final int theY) {
-        if (
-                theFloor >= 0 && theFloor < myExplored.length &&
-                theX >= 0 && theX < myExplored[0].length &&
-                theY >= 0 && theY < myExplored[0][0].length
-        ) {
-            myExplored[theFloor][theX][theY] = true;
-        }
-    }
-
-    void explore(final RoomCoordinates theCoords) {
-        explore(
-                theCoords.getFloor(),
-                theCoords.getX(),
-                theCoords.getY()
-        );
-    }
+    abstract void explore(RoomCoordinates theCoords);
 }

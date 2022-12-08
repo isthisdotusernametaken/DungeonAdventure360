@@ -15,8 +15,12 @@ public abstract class CharacterApplicableItem extends Item {
     }
 
     final String use(final DungeonCharacter theTarget) {
-        consume();
-        return applyEffect(theTarget);
+        final String result = applyEffect(theTarget);
+        if (!Util.NONE.equals(result)) {
+            consume();
+        }
+
+        return result;
     }
 
     abstract String applyEffect(final DungeonCharacter theTarget);

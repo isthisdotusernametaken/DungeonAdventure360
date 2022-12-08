@@ -5,22 +5,24 @@ import java.util.Scanner;
 
 public class TemplateGenerator {
 
-    static final String INVALID_TABLE =
+    private static final String INVALID_TABLE =
             "No such table exists: ";
-    static final String INVALID_FIELD =
+    private static final String INVALID_FIELD =
             "Invalid field (possibly wrong data type): ";
-    static final String NULL_FIELD =
+    private static final String NULL_FIELD =
             "Field is null";
-    static final String INVALID_RESISTANCE_DATA =
+    private static final String INVALID_RESISTANCE_DATA =
             "Invalid resistance data: ";
-    static final String INVALID_CHAR_LENGTH =
+    private static final String INVALID_DAMAGE_TYPE =
+            "Invalid damage type: ";
+    private static final String INVALID_CHAR_LENGTH =
             "Invalid individual char: ";
-    static final String INVALID_PROBABILITY =
+    private static final String INVALID_PROBABILITY =
             "Probability out of range: ";
 
-    final Table myTable;
-    final String myTableName;
-    int myColumn;
+    private final Table myTable;
+    private final String myTableName;
+    private int myColumn;
 
     TemplateGenerator(final DBManager theDBManager, final String theTable)
             throws SQLException, IllegalArgumentException {
@@ -32,6 +34,7 @@ public class TemplateGenerator {
     }
 
     boolean next() throws SQLException {
+        myColumn = 1;
         return myTable.next();
     }
 
@@ -69,6 +72,17 @@ public class TemplateGenerator {
         return new ResistanceData(resistanceValues);
     }
 
+    DamageType getDamageType() throws SQLException, IllegalArgumentException {
+        final String field = getString();
+        try {
+            return DamageType.valueOf(field);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    INVALID_DAMAGE_TYPE + field + getFieldLocation()
+            );
+        }
+    }
+
     String getString() throws SQLException, IllegalArgumentException {
         try {
             final String field = myTable.getString(myColumn++);
@@ -102,11 +116,6 @@ public class TemplateGenerator {
         }
     }
 
-    int getIntModified(final Difficulty theDifficulty)
-            throws SQLException, IllegalArgumentException {
-        return (int) (getInt() * theDifficulty.getNegativeMultiplier());
-    }
-
     double getDouble() throws SQLException, IllegalArgumentException {
         try {
             final double field = myTable.getDouble(myColumn++);
@@ -130,7 +139,7 @@ public class TemplateGenerator {
         }
     }
 
-    String getFieldLocation() throws SQLException {
+    private String getFieldLocation() throws SQLException {
         return " (" +
                 myTableName +
                 ": row " + myTable.getRow() +
@@ -138,7 +147,7 @@ public class TemplateGenerator {
                 ")";
     }
 
-    void exceptionOnNoTable(final String theTable)
+    private void exceptionOnNoTable(final String theTable)
             throws IllegalArgumentException {
         if (myTable == null) {
             throw new IllegalArgumentException(
@@ -147,13 +156,13 @@ public class TemplateGenerator {
         }
     }
 
-    SQLException invalidFieldException() throws SQLException {
+    private SQLException invalidFieldException() throws SQLException {
         return new SQLException(
                 INVALID_FIELD + getFieldLocation()
         );
     }
 
-    void exceptionOnNull()
+    private void exceptionOnNull()
             throws SQLException, IllegalArgumentException {
         if (myTable.wasNull()) {
             throw new IllegalArgumentException(
@@ -162,14 +171,14 @@ public class TemplateGenerator {
         }
     }
 
-    void resistanceDataException(final String theField)
+    private void resistanceDataException(final String theField)
             throws SQLException, IllegalArgumentException {
         throw new IllegalArgumentException(
                 INVALID_RESISTANCE_DATA + theField + getFieldLocation()
         );
     }
 
-    void exceptionOnInvalidCharLength(final String theField)
+    private void exceptionOnInvalidCharLength(final String theField)
             throws SQLException, IllegalArgumentException {
         if (theField.length() != 1) {
             throw new IllegalArgumentException(
@@ -178,7 +187,7 @@ public class TemplateGenerator {
         }
     }
 
-    void exceptionOnIllegalProbability(final double theProbability)
+    private void exceptionOnIllegalProbability(final double theProbability)
             throws SQLException, IllegalArgumentException {
         if (theProbability < 0.0 || theProbability > 1.0) {
             throw new IllegalArgumentException(

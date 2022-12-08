@@ -7,27 +7,30 @@ public class Room implements Serializable {
     /**
      * The width and length of the contents of a Room in its String
      * representation.
-     * Should be >= 2
+     * Should be >= 3
      */
     static final int ROOM_SIZE = 3;
+    private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
+    private static final char ADVENTURER = '@';
+    private static final char MONSTER = 'M';
     private static final char EMPTY = ' ';
     private static final char MORE = '…';
     private static final char ENTRANCE = 'i';
-    private static final char EXIT = '0';
+    private static final char EXIT = 'o';
     private static final char BROKEN_TRAP = 'X';
     private static final char WALL = '*';
     private static final char HORIZONTAL_DOOR = '-';
     private static final char VERTICAL_DOOR = '|';
 
-    private final Direction[] myDoors;
+    private final boolean[] myDoors;
     private final Container myContainer;
     private final Trap myTrap;
     private Monster myMonster;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
-    Room(final Direction[] theDoors,
+    Room(final boolean[] theDoors,
          final Trap theTrap,
          final Monster theMonster,
          final boolean theIsEntrance,
@@ -44,31 +47,25 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    String toString(final boolean theHasAdventurer) {
         StringBuilder theBuilder = new StringBuilder();
 
         appendHorizontalWall(theBuilder, Direction.NORTH);
-        appendVerticalWallsAndContents(theBuilder);
+        appendVerticalWallsAndContents(theBuilder, theHasAdventurer);
         appendHorizontalWall(theBuilder, Direction.SOUTH);
 
         return theBuilder.toString();
     }
 
-    Container getContents() {
+    Container getContainer() {
         return myContainer;
     }
 
-    Direction[] getDoors() {
-        return myDoors.clone();
-    }
-
     boolean hasDoor(final Direction theDirection) {
-        for (Direction door : myDoors) {
-            if (theDirection == door) {
-                return true;
-            }
-        }
-
-        return false;
+        return myDoors[theDirection.ordinal()];
     }
 
     boolean isEntrance() {
@@ -83,9 +80,9 @@ public class Room implements Serializable {
         return myTrap != null;
     }
 
-    AttackResult activateTrap(final DungeonCharacter theTarget) {
+    AttackResultAndAmount activateTrap(final DungeonCharacter theTarget) {
         return myTrap == null ?
-               AttackResult.NO_ACTION :
+               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
                myTrap.activate(theTarget);
     }
 
@@ -97,21 +94,21 @@ public class Room implements Serializable {
         return myMonster;
     }
 
-    AttackResult attackMonster(final DungeonCharacter theAttacker) {
-        if (myMonster == null) {
-            return AttackResult.NO_ACTION;
-        } else {
-            final AttackResult result = theAttacker.attemptDamage(
+    AttackResultAndAmount attackMonster(final DungeonCharacter theAttacker) {
+        return myMonster == null ?
+                AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
+                killMonsterOnKillResult(theAttacker.attemptDamage(
                     myMonster,true
-            );
+                ));
+    }
 
-            if (result == AttackResult.KILL) {
-                // Send drops to Room's Container
-                myMonster = null;
-            }
-
-            return result;
+    AttackResultAndAmount killMonsterOnKillResult(final AttackResultAndAmount theResult) {
+        if (theResult.getResult() == AttackResult.KILL) {
+            // Send drops to Room's Container
+            myMonster = null;
         }
+
+        return theResult;
     }
 
 
@@ -119,29 +116,53 @@ public class Room implements Serializable {
     private void appendHorizontalWall(final StringBuilder theBuilder,
                                       final Direction theDirection) {
         theBuilder.append(WALL).append(WALL)
-                .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
-                .append(WALL).append(WALL);
+                  .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
+                  .append(WALL).append(WALL)
+                  .append('\n');
     }
 
     // * co*
     // |nte|
     // *nts*
-    private void appendVerticalWallsAndContents(final StringBuilder theBuilder
-    ) {
-        char[][] contents = roomContents();
+    private void appendVerticalWallsAndContents(final StringBuilder theBuilder,
+                                                final boolean theHasAdventurer) {
+        char[][] contents = roomContents(theHasAdventurer);
 
-        theBuilder.append(WALL).append(contents[0]).append(WALL)
-                .append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
-                .append(contents[1])
-                .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
-                .append(WALL).append(contents[2]).append(WALL);
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, 0, HALF_ROOM_SIZE
+        );
+        theBuilder.append(hasDoor(Direction.WEST) ? VERTICAL_DOOR : WALL)
+                  .append(contents[HALF_ROOM_SIZE])
+                  .append(hasDoor(Direction.EAST) ? VERTICAL_DOOR : WALL)
+                  .append('\n');
+        appendWallAndContentsLine(
+                theBuilder,
+                contents, HALF_ROOM_SIZE + 1, ROOM_SIZE
+        );
     }
 
-    private char[][] roomContents() {
+    private void appendWallAndContentsLine(final StringBuilder theBuilder,
+                                           final char[][] theContents,
+                                           final int theStart,
+                                           final int theEnd) {
+        for (int i = theStart; i < theEnd; i++) {
+            theBuilder.append(WALL).append(theContents[i]).append(WALL)
+                      .append('\n');
+        }
+    }
+
+    private char[][] roomContents(final boolean theHasAdventurer) {
         char[][] contents = new char[ROOM_SIZE][ROOM_SIZE];
         int[] position = new int[2]; // row, col
         position[0] = position[1] = ROOM_SIZE - 1;
 
+        if (theHasAdventurer) {
+            addToContents(ADVENTURER, contents, position);
+        }
+        if (myMonster != null) {
+            addToContents(MONSTER, contents, position);
+        }
         if (myIsEntrance) {
             addToContents(ENTRANCE, contents, position);
         }

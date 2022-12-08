@@ -6,9 +6,9 @@ public enum BuffType implements CharRepresentable {
 
     NONE(false, ' '), // Representation should not be used
     STRENGTH(false, 'S'),
-    SPEED(false, '》'),
-    ACCURACY(false, '➹'),
-    RESISTANCE(false, '⌺'),
+    SPEED(false, '→'),
+    ACCURACY(false, 'Ꙩ'),
+    RESISTANCE(false, 'R'),
     BROKEN_BONE(true, '<'),
     BURNING(true, '♨'),
     BLEEDING(true, 'B'),
@@ -21,18 +21,25 @@ public enum BuffType implements CharRepresentable {
 
     private final boolean myIsDebuff;
     private final char myRepresentation;
+    private String myName;
 
-    BuffType(final boolean theIsDebuff, final char theRepresentation) {
+    BuffType(final boolean theIsDebuff,
+             final char theRepresentation) {
         myIsDebuff = theIsDebuff;
         myRepresentation = theRepresentation;
     }
 
-    static int positiveTypeCount() {
-        return POSITIVE_TYPES.length;
+    static BuffType[] getAllPositiveBuffTypes() {
+        return POSITIVE_TYPES.clone();
     }
 
-    static BuffType randomPositiveBuffType() {
-        return POSITIVE_TYPES[Util.randomIntExc(POSITIVE_TYPES.length)];
+    @Override
+    public String toString() {
+        if (myName == null) {
+            myName = Util.createNameFromEnumName(this);
+        }
+
+        return myName;
     }
 
     @Override

@@ -1,118 +1,72 @@
 package controller;
 
-
+import model.Difficulty;
 import model.DungeonAdventure;
 import view.ConsoleUI;
-import view.UISelection;
+
+import java.io.File;
 
 public class Controller {
+
+    public static final String NAME_REGEX =
+            "(?=.*[\\dA-Za-z(),._-])[ \\dA-Za-z()',._-]{1,30}";
+
+    private static final String LOG_DIR_PATH = System.getenv("APPDATA") +
+            "\\Dungeon Adventure";
+    private static final String LOG_PATH = LOG_DIR_PATH + "\\log.txt";
+    private static final String COULD_NOT_START =
+            "The application could not start. For more information, view " +
+            LOG_PATH + '.';
 
     private DungeonAdventure myGame;
     private final ConsoleUI myUI;
 
-    public Controller() {
-        myUI = UISelection.select() == UISelection.CONSOLE_UI ?
-                new ConsoleUI(this) :
-                null/*new GUI(this)*/;
+    private Controller() {
+        myUI = new ConsoleUI(this);
     }
 
     public static void main(String[] args) {
-
+        new File(LOG_DIR_PATH).mkdirs();
+        if (DungeonAdventure.buildFactories(LOG_PATH)) {
+            new Controller().myUI.run();
+        } else {
+            System.out.println(COULD_NOT_START);
+        }
     }
 
-    public static String getPlayGuide() {
-        return "";
+    public DungeonAdventure getGame() {
+        return myGame;
     }
 
-    public static String getAdventureClasses() {
-        return "";
+    public String[] getSaveFiles() {
+        return null;
     }
 
-    public static String getDifficultyLevel() {
-        return "";
+    public boolean createGame(final String theGameFileName,
+                              final String theAdventurerName,
+                              final int theAdventurerClass,
+                              final int theDifficulty) {
+        if (
+                DungeonAdventure.isValidAdventurerClass(theAdventurerClass) &&
+                DungeonAdventure.isValidDifficulty(theDifficulty)
+        ) {
+            myGame = new DungeonAdventure(
+                    theAdventurerName,
+                    theAdventurerClass,
+                    Difficulty.values()[theDifficulty]
+            );
+
+            return true;
+        }
+
+        return false;
     }
 
-    public String getAdventure() {
-        return "";
+    public boolean loadGame(final String theFile) {
+        return false;
     }
 
-    public String getRoom() {
-        return "";
-    }
-
-    public String getRoomItems() {
-        return "";
-    }
-
-    public String getInventory() {
-        return "";
-    }
-
-    public String getMap() {
-        return "";
-    }
-
-    public boolean isInCombat() {
-        return true;
-    }
-
-    public String getMonster() {
-        return "";
-    }
-
-    public String getSpecialSkills() {
-        return "";
-    }
-
-    public String getSaveFiles() {
-        return "";
-    }
-
-    public boolean move(final String theDirection) {
-        return true;
-    }
-
-    public void useItem(final int theIndexInInventory) {
-
-    }
-
-    public void dropItem(final int theIndexInInventory) {
-
-    }
-
-    public void collectItem(final int theIndexInInventory) {
-
-    }
-
-    public String attack() {
-        return "";
-    }
-
-    public String useSpecialSkills(final int theIndex) {
-        return "";
-    }
-
-    public String flee() {
-        return "";
-    }
-
-    public String createGame(final String theGameDetails) {
-        return "";
-    }
-
-    public String loadGame(final String theFile) {
-        return "";
-    }
-
-    public String saveGame(final String theFile) {
-        return "";
-    }
-
-    private void runGame() {
-
-    }
-
-    private void startUI() {
-
+    public boolean saveGame(final String theFile) {
+        return false;
     }
 }

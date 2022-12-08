@@ -1,6 +1,13 @@
 package model;
 
+import java.util.Arrays;
+
 public class Pillar extends Item {
+
+    private static final String[] NAMES =
+            Arrays.stream(createPillars())
+            .map(Item::createNameFromType)
+            .toArray(String[]::new);
 
     private static final char ABSTRACTION_REPRESENTATION = 'A';
     private static final char ENCAPSULATION_REPRESENTATION = 'E';
@@ -29,5 +36,10 @@ public class Pillar extends Item {
     @Override
     Item copy() {
         return this;
+    }
+
+    @Override
+    String getName() {
+        return NAMES[getType().ordinal()];
     }
 }

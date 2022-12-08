@@ -10,9 +10,19 @@ public enum DamageType {
 
 
     private final BuffType myDebuffType;
+    private String myName;
 
     DamageType(final BuffType theDebuffType) {
        myDebuffType = theDebuffType;
+    }
+
+    @Override
+    public String toString() {
+        if (myName == null) {
+            myName = Util.createNameFromEnumName(this);
+        }
+
+        return myName;
     }
 
     BuffType getDebuffType() {

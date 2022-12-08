@@ -16,6 +16,14 @@ public class Container implements Serializable {
         myItems = new ArrayList<>(Arrays.asList(theItems));
     }
 
+    int size() {
+        return myItems.size();
+    }
+
+    String[] viewItemsAsStrings() {
+        return myItems.stream().map(Item::toString).toArray(String[]::new);
+    }
+
     Item[] viewItems() {
         Item[] items = new Item[myItems.size()];
 
@@ -31,17 +39,22 @@ public class Container implements Serializable {
                    final DungeonCharacter theTarget,
                    final Map theMap,
                    final Room theRoom,
-                   final RoomCoordinates theCoords) {
+                   final RoomCoordinates theCoords,
+                   final boolean theIsInCombat) {
         Item selectedItem = myItems.get(theIndex);
 
         if (selectedItem instanceof CharacterApplicableItem) {
             return ((CharacterApplicableItem) selectedItem).use(theTarget);
         }
         if (selectedItem instanceof MapApplicableItem) {
-            return ((MapApplicableItem) selectedItem).use(theMap, theCoords);
+            return theIsInCombat ?
+                   Util.NONE :
+                   ((MapApplicableItem) selectedItem).use(theMap, theCoords);
         }
         if (selectedItem instanceof RoomApplicableItem) {
-            return ((RoomApplicableItem) selectedItem).use(theRoom);
+            return theIsInCombat ?
+                   Util.NONE :
+                   ((RoomApplicableItem) selectedItem).use(theRoom);
         }
 
         throw new IllegalArgumentException(UNKNOWN_TYPE);

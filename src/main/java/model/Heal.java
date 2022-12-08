@@ -1,12 +1,20 @@
 package model;
 
-public class Heal implements SpecialSkill {
+public class Heal extends SpecialSkill {
 
-    private final static int MIN_HEAL = 0;
-    private final static int MAX_HEAL = 0;
+    private static final int COOLDOWN = 4;
+    private static final double HEAL_PERCENT = 0.3;
+
+    Heal() {
+        super(COOLDOWN);
+    }
 
     @Override
-    public AttackResult use(DungeonCharacter theTarget) {
-        return null;
+    AttackResultAndAmount apply(final DungeonCharacter theSelf,
+                              final DungeonCharacter theEnemy) {
+        return new AttackResultAndAmount(
+                AttackResult.HEAL,
+                theSelf.heal(theSelf.percentOfMaxHP(HEAL_PERCENT))
+        );
     }
 }
