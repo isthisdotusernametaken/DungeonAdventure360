@@ -59,11 +59,16 @@ public class MockDBManager implements DBManager {
         TABLES.put(theTable, theRows);
     }
 
+    @Override
+    public void close() throws SQLException {
+    }
+
     public MockTable readTable(final String theTable) {
         final String[][] table = TABLES.get(theTable);
 
         return table == null ? null : new MockTable(table);
     }
+
 
     static class MockTable implements Table {
 
