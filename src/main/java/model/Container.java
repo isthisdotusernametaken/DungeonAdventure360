@@ -45,23 +45,27 @@ public class Container implements Serializable {
                    final Room theRoom,
                    final RoomCoordinates theCoords,
                    final boolean theIsInCombat) {
-        Item selectedItem = myItems.get(theIndex);
+        final Item selectedItem = myItems.get(theIndex);
+        String result;
 
         if (selectedItem instanceof CharacterApplicableItem) {
-            return ((CharacterApplicableItem) selectedItem).use(theTarget);
-        }
-        if (selectedItem instanceof MapApplicableItem) {
-            return theIsInCombat ?
-                   Util.NONE :
-                   ((MapApplicableItem) selectedItem).use(theMap, theCoords);
-        }
-        if (selectedItem instanceof RoomApplicableItem) {
-            return theIsInCombat ?
-                   Util.NONE :
-                   ((RoomApplicableItem) selectedItem).use(theRoom);
+            result = ((CharacterApplicableItem) selectedItem).use(theTarget);
+        } else if (selectedItem instanceof MapApplicableItem) {
+            result = theIsInCombat ?
+                     Util.NONE :
+                     ((MapApplicableItem) selectedItem).use(theMap, theCoords);
+        } else if (selectedItem instanceof RoomApplicableItem) {
+            result = theIsInCombat ?
+                     Util.NONE :
+                     ((RoomApplicableItem) selectedItem).use(theRoom);
+        } else {
+            throw new IllegalArgumentException(UNKNOWN_TYPE);
         }
 
-        throw new IllegalArgumentException(UNKNOWN_TYPE);
+        if (selectedItem.getCount() <= 0) {
+            myItems.remove(selectedItem);
+        }
+        return result;
     }
 
     void addItem(final Item theItem) {

@@ -44,6 +44,6 @@ public class BuffPotion extends CharacterApplicableItem {
 
     @Override
     String getName() {
-        return NAMES[myBuffType.ordinal() + 1];
+        return NAMES[myBuffType.ordinal() - 1];
     }
 }

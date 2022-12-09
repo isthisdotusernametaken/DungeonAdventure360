@@ -63,6 +63,10 @@ public class Util {
         );
     }
 
+    static String asPercent(final double theFraction) {
+        return Math.round(theFraction * 100.0) + "%";
+    }
+
     static String createNameFromClassName(final Object theObject) {
         return theObject.getClass().getSimpleName()
                .replaceAll("(.)([A-Z])", "$1 $2");
