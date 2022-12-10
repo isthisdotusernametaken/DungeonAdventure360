@@ -17,10 +17,7 @@ public abstract class SpecialSkill implements Serializable {
     public String toString() {
         return myRemainingCooldown == 0 ?
                myName :
-               new StringBuilder(myName).append(" (can use in ")
-                                        .append(myRemainingCooldown)
-                                        .append(" turns)")
-                                        .toString();
+               myName + " (can use in " + myRemainingCooldown + " turns)";
     }
 
     void advance() {
@@ -34,13 +31,11 @@ public abstract class SpecialSkill implements Serializable {
     }
 
     AttackResultAndAmount use(final DungeonCharacter theSelf,
-                     final DungeonCharacter theEnemy) {
-        if (myRemainingCooldown == 0) {
+                              final DungeonCharacter theEnemy) {
+        if (myRemainingCooldown == 0 && theEnemy != null) {
             myRemainingCooldown = myCooldown;
 
-            return theEnemy == null ?
-                   AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
-                   apply(theSelf, theEnemy);
+            return apply(theSelf, theEnemy);
         }
 
         return AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);

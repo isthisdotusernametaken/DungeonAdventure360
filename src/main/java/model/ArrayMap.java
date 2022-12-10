@@ -13,7 +13,10 @@ public class ArrayMap extends Map {
     boolean isExplored(final int theFloor,
                        final int theX,
                        final int theY) {
-        return myExplored[theFloor][theX][theY];
+        return theFloor >= 0 && theFloor < myExplored.length &&
+               theX >= 0 && theX < myExplored[0].length &&
+               theY >= 0 && theY < myExplored[0][0].length &&
+               myExplored[theFloor][theX][theY];
     }
 
     boolean isExplored(final RoomCoordinates theCoords) {

@@ -46,21 +46,28 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     @Override
     public String toString() {
-        return new StringBuilder(getName()).append('\n')
-                .append(" Class: ").append(getClassName()).append('\n')
-                .append(" HP: ").append(getHP()).append('\n')
-                .append(" Max HP: ").append(getMaxHP()).append('\n')
-                .append(" Base Damage: ").append(getMinDamage())
-                .append('-')
-                .append(getMaxDamage()).append('\n')
-                .append(" Hit Chance: ").append(getHitChance()).append('\n')
-                .append(" Damage Type: ").append(getDamageType()).append('\n')
-                .append(" Debuff Chance: ").append(getDebuffChance()).append('\n')
-                .append(" Debuff Duration: ").append(getDebuffDuration()).append('\n')
-                .append(" Speed: ").append(getSpeed()).append('\n')
-                .append(" Block Chance: ").append(getBlockChance()).append('\n')
-                .append(getResistances())
-                .toString();
+        return myName + '\n' +
+               ' ' + getClassName() + ", " +
+               myHP + '/' + myMaxHP + " HP" +
+               '\n' +
+
+               " Base Damage: " + getAdjustedMinDamage() + '-' +
+                   getAdjustedMaxDamage() + ", " +
+               getDamageType() + ", " +
+               Util.asPercent(getAdjustedHitChance()) + " Accuracy" +
+               '\n' +
+
+               ' ' + getDebuffInfoAsString() +
+               '\n' +
+
+               " Speed: " + getAdjustedSpeed() + ", " +
+               Util.asPercent(myBlockChance) + " Block Chance" +
+               '\n' +
+
+               myAdjustedStats.getResistancesAsString() +
+               '\n' +
+
+               getBuffsAsString();
     }
 
     final String getName() {
@@ -105,12 +112,6 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     final double getAdjustedResistance(final DamageType theDamageType) {
         return myAdjustedStats.getResistance(theDamageType);
-    }
-
-    final String viewBuff(final BuffType theBuffType) {
-        final Buff buff = getBuff(theBuffType);
-
-        return buff == null ? Util.NONE : buff.toString();
     }
 
     final void setName(final String theNewName) {
@@ -170,11 +171,6 @@ public abstract class DungeonCharacter extends DamageDealer {
             myBuffs.add(buff);
             buff.adjustStats(myAdjustedStats);
         }
-    }
-
-    final void clearBuffsAndDebuffs() {
-        myBuffs.clear();
-        myAdjustedStats.resetStats();
     }
 
     final AttackResultAndAmount advanceBuffsAndDebuffs() {
@@ -280,6 +276,26 @@ public abstract class DungeonCharacter extends DamageDealer {
     private double adjustedDebuffChance(final double theBaseDebuffChance,
                                         final DamageType theDamageType) {
         return theBaseDebuffChance * inverseAdjustedResistance(theDamageType);
+    }
+
+    private String getDebuffInfoAsString() {
+        return Util.asPercent(getDebuffChance()) + " Chance to Debuff for " +
+               getDebuffDuration() +
+               " Turn" + (getDebuffDuration() != 1 ? "s" : "");
+    }
+
+    private String getBuffsAsString() {
+        if (!myBuffs.isEmpty()) {
+            final StringBuilder builder = new StringBuilder(" Buffs:\n");
+
+            for (Buff buff : myBuffs) {
+                builder.append("  ").append(buff).append('\n');
+            }
+
+            return builder.toString();
+        }
+
+        return " No buffs\n";
     }
 }
 

@@ -34,8 +34,7 @@ public class BuffPotion extends CharacterApplicableItem {
         final int duration = Util.randomIntInc(MIN_DURATION, MAX_DURATION);
         theTarget.applyBuff(myBuffType, duration);
 
-
-        return "" + duration;
+        return myBuffType + " +" + duration + " turns";
     }
 
     @Override
