@@ -26,7 +26,8 @@ public class NewGameView {
     private static final String GAME_NAME_PROMPT =
             "Enter the name of the new game file";
     private static final String ADVENTURER_NAME_PROMPT =
-            "Enter the name of the Adventurer";
+            "Enter the name of the Adventurer (or nothing to have a name " +
+            "generated for you)";
     private static final String BACK_PROMPT =
             " (or " + Menu.EXIT_OPTION + " to return to the previous screen):";
 
@@ -67,13 +68,13 @@ public class NewGameView {
         System.out.print(ADVENTURER_NAME_PROMPT);
         System.out.println(BACK_PROMPT);
 
-        return InputReader.readNameUntilValid();
+        return InputReader.readNameUntilValid(true);
     }
 
     private static String readGameFileName() {
         System.out.print(GAME_NAME_PROMPT);
         System.out.println(BACK_PROMPT);
 
-        return InputReader.readNameUntilValid();
+        return InputReader.readNameUntilValid(false);
     }
 }
