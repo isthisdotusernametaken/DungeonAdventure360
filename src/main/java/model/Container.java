@@ -30,6 +30,7 @@ public class Container implements Serializable {
         int i = 0;
         for (Item item : myItems) {
             items[i] = item.copy();
+            i++;
         }
 
         return items;
