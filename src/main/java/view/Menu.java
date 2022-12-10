@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -11,8 +12,6 @@ public class Menu {
     static final int SECRET = -3;
 
     private static final int BACK = -2;
-
-    private static final String SECRET_OPTION = "oop";
 
     private final int INVALID_SELECTION = -1;
     private static final String INVALID_SELECTION_MESSAGE =
@@ -74,11 +73,21 @@ public class Menu {
     }
 
     private static List<String> toLower(final String[] theStrings) {
-        return Arrays.stream(theStrings).map(String::toLowerCase).toList();
+        return new ArrayList<>(
+                Arrays.stream(theStrings).map(String::toLowerCase).toList()
+        );
     }
 
     int select() {
         return promptAndReadOptionUntilValid(true, ALL_INCLUDED);
+    }
+
+    int select(final String theVariableChoice) {
+        final int lastIndex = myMenuDescriptions.length - 1;
+        myMenuDescriptions[lastIndex] = theVariableChoice;
+        myLowerCaseDescriptions.set(lastIndex, theVariableChoice.toLowerCase());
+
+        return select();
     }
 
     int select(final int[] theExcludedOptions) {
@@ -126,7 +135,7 @@ public class Menu {
             System.out.println();
             return BACK;
         }
-        if (myIncludeSecret && SECRET_OPTION.equalsIgnoreCase(input)) {
+        if (myIncludeSecret && InputReader.isSecret(input)) {
             System.out.println();
             return SECRET;
         }

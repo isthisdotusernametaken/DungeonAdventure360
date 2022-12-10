@@ -39,9 +39,9 @@ public class Monster extends DungeonCharacter {
 
     @Override
     public final String toString() {
-        return new StringBuilder(super.toString())
-                .append(" Heal Chance (per turn): ").append(myHealChance).append('\n')
-                .toString();
+        return super.toString() +
+               " " + Util.asPercent(myHealChance) + " Heal Chance per Turn" +
+               '\n';
     }
 
     double getHealChance() {

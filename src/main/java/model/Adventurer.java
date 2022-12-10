@@ -37,9 +37,9 @@ public class Adventurer extends DungeonCharacter {
 
     @Override
     public final String toString() {
-        return new StringBuilder(super.toString())
-                .append(" Special Skill: ").append(mySpecialSkill).append('\n')
-                .toString();
+        return super.toString() +
+               " Special Skill: " + mySpecialSkill +
+               '\n';
     }
 
     final SpecialSkill getSpecialSkill() {
@@ -50,8 +50,7 @@ public class Adventurer extends DungeonCharacter {
         return mySpecialSkill.toString();
     }
 
-    final AttackResultAndAmount useSpecialSkill(final DungeonCharacter theSelf,
-                                                final DungeonCharacter theEnemy) {
-        return mySpecialSkill.use(theSelf, theEnemy);
+    final AttackResultAndAmount useSpecialSkill(final DungeonCharacter theEnemy) {
+        return mySpecialSkill.use(this, theEnemy);
     }
 }

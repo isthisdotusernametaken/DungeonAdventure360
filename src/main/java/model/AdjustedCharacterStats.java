@@ -18,6 +18,19 @@ public class AdjustedCharacterStats implements Serializable {
         resetStats();
     }
 
+    String getResistancesAsString() {
+        final StringBuilder builder = new StringBuilder(" Resistances - ");
+
+        int i = 0;
+        for (DamageType type : DamageType.values()) {
+            builder.append(type).append(": ")
+                   .append(Util.asPercent(myResistances[i++])).append(", ");
+        }
+        builder.delete(builder.length() - 2, builder.length());
+
+        return builder.toString();
+    }
+
     int getMinDamage() {
         return myMinDamage;
     }
@@ -68,7 +81,7 @@ public class AdjustedCharacterStats implements Serializable {
         resetResistances();
     }
 
-    void resetResistances() {
+    private void resetResistances() {
         final ResistanceData baseResistances = myCharacter.getResistances();
         for (int i = 0; i < myResistances.length; i++) {
             myResistances[i] = baseResistances.getResistance(i);
