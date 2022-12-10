@@ -16,7 +16,7 @@ public class DungeonAdventure implements Serializable {
     private final Adventurer myAdventurer;
     private final Container myInventory;
     private RoomCoordinates myAdventurerCoordinates;
-    private boolean myIsDead;
+    private boolean myIsAlive;
     private boolean myIsInCombat;
     private TurnAllocator myTurnAllocator;
 
@@ -31,11 +31,13 @@ public class DungeonAdventure implements Serializable {
 
         myAdventurer = AdventurerFactory.getInstance()
                 .create(theAdventurerClass, theDifficulty);
-        myAdventurer.setName(theAdventurerName);
+        if (!Util.NONE.equals(theAdventurerName)) {
+            myAdventurer.setName(theAdventurerName);
+        }
 
         myInventory = InventoryFactory.createWithInitialItems(theDifficulty);
 
-        myIsDead = false;
+        myIsAlive = true;
         // myInCombat false (myTurnAllocator irrelevant)
 
         myIsUnexploredHidden = true;
@@ -139,14 +141,14 @@ public class DungeonAdventure implements Serializable {
     }
 
     public boolean canUseInventoryItem(final int theIndex) {
-        return Util.isValidIndex(theIndex, myInventory.size()) &&
+        return myInventory.canUse(theIndex) &&
                (!myIsInCombat || myInventory.canUseInCombat(theIndex));
     }
 
     public String useInventoryItem(final int theIndex) {
         requireAlive();
 
-        return (Util.isValidIndex(theIndex, myInventory.size())) ?
+        return (canUseInventoryItem(theIndex)) ?
                 myInventory.useItem(
                         theIndex,
                         myAdventurer,
@@ -158,16 +160,37 @@ public class DungeonAdventure implements Serializable {
                 Util.NONE;
     }
 
+    public boolean roomHasItems() {
+        return getCurrentRoom().getContainer().hasItems();
+    }
+
+    public String[] collectItems() {
+        return Arrays.stream(getCurrentRoom().collectItems(myInventory))
+                     .map(Item::toString)
+                     .toArray(String[]::new);
+    }
+
+    public boolean canExit() {
+        return getCurrentRoom().isExit() && myInventory.hasAllPillars();
+    }
+
     public boolean isInCombat() {
         return myIsInCombat;
     }
 
-    public AttackResultAndAmount[] tryNextCombatTurn() {
+    public boolean isMonsterTurn() {
+        return testCombat() && !myTurnAllocator.peekNextTurn();
+    }
+
+    public AttackResultAndAmount[] tryMonsterTurn() {
         requireAlive();
 
-        if (myIsInCombat) {
+        if (myIsInCombat && !myTurnAllocator.peekNextTurn()) {
             if (myTurnAllocator.peekNextTurn()) {
-                return null; // Adventurer's turn
+                return null; // Adventurer's turn. To execute code between
+                             // finding out whose turn it is and executing the
+                             // Monster's turn, client should first call
+                             // isMonsterTurn() to decide which turn to run
             }
 
             return runMonsterTurn();
@@ -181,12 +204,31 @@ public class DungeonAdventure implements Serializable {
     }
 
     public String getMonsterName() {
-        return getCurrentRoom().getMonster().getName();
+        return getCurrentRoom().getMonsterName();
     }
 
     public String getMonsterDebuffType() {
         return getCurrentRoom().getMonster().getDamageType().getDebuffType()
                 .toString();
+    }
+
+    public AttackResultAndAmount killMonster() {
+        requireAlive();
+
+        final AttackResultAndAmount result =
+                getCurrentRoom().killMonsterOnKillResult(
+                        new AttackResultAndAmount(
+                                AttackResult.KILL,
+                                getCurrentRoom().getMonster().getHP()
+                        )
+                );
+        testCombat();
+
+        return result;
+    }
+
+    public boolean isAlive() {
+        return myIsAlive;
     }
 
     public AttackResultAndAmount[] attack() {
@@ -202,37 +244,38 @@ public class DungeonAdventure implements Serializable {
     }
 
     public AttackResultAndAmount[] useSpecialSkill() {
-        return runAdventurerTurn(false);
+        return canUseSpecialSkill() ?
+               runAdventurerTurn(false) :
+               null;
     }
 
     public AttackResultAndAmount[] flee(final Direction theDirection) {
         requireAlive();
 
-        if (
-                myIsInCombat && myTurnAllocator.peekNextTurn() &&
-                isValidDirection(theDirection)
-        ) {
+        if (myIsInCombat && myTurnAllocator.peekNextTurn() &&
+            isValidDirection(theDirection)) {
+
             if (Util.probabilityTest(SpeedTest.evaluate(
-                    myAdventurer, getCurrentRoom().getMonster()
-            ))) {
+                    myAdventurer, getCurrentRoom().getMonster()))) {
                 myIsInCombat = false;
 
                 return Stream.concat(
-                        Arrays.stream(moveAdventurerUnchecked(theDirection)),
                         Stream.of(AttackResultAndAmount.getNoAmount(
                                 AttackResult.FLED_SUCCESSFULLY
-                        ))
+                        )),
+                        Arrays.stream(moveAdventurerUnchecked(theDirection))
                 ).toArray(AttackResultAndAmount[]::new);
             }
 
             nextTurn();
-            return advanceInCombatAndCompileResults(
+
+            return new AttackResultAndAmount[]{
                     AttackResultAndAmount.getNoAmount(
                             AttackResult.COULD_NOT_FLEE
-                    )
-            );
+                    ),
+                    advanceInCombat()
+            };
         }
-
         return null;
     }
 
@@ -305,7 +348,7 @@ public class DungeonAdventure implements Serializable {
 
     private void testDead(final AttackResultAndAmount theResult) {
         if (theResult.getResult() == AttackResult.KILL) {
-            myIsDead = true;
+            myIsAlive = false;
         }
     }
 
@@ -343,12 +386,13 @@ public class DungeonAdventure implements Serializable {
             } else {
                 attackResult = getCurrentRoom().killMonsterOnKillResult(
                         myAdventurer.useSpecialSkill(
-                                myAdventurer, getCurrentRoom().getMonster()
+                                getCurrentRoom().getMonster()
                         )
                 );
             }
 
-            if (attackResult.getResult() != AttackResult.EXTRA_TURN) {
+            if (attackResult.getResult() != AttackResult.EXTRA_TURN_NO_DEBUFF &&
+                attackResult.getResult() != AttackResult.EXTRA_TURN_DEBUFF) {
                 nextTurn();
             }
 
@@ -365,6 +409,7 @@ public class DungeonAdventure implements Serializable {
 
     private AttackResultAndAmount advanceOutOfCombat() {
         testEnterCombat();
+        myAdventurer.getSpecialSkill().advance();
 
         return myAdventurer.advanceDebuffs();
     }
@@ -405,7 +450,7 @@ public class DungeonAdventure implements Serializable {
     }
 
     private void requireAlive() {
-        if (myIsDead) {
+        if (!myIsAlive) {
             throw new IllegalStateException(
                     "The adventurer is dead, and no actions other than " +
                     "viewing the final game state are allowed."

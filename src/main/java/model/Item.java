@@ -6,6 +6,8 @@ public abstract class Item implements CharRepresentable, Serializable {
 
     static final int MAX_STACK_SIZE = 999;
 
+    static final String CANNOT_USE_HERE = "This item cannot be used here.\n";
+
     private final char myRepresentation;
     private final ItemType myType;
     private final boolean myCanChangeCount;
@@ -27,11 +29,7 @@ public abstract class Item implements CharRepresentable, Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-               .append(getName())
-               .append(": ")
-               .append(myCount)
-               .toString();
+        return getName() + ": " + myCount;
     }
 
     public final char charRepresentation() {

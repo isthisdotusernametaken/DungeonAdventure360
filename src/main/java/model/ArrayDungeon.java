@@ -251,6 +251,7 @@ public class ArrayDungeon extends Dungeon {
             ) ?
                     UNKNOWN_ROOM :
                     myRooms[theFloor][i][theRow].toString(
+                            theAdventurerCoords != null &&
                             theAdventurerCoords.isSameRoom(theFloor, i, theRow)
                     );
         }

@@ -9,6 +9,7 @@ import model.Util;
 import view.ConsoleUI;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Controller {
 
@@ -109,12 +110,128 @@ public class Controller {
         return myGame.useInventoryItem(theIndex);
     }
 
+    public boolean roomHasItems() {
+        return myGame.roomHasItems();
+    }
+
+    public String collectItems() {
+        final String[] items = myGame.collectItems();
+
+        if (items.length != 0) {
+            final StringBuilder builder = new StringBuilder("Gained items:")
+                    .append('\n');
+
+            for (String item : items) {
+                builder.append(' ').append(item).append('\n');
+            }
+
+            return builder.toString();
+        }
+        return Util.NONE;
+    }
+
+    public boolean canExit() {
+        return myGame.canExit();
+    }
+
     public boolean isInCombat() {
         return myGame.isInCombat();
     }
 
+    public boolean isMonsterTurn() {
+        return myGame.isMonsterTurn();
+    }
+
+    public String tryMonsterTurn() {
+        final AttackResultAndAmount[] results = myGame.tryMonsterTurn();
+
+        if (results != null) {
+            final String buffDamage = parseBuffDamage(results[0], false);
+
+            return results[0].getResult() == AttackResult.KILL ?
+                   buffDamage :
+                   buffDamage + parseHeal(results[1], false) +
+                           parseDamage(
+                                   results[2],
+                                   myGame.getMonsterDebuffType(),
+                                   myGame.getMonsterName(),
+                                   true
+                           );
+        }
+        return Util.NONE;
+    }
+
+    public String getMonster() {
+        return myGame.getMonster();
+    }
+
+    public String killMonster() {
+        return parseDamage(
+                myGame.killMonster(),
+                Util.NONE, // Not used
+                myGame.getAdventurerName(),
+                false
+        );
+    }
+
+    public boolean isAlive() {
+        return myGame.isAlive();
+    }
+
+    public String attack() {
+        final AttackResultAndAmount[] results = myGame.attack();
+
+        return parseBuffDamage(results[0], true) +
+               parseDamage(
+                       results[1],
+                       myGame.getAdventurerDebuffType(),
+                       myGame.getAdventurerName(),
+                       false
+               );
+    }
+
+    public String getSpecialSkill() {
+        return myGame.getSpecialSkill();
+    }
+
+    public String useSpecialSkill() {
+        if (myGame.canUseSpecialSkill()) {
+            final String skillUsed = myGame.getAdventurerName() + " used " +
+                    myGame.getSpecialSkill() + ".\n";
+            final AttackResultAndAmount[] results = myGame.useSpecialSkill();
+
+            return parseBuffDamage(results[0], true) + skillUsed + (
+                        results[1].getResult() == AttackResult.HEAL ?
+                                parseHeal(results[1], true) :
+                        parseDamage(
+                                results[1],
+                                myGame.getAdventurerDebuffType(),
+                                myGame.getAdventurerName(),
+                                false
+                        ) + (results[1].getResult() == AttackResult.EXTRA_TURN_NO_DEBUFF ||
+                             results[1].getResult() == AttackResult.EXTRA_TURN_DEBUFF ?
+                                "Bonus turn!\n" : ""
+                        )
+                   );
+        }
+        return "Skill in cooldown.\n";
+    }
+
+    public String flee(final Direction theDirection) {
+        final AttackResultAndAmount[] results = myGame.flee(theDirection);
+
+        return results[0].getResult() + "\n" + (
+                    results[0].getResult() == AttackResult.FLED_SUCCESSFULLY ? (
+                            parseMove(new AttackResultAndAmount[]{
+                                    results[1], results[2]
+                            })
+                    ) :
+                    parseBuffDamage(results[1], true)
+               );
+    }
+
     public String moveAdventurer(final Direction theDirection) {
-        return move(myGame.moveAdventurer(theDirection));
+        return parseMove(myGame.moveAdventurer(theDirection));
     }
 
     public boolean hasStairs(final boolean theIsUp) {
@@ -122,14 +239,14 @@ public class Controller {
     }
 
     public String useStairs(final boolean theIsUp) {
-        return move(myGame.useStairs(theIsUp));
+        return parseMove(myGame.useStairs(theIsUp));
     }
 
     public boolean isValidDirection(final Direction theDirection) {
         return myGame.isValidDirection(theDirection);
     }
 
-    private String move(final AttackResultAndAmount[] theResults) {
+    private String parseMove(final AttackResultAndAmount[] theResults) {
         return theResults == null ?
                COULD_NOT_MOVE :
                parseBuffDamage(theResults[0], true) +
@@ -153,9 +270,7 @@ public class Controller {
     private String parseTrapDamage(final AttackResultAndAmount theTrapActivation) {
         final String trap = "a " + myGame.getTrap();
 
-        return theTrapActivation.getResult() == AttackResult.NO_ACTION ?
-                    Util.NONE :
-               theTrapActivation.getResult() == AttackResult.DODGE ?
+        return theTrapActivation.getResult() == AttackResult.DODGE ?
                     myGame.getAdventurerName() + " dodged " + trap + "\n" :
                parseDamage(
                        theTrapActivation, myGame.getTrapDebuffType(), trap,
@@ -171,13 +286,18 @@ public class Controller {
                 myGame.getAdventurerName() :
                 myGame.getMonsterName();
 
-        return theDamage.getResult() == AttackResult.BLOCK ?
-               target + " blocked an attack from " + theAttacker + ".\n" :
+        return theDamage.getResult() == AttackResult.NO_ACTION ?
+                    Util.NONE :
+               theDamage.getResult() == AttackResult.MISS ?
+                    theAttacker + " missed.\n" :
+               theDamage.getResult() == AttackResult.BLOCK ?
+                    target + " blocked an attack from " + theAttacker + ".\n" :
                target + " took " + theDamage.getAmount() + " damage from " +
                     theAttacker + (
                           theDamage.getResult() == AttackResult.KILL ?
                                  " and died" :
-                          theDamage.getResult() == AttackResult.HIT_DEBUFF ?
+                          theDamage.getResult() == AttackResult.HIT_DEBUFF ||
+                          theDamage.getResult() == AttackResult.EXTRA_TURN_DEBUFF ?
                                  " and gained a " + theDebuffType + " debuff" :
                           ""
                     ) + ".\n";
@@ -191,6 +311,6 @@ public class Controller {
                        myGame.getAdventurerName() :
                        myGame.getMonsterName()
                ) + " healed " + theHealResult.getAmount() +
-                       " hp and cleared all debuffs.";
+                       " hp and cleared all debuffs.\n";
     }
 }

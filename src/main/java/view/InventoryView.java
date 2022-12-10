@@ -27,7 +27,7 @@ public class InventoryView {
             choice = selectItem(theController);
 
             if (Menu.isBack(choice)) {
-                return MenuSignal.EXPLORATION;
+                return MenuSignal.PREVIOUS;
             }
 
             if (Menu.isSecret(choice)) {

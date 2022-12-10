@@ -27,7 +27,7 @@ public class HealthPotion extends CharacterApplicableItem {
 
         return amountHealed == 0 ?
                Util.NONE :
-               "Healed " + amountHealed + " hp.";
+               "Healed " + amountHealed + " hp and cleared all debuffs.";
     }
 
     @Override

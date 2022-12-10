@@ -5,7 +5,6 @@ import java.util.SplittableRandom;
 public class Util {
 
     public static final String NONE = "";
-    public static final String NEW = "n";
 
     private static final SplittableRandom RANDOM = new SplittableRandom();
 
@@ -59,7 +58,7 @@ public class Util {
                               final int theAugend) {
         return (int) Math.max(
                 theMin,
-                Math.min(((long) theAddend) + theAugend, theMax - 1)
+                Math.min(((long) theAddend) + theAugend, theMax)
         );
     }
 

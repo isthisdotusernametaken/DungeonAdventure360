@@ -17,12 +17,25 @@ public class SneakAttack extends SpecialSkill {
     AttackResultAndAmount apply(final DungeonCharacter theSelf,
                                 final DungeonCharacter theEnemy) {
         final double test = Util.randomDouble();
-        return test <= SUCCESS_CHANCE ?
-               new AttackResultAndAmount(
-                       AttackResult.EXTRA_TURN,
-                       theSelf.attemptDamage(theEnemy, true).getAmount()
-               ) : test <= NORMAL_ATTACK_CUTOFF ?
-               theSelf.attemptDamage(theEnemy, true) :
-               AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
+        if (test <= NORMAL_ATTACK_CUTOFF) {
+            final AttackResultAndAmount result =
+                    theSelf.attemptDamage(theEnemy, true);
+
+            return test <= SUCCESS_CHANCE ? (
+                        result.getResult() == AttackResult.HIT_NO_DEBUFF ?
+                            new AttackResultAndAmount(
+                                    AttackResult.EXTRA_TURN_NO_DEBUFF,
+                                    result.getAmount()
+                            ) :
+                        result.getResult() == AttackResult.HIT_DEBUFF ?
+                            new AttackResultAndAmount(
+                                    AttackResult.EXTRA_TURN_DEBUFF,
+                                    result.getAmount()
+                            ) :
+                        result
+                   ) :
+                   result;
+        }
+        return AttackResultAndAmount.getNoAmount(AttackResult.MISS);
     }
 }

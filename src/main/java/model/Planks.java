@@ -4,7 +4,7 @@ public class Planks extends RoomApplicableItem {
 
     private static final String NAME = createNameFromType(new Planks(0));
     private static final char REPRESENTATION = '=';
-    private static final String SUCCESS_MSG = "Trap boarded.";
+    private static final String SUCCESS_MSG = "Trap boarded.\n";
 
     Planks(int theCount) {
         super(
@@ -24,7 +24,7 @@ public class Planks extends RoomApplicableItem {
 
     @Override
     Item copy() {
-        return new VisionPotion(getCount());
+        return new Planks(getCount());
     }
 
     @Override

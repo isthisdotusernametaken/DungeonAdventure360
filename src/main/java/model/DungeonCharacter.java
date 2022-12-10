@@ -78,6 +78,10 @@ public abstract class DungeonCharacter extends DamageDealer {
         return myMaxHP;
     }
 
+    final int getHP() {
+        return myHP;
+    }
+
     final double getBlockChance() {
         return myBlockChance;
     }

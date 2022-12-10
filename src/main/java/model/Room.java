@@ -27,6 +27,7 @@ public class Room implements Serializable {
     private final Container myContainer;
     private final Trap myTrap;
     private Monster myMonster;
+    private final String myMonsterName;
     private final boolean myIsEntrance;
     private final boolean myIsExit;
 
@@ -41,6 +42,7 @@ public class Room implements Serializable {
         myContainer = new Container(theItems);
         myTrap = theTrap;
         myMonster = theMonster;
+        myMonsterName = myMonster == null ? "" : myMonster.getName();
         myIsEntrance = theIsEntrance;
         myIsExit = theIsExit;
     }
@@ -64,6 +66,15 @@ public class Room implements Serializable {
         return myContainer;
     }
 
+    Item[] collectItems(final Container theInventory) {
+        final Item[] items = myContainer.viewItems();
+
+        theInventory.addItems(items);
+        myContainer.clearItems();
+
+        return items;
+    }
+
     boolean hasDoor(final Direction theDirection) {
         return myDoors[theDirection.ordinal()];
     }
@@ -74,10 +85,6 @@ public class Room implements Serializable {
 
     boolean isExit() {
         return myIsExit;
-    }
-
-    boolean hasTrap() {
-        return myTrap != null;
     }
 
     AttackResultAndAmount activateTrap(final DungeonCharacter theTarget) {
@@ -104,17 +111,23 @@ public class Room implements Serializable {
         return myMonster;
     }
 
+    public String getMonsterName() {
+        return myMonsterName;
+    }
+
     AttackResultAndAmount attackMonster(final DungeonCharacter theAttacker) {
         return myMonster == null ?
                AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION) :
-               killMonsterOnKillResult(theAttacker.attemptDamage(
-                   myMonster,true
-               ));
+               killMonsterOnKillResult(
+                       theAttacker.attemptDamage(
+                               myMonster,true
+                       )
+               );
     }
 
     AttackResultAndAmount killMonsterOnKillResult(final AttackResultAndAmount theResult) {
         if (theResult.getResult() == AttackResult.KILL) {
-            // Send drops to Room's Container
+            myContainer.addItem(ItemFactory.createRandom());
             myMonster = null;
         }
 

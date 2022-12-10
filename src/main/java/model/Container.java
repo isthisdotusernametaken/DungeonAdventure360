@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Container implements Serializable {
 
@@ -16,10 +17,6 @@ public class Container implements Serializable {
         myItems = new ArrayList<>(Arrays.asList(theItems));
     }
 
-    int size() {
-        return myItems.size();
-    }
-
     String[] viewItemsAsStrings() {
         return myItems.stream().map(Item::toString).toArray(String[]::new);
     }
@@ -29,10 +26,19 @@ public class Container implements Serializable {
 
         int i = 0;
         for (Item item : myItems) {
-            items[i] = item.copy();
+            items[i++] = item.copy();
         }
 
         return items;
+    }
+
+    boolean hasItems() {
+        return myItems.size() != 0;
+    }
+
+    boolean canUse(final int theIndex) {
+        return Util.isValidIndex(theIndex, myItems.size()) &&
+               myItems.get(theIndex).canChangeCount();
     }
 
     boolean canUseInCombat(final int theIndex) {
@@ -83,5 +89,24 @@ public class Container implements Serializable {
         for (Item item : theItems) {
             addItem(item);
         }
+    }
+
+    void clearItems() {
+        myItems.clear();
+    }
+
+    boolean hasAllPillars() {
+        final Pillar[] pillars = Pillar.createPillars();
+        int pillarCount = 0;
+
+        for (Pillar pillar : pillars) {
+            for (Item item : myItems) {
+                if (pillar.getType() == item.getType()) {
+                    pillarCount++;
+                }
+            }
+        }
+
+        return pillarCount >= pillars.length;
     }
 }
