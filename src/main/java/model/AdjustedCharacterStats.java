@@ -85,7 +85,7 @@ public class AdjustedCharacterStats implements Serializable {
         resetResistances();
     }
 
-    private void resetResistances() {
+    public void resetResistances() {
         final ResistanceData baseResistances = myCharacter.getResistances();
         for (int i = 0; i < myResistances.length; i++) {
             myResistances[i] = baseResistances.getResistance(i);

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AdjustedCharacterStatsTest {
 
-    private AdjustedCharacterStats stats = new AdjustedCharacterStats(
+    private final AdjustedCharacterStats stats = new AdjustedCharacterStats(
             new Monster(
                     "Skeleton",
                     "Skeleton",

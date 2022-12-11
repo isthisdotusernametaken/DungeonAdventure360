@@ -1,9 +1,9 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import static model.TestingUtil.assertResistanceDataEqualsArray;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResistanceDataTest {
 
@@ -23,14 +23,14 @@ public class ResistanceDataTest {
         );
     }
 
-    @Test
-    void testGetResistanceDamageType() {
-        DamageType type = DamageType.SHARP;
-        double resistance = 0.777;
-        RES_DATA.myResistances[type.ordinal()] = resistance;
-
-        assertEquals(resistance, RES_DATA.getResistance(type));
-    }
+//    @Test
+//    void testGetResistanceDamageType() {
+//        DamageType type = DamageType.SHARP;
+//        double resistance = 0.777;
+//        RES_DATA.myResistances[type.ordinal()] = resistance;
+//
+//        assertEquals(resistance, RES_DATA.getResistance(type));
+//    }
 
     @Test
     void testGetResistanceInt() {
