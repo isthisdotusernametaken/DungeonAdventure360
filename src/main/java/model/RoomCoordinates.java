@@ -50,8 +50,8 @@ public class RoomCoordinates implements Serializable {
     RoomCoordinates addFloor(final boolean theIsUp,
                              final int theFloorCount) {
         return new RoomCoordinates(
-                Util.clampIntUpExc(
-                        0, theFloorCount, myFloor + (theIsUp ? -1 : 1)
+                Util.clampIntZeroToMaxExc(
+                        theFloorCount, myFloor + (theIsUp ? -1 : 1)
                 ),
                 myX,
                 myY
@@ -79,7 +79,7 @@ public class RoomCoordinates implements Serializable {
     private RoomCoordinates addX(final int theChange, final int theMaxX) {
         return new RoomCoordinates(
                 myFloor,
-                Util.clampIntUpExc(0, theMaxX, myX + theChange),
+                Util.clampIntZeroToMaxExc(theMaxX, myX + theChange),
                 myY
         );
     }
@@ -88,7 +88,7 @@ public class RoomCoordinates implements Serializable {
         return new RoomCoordinates(
                 myFloor,
                 myX,
-                Util.clampIntUpExc(0, theMaxY, myY + theChange)
+                Util.clampIntZeroToMaxExc(theMaxY, myY + theChange)
         );
     }
 }

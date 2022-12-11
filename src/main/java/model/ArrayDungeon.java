@@ -29,14 +29,14 @@ public class ArrayDungeon extends Dungeon {
     /**
      * Creates a new Dungeon of Rooms with the provided number of floors, rows,
      * and columns, including a Map of the same size.
-     *
+     * <p>
      * Each room can have a Monster, a Trap, or neither (but not both).
      * The probability of a Room having a Monster is monsterChancePerRoom.
      * The probability of a Room having a Trap is
      * (1 - monsterChancePerRoom) * trapChancePerRoom.
      * The probability of a Room having neither a Monster nor a Trap is
      * (1 - monsterChancePerRoom) * (1 - trapChancePerRoom)
-     *
+     * <p>
      * The probability of a Room having an Item is independent of Monster and
      * Trap probabilities.
      *
@@ -73,6 +73,8 @@ public class ArrayDungeon extends Dungeon {
 
     @Override
     public String toString() {
+        // Coords to make sure Adventurer not shown. Okay because only ever
+        // used to compare to current room coords
         return toString(new RoomCoordinates(-1, -1, -1), false);
     }
 
@@ -125,11 +127,6 @@ public class ArrayDungeon extends Dungeon {
         return myTerminalPoints[0];
     }
 
-    @Override
-    RoomCoordinates getExit() {
-        return myTerminalPoints[1];
-    }
-
     private void appendStairs(final StringBuilder theBuilder,
                               final int theFloor,
                               final boolean theNorth,
@@ -157,9 +154,9 @@ public class ArrayDungeon extends Dungeon {
                 );
             }
         } else if (hasUpStairs) {
-            appendStairs(theBuilder, theFloor - 1, UP_STAIRS, true, true);
+            appendStairs(theBuilder, theFloor - 1, UP_STAIRS, true);
         } else if (hasDownStairs) {
-            appendStairs(theBuilder, theFloor, DOWN_STAIRS, true, true);
+            appendStairs(theBuilder, theFloor, DOWN_STAIRS, true);
         }
     }
 
@@ -182,7 +179,7 @@ public class ArrayDungeon extends Dungeon {
                                  final char theFirstFloorChar,
                                  final char theSecondFloorChar) {
         appendStairs(
-                theBuilder, theFirstFloor, theFirstFloorChar, true, false
+                theBuilder, theFirstFloor, theFirstFloorChar, false
         );
 
         appendSpaces(
@@ -197,9 +194,8 @@ public class ArrayDungeon extends Dungeon {
     private void appendStairs(final StringBuilder theBuilder,
                               final int theFloor,
                               final char theStairsChar,
-                              final boolean theIncludeHalf,
                               final boolean theAppendNewLine) {
-        appendSpaces(theBuilder, myStairs[theFloor].getX(), theIncludeHalf);
+        appendSpaces(myStairs[theFloor].getX(), theBuilder);
 
         theBuilder.append(theStairsChar);
 
@@ -208,14 +204,11 @@ public class ArrayDungeon extends Dungeon {
         }
     }
 
-    private void appendSpaces(final StringBuilder theBuilder,
-                              final int theX,
-                              final boolean theIncludeHalf) {
+    private void appendSpaces(final int theX,
+                              final StringBuilder theBuilder) {
         appendSpaces(
                 theBuilder,
-                theX * TOTAL_ROOM_SIZE + (
-                        theIncludeHalf ? HALF_TOTAL_ROOM_SIZE : 0
-                )
+                theX * TOTAL_ROOM_SIZE + HALF_TOTAL_ROOM_SIZE
         );
     }
 

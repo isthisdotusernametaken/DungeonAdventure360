@@ -32,6 +32,4 @@ public abstract class Dungeon implements Serializable {
     abstract boolean hasStairsDown(RoomCoordinates theCoords);
 
     abstract RoomCoordinates getEntrance();
-
-    abstract RoomCoordinates getExit();
 }

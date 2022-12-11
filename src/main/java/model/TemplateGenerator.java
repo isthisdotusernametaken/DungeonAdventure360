@@ -17,6 +17,8 @@ public class TemplateGenerator {
             "Invalid damage type: ";
     private static final String INVALID_CHAR_LENGTH =
             "Invalid individual char: ";
+    private static final String INVALID_INT =
+            "Integer out of range: ";
     private static final String INVALID_PROBABILITY =
             "Probability out of range: ";
 
@@ -109,6 +111,7 @@ public class TemplateGenerator {
         try {
             final int field = myTable.getInt(myColumn++);
             exceptionOnNull();
+            exceptionOnIllegalInt(field);
 
             return field;
         } catch (SQLException e) {
@@ -183,6 +186,15 @@ public class TemplateGenerator {
         if (theField.length() != 1) {
             throw new IllegalArgumentException(
                     INVALID_CHAR_LENGTH + theField + getFieldLocation()
+            );
+        }
+    }
+
+    private void exceptionOnIllegalInt(final int theInt)
+            throws SQLException, IllegalArgumentException {
+        if (theInt < 1 || theInt > Util.MAX_INT) {
+            throw new IllegalArgumentException(
+                    INVALID_INT + theInt + getFieldLocation()
             );
         }
     }

@@ -44,10 +44,6 @@ public abstract class Item implements CharRepresentable, Serializable {
         return myType;
     }
 
-    final boolean canChangeCount() {
-        return myCanChangeCount;
-    }
-
     final int getCount() {
         return myCount;
     }

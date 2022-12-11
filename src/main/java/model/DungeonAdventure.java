@@ -29,14 +29,29 @@ public class DungeonAdventure implements Serializable {
 
     public DungeonAdventure(final String theAdventurerName,
                             final int theAdventurerClass,
-                            final Difficulty theDifficulty) {
+                            final Difficulty theDifficulty)
+            throws IllegalArgumentException {
+        if (!AdventurerFactory.getInstance().isValidIndex(theAdventurerClass)) {
+            throw new IllegalArgumentException(
+                    "Adventurer class index out of bounds: " +
+                    theAdventurerClass + ".\nCheck " +
+                    "AdventurerFactory.isValidIndex to validate index"
+            );
+        }
+        if (theDifficulty == null) {
+            throw new IllegalArgumentException(
+                    "Difficulty passed to DungeonAdventure constructor must" +
+                    "not be null"
+            );
+        }
+
         myDungeon = DungeonFactory.create(theDifficulty);
         myAdventurerCoordinates = myDungeon.getEntrance();
         myDungeon.getMap().explore(myAdventurerCoordinates);
 
         myAdventurer = AdventurerFactory.getInstance()
                 .create(theAdventurerClass, theDifficulty);
-        if (!Util.NONE.equals(theAdventurerName)) {
+        if (theAdventurerName != null && !Util.NONE.equals(theAdventurerName)) {
             myAdventurer.setName(theAdventurerName);
         }
 
@@ -405,15 +420,10 @@ public class DungeonAdventure implements Serializable {
                 nextTurn();
             }
 
-            return advanceInCombatAndCompileResults(attackResult);
+            return new AttackResultAndAmount[]{advanceInCombat(), attackResult};
         }
 
         return null;
-    }
-
-    private AttackResultAndAmount[] advanceInCombatAndCompileResults(
-            final AttackResultAndAmount theAttackResult) {
-        return new AttackResultAndAmount[]{advanceInCombat(), theAttackResult};
     }
 
     private AttackResultAndAmount advanceOutOfCombat() {
@@ -465,7 +475,7 @@ public class DungeonAdventure implements Serializable {
                     "viewing the final game state are allowed.\n"
             );
 
-            ProgramFileManager.getInstance().logException(e);
+            ProgramFileManager.getInstance().logException(e, true);
             throw e;
         }
     }

@@ -1,5 +1,7 @@
 package model;
 
+import controller.ProgramFileManager;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,7 +56,12 @@ public class Container implements Serializable {
         String result;
 
         if (selectedItem instanceof CharacterApplicableItem) {
-            result = ((CharacterApplicableItem) selectedItem).use(theTarget);
+            try {
+                result = ((CharacterApplicableItem) selectedItem).use(theTarget);
+            } catch (IllegalArgumentException e) {
+                ProgramFileManager.getInstance().logException(e, false);
+                return UNUSABLE;
+            }
         } else if (selectedItem instanceof MapApplicableItem) {
             result = theIsInCombat ?
                      Util.NONE :

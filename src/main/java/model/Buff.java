@@ -49,10 +49,6 @@ public abstract class Buff implements Serializable {
         return myDamagePercent;
     }
 
-    final int getDuration() {
-        return myDuration;
-    }
-
     final void changeDuration(final int theTurns) {
         myDuration = Util.addAndClampInt(1, MAX_TURNS, myDuration, theTurns);
     }

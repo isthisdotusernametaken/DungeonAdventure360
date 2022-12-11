@@ -19,7 +19,8 @@ public abstract class CharacterApplicableItem extends Item {
         );
     }
 
-    final String use(final DungeonCharacter theTarget) {
+    final String use(final DungeonCharacter theTarget)
+            throws IllegalArgumentException {
         final String result = applyEffect(theTarget);
         if (!Util.NONE.equals(result)) {
             consume();

@@ -34,7 +34,8 @@ public class BuffPotion extends CharacterApplicableItem {
     }
 
     @Override
-    String applyEffect(final DungeonCharacter theTarget) {
+    String applyEffect(final DungeonCharacter theTarget)
+            throws IllegalArgumentException {
         final int duration = Util.randomIntInc(MIN_DURATION, MAX_DURATION);
         theTarget.applyBuff(myBuffType, duration);
 

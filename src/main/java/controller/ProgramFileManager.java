@@ -56,7 +56,12 @@ public class ProgramFileManager {
         return INSTANCE;
     }
 
-    static boolean tryCreateInstance() {
+    public static boolean tryCreateInstance() {
+        if (INSTANCE != null) {
+            // Ensures instance constant, so same program dir used
+            return true;
+        }
+
         final boolean dirExists = createDirs(SAVES_DIR);
         final boolean backupDirExists = !dirExists &&
                 createDirs(BACKUP_SAVES_DIR);
@@ -98,8 +103,12 @@ public class ProgramFileManager {
         }
     }
 
-    public void logException(final Exception theException) {
-        logException(theException, theException.getMessage(), true);
+    public void logException(final Exception theException,
+                             final boolean thePrintToConsoleOnSuccess) {
+        logException(
+                theException,
+                theException.getMessage(), thePrintToConsoleOnSuccess
+        );
     }
 
     String getLogPath() {
