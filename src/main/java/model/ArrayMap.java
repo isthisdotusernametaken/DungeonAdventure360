@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class ArrayMap extends Map {
+
+    @Serial
+    private static final long serialVersionUID = -2679508810748662333L;
 
     private final boolean[][][] myExplored;
 

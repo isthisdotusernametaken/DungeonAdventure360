@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 public class BuffPotion extends CharacterApplicableItem {
+
+    @Serial
+    private static final long serialVersionUID = 8841704767797465686L;
 
     private static final String[] NAMES =
             Arrays.stream(BuffType.getAllPositiveBuffTypes())

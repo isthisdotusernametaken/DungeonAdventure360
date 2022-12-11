@@ -1,9 +1,13 @@
 package model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
+
+    @Serial
+    private static final long serialVersionUID = -6220105292148511769L;
 
     private String myName;
     private final int myMaxHP;

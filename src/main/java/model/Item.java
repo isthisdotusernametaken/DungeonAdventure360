@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Item implements CharRepresentable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3510320815857469564L;
 
     static final int MAX_STACK_SIZE = 999;
 

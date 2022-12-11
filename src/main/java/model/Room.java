@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Room implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4590698579987805557L;
 
     /**
      * The width and length of the contents of a Room in its String

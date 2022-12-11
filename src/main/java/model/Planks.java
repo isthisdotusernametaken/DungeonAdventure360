@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class Planks extends RoomApplicableItem {
+
+    @Serial
+    private static final long serialVersionUID = -4102401273626104641L;
 
     private static final String NAME = createNameFromType(new Planks(0));
     private static final char REPRESENTATION = '=';

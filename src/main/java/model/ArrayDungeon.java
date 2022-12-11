@@ -1,10 +1,14 @@
 package model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
 public class ArrayDungeon extends Dungeon {
+
+    @Serial
+    private static final long serialVersionUID = 6134960628901176398L;
 
     private static final double MONSTER_CHANCE_PER_ROOM = 0.3;
     private static final double TRAP_CHANCE_PER_ROOM = 0.2;

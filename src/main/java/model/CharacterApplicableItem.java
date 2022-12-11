@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public abstract class CharacterApplicableItem extends Item {
+
+    @Serial
+    private static final long serialVersionUID = -4722484965977712597L;
 
     CharacterApplicableItem(final char theRepresentation,
                             final ItemType theType,

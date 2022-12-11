@@ -1,9 +1,13 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
 public class TurnAllocator implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -5248983433683950395L;
 
     private final boolean[] myTurns;
     private final double myExtraTurnChance;

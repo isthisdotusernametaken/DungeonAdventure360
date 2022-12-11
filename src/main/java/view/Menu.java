@@ -35,8 +35,8 @@ public class Menu {
          final boolean theIncludeSecret) {
         myTitle = theTitle;
 
-        myMenuDescriptions = theMenuDescriptions;
-        myMenuOptions = theMenuOptions;
+        myMenuDescriptions = theMenuDescriptions.clone();
+        myMenuOptions = theMenuOptions.clone();
 
         myLowerCaseDescriptions = toLower(myMenuDescriptions);
         myLowerCaseOptions = toLower(myMenuOptions);
@@ -84,6 +84,11 @@ public class Menu {
 
     int select(final String theVariableChoice) {
         final int lastIndex = myMenuDescriptions.length - 1;
+
+        if (theVariableChoice == null) {
+            return select(new int[]{lastIndex});
+        }
+
         myMenuDescriptions[lastIndex] = theVariableChoice;
         myLowerCaseDescriptions.set(lastIndex, theVariableChoice.toLowerCase());
 

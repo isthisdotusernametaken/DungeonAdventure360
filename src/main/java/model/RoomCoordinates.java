@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class RoomCoordinates implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4630802384169539704L;
 
     private final int myFloor;
     private final int myX;
@@ -18,11 +22,7 @@ public class RoomCoordinates implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-               .append("Floor: ").append(myFloor)
-               .append("; X: ").append(myX)
-               .append("; Y: ").append(myY)
-               .toString();
+        return "Floor: " + myFloor + "; X: " + myX + "; Y: " + myY;
     }
 
     int getFloor() {

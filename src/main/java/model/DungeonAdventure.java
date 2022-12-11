@@ -1,12 +1,16 @@
 package model;
 
+import controller.ProgramFileManager;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.stream.Stream;
 
 public class DungeonAdventure implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7334732339432863725L;
 
     private static final String DB_ERROR =
             "An error occurred while accessing the database, and the " +
@@ -43,7 +47,7 @@ public class DungeonAdventure implements Serializable {
         myIsUnexploredHidden = true;
     }
 
-    public static boolean buildFactories(final String theLogFile) {
+    public static boolean buildFactories() {
         DBManager dbManager = null;
         try {
             dbManager = new SQLiteDBManager();
@@ -54,13 +58,13 @@ public class DungeonAdventure implements Serializable {
 
             dbManager.close();
         } catch (SQLException | IllegalArgumentException e1) {
-            logDBException(e1, theLogFile);
+            logDBException(e1);
 
             if (dbManager != null) {
                 try {
                     dbManager.close();
                 } catch (SQLException e2) {
-                    logDBException(e2, theLogFile);
+                    logDBException(e2);
                     // Still need to exit, so nothing else here
                 }
             }
@@ -83,22 +87,10 @@ public class DungeonAdventure implements Serializable {
         return Util.isValidIndex(theIndex, Difficulty.values().length);
     }
 
-    private static void logDBException(final Exception theException,
-                                       final String theLogFile) {
-        try (FileWriter fw = new FileWriter(theLogFile, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter pw = new PrintWriter(bw)) {
-            pw.println();
-
-            pw.print(new Date());
-            pw.println(':');
-
-            pw.println(DB_ERROR);
-
-            theException.printStackTrace(pw);
-        } catch (IOException e2) {
-            System.out.println(DB_ERROR);
-        }
+    private static void logDBException(final Exception theException) {
+        ProgramFileManager.getInstance().logException(
+                theException, DB_ERROR, false
+        );
     }
 
 
@@ -141,8 +133,7 @@ public class DungeonAdventure implements Serializable {
     }
 
     public boolean canUseInventoryItem(final int theIndex) {
-        return myInventory.canUse(theIndex) &&
-               (!myIsInCombat || myInventory.canUseInCombat(theIndex));
+        return myInventory.canUse(theIndex, myIsInCombat);
     }
 
     public String useInventoryItem(final int theIndex) {
@@ -449,12 +440,15 @@ public class DungeonAdventure implements Serializable {
         myTurnAllocator.nextTurn();
     }
 
-    private void requireAlive() {
+    private void requireAlive() throws IllegalStateException {
         if (!myIsAlive) {
-            throw new IllegalStateException(
+            final IllegalStateException e = new IllegalStateException(
                     "The adventurer is dead, and no actions other than " +
                     "viewing the final game state are allowed."
             );
+
+            ProgramFileManager.getInstance().logException(e);
+            throw e;
         }
     }
 }

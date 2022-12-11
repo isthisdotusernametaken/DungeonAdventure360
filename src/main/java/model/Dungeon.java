@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Dungeon implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6235438913940504967L;
 
     private final Map myMap;
 

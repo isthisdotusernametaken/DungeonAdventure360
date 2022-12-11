@@ -8,52 +8,58 @@ import model.DungeonAdventure;
 import model.Util;
 import view.ConsoleUI;
 
-import java.io.File;
-import java.util.Arrays;
-
 public class Controller {
 
-    public static final String NAME_REGEX =
-            "(?=.*[\\dA-Za-z(),._-])[ \\dA-Za-z()',._-]{1,30}";
-
-    private static final String LOG_DIR_PATH = System.getenv("APPDATA") +
-            "\\Dungeon Adventure";
-    private static final String LOG_PATH = LOG_DIR_PATH + "\\log.txt";
     private static final String COULD_NOT_START =
-            "The application could not start. For more information, view " +
-            LOG_PATH + '.';
+            "The application could not start.";
+    private static final String FAILURE_DETAILS =
+            "For more information, view ";
 
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
     private DungeonAdventure myGame;
     private final ConsoleUI myUI;
+    private String myPreviousSaveName;
+    private boolean myIsSaved;
 
     private Controller() {
         myUI = new ConsoleUI(this);
     }
 
     public static void main(String[] args) {
-        new File(LOG_DIR_PATH).mkdirs();
-        if (DungeonAdventure.buildFactories(LOG_PATH)) {
-            new Controller().myUI.run();
+        if (ProgramFileManager.tryCreateInstance()) {
+            if (DungeonAdventure.buildFactories()) {
+                new Controller().myUI.run();
+            } else {
+                System.out.println(COULD_NOT_START);
+
+                System.out.print(FAILURE_DETAILS);
+                System.out.println(
+                        ProgramFileManager.getInstance().getLogPath()
+                );
+            }
         } else {
             System.out.println(COULD_NOT_START);
         }
     }
 
     public String[] getSaveFiles() {
-        return null;
+        return ProgramFileManager.getInstance().getSaveFiles();
     }
 
-    public boolean createGame(final String theGameFileName,
-                              final String theAdventurerName,
+    public void reset() {
+        myGame = null;
+        myPreviousSaveName = null;
+        noteUnsaved();
+    }
+
+    public boolean createGame(final String theAdventurerName,
                               final int theAdventurerClass,
                               final int theDifficulty) {
-        if (
-                DungeonAdventure.isValidAdventurerClass(theAdventurerClass) &&
-                DungeonAdventure.isValidDifficulty(theDifficulty)
-        ) {
+        if (DungeonAdventure.isValidAdventurerClass(theAdventurerClass) &&
+                DungeonAdventure.isValidDifficulty(theDifficulty)) {
+            reset();
             myGame = new DungeonAdventure(
                     theAdventurerName,
                     theAdventurerClass,
@@ -67,10 +73,42 @@ public class Controller {
     }
 
     public boolean loadGame(final String theFile) {
+        final DungeonAdventure loaded =
+                ProgramFileManager.getInstance().loadGame(theFile);
+
+        if (loaded != null) {
+            myGame = loaded;
+            myPreviousSaveName = theFile;
+            myIsSaved = true;
+            return true;
+        }
         return false;
     }
 
+    public String getPreviousSaveName() {
+        return myPreviousSaveName;
+    }
+
+    public boolean hasPreviousSaveName() {
+        return myPreviousSaveName != null;
+    }
+
+    public boolean isSaved() {
+        return myIsSaved || myGame == null;
+    }
+
+    public boolean saveGame() {
+        return hasPreviousSaveName() && saveGame(myPreviousSaveName);
+    }
+
     public boolean saveGame(final String theFile) {
+        if (ProgramFileManager.getInstance().saveGame(theFile, myGame)) {
+            myPreviousSaveName = theFile;
+            myIsSaved = true;
+
+            return true;
+        }
+
         return false;
     }
 
@@ -87,6 +125,8 @@ public class Controller {
     }
 
     public void toggleIsUnexploredHidden() {
+        noteUnsaved();
+
         myGame.toggleIsUnexploredHidden();
     }
 
@@ -99,6 +139,8 @@ public class Controller {
     }
 
     public void addMaxItems() {
+        noteUnsaved();
+
         myGame.addMaxItems();
     }
 
@@ -107,6 +149,8 @@ public class Controller {
     }
 
     public String useInventoryItem(final int theIndex) {
+        noteUnsaved();
+
         return myGame.useInventoryItem(theIndex);
     }
 
@@ -115,6 +159,8 @@ public class Controller {
     }
 
     public String collectItems() {
+        noteUnsaved();
+
         final String[] items = myGame.collectItems();
 
         if (items.length != 0) {
@@ -143,6 +189,8 @@ public class Controller {
     }
 
     public String tryMonsterTurn() {
+        noteUnsaved();
+
         final AttackResultAndAmount[] results = myGame.tryMonsterTurn();
 
         if (results != null) {
@@ -166,6 +214,8 @@ public class Controller {
     }
 
     public String killMonster() {
+        noteUnsaved();
+
         return parseDamage(
                 myGame.killMonster(),
                 Util.NONE, // Not used
@@ -179,6 +229,8 @@ public class Controller {
     }
 
     public String attack() {
+        noteUnsaved();
+
         final AttackResultAndAmount[] results = myGame.attack();
 
         return parseBuffDamage(results[0], true) +
@@ -195,6 +247,8 @@ public class Controller {
     }
 
     public String useSpecialSkill() {
+        noteUnsaved();
+
         if (myGame.canUseSpecialSkill()) {
             final String skillUsed = myGame.getAdventurerName() + " used " +
                     myGame.getSpecialSkill() + ".\n";
@@ -218,6 +272,8 @@ public class Controller {
     }
 
     public String flee(final Direction theDirection) {
+        noteUnsaved();
+
         final AttackResultAndAmount[] results = myGame.flee(theDirection);
 
         return results[0].getResult() + "\n" + (
@@ -231,6 +287,8 @@ public class Controller {
     }
 
     public String moveAdventurer(final Direction theDirection) {
+        noteUnsaved();
+
         return parseMove(myGame.moveAdventurer(theDirection));
     }
 
@@ -239,11 +297,17 @@ public class Controller {
     }
 
     public String useStairs(final boolean theIsUp) {
+        noteUnsaved();
+
         return parseMove(myGame.useStairs(theIsUp));
     }
 
     public boolean isValidDirection(final Direction theDirection) {
         return myGame.isValidDirection(theDirection);
+    }
+
+    private void noteUnsaved() {
+        myIsSaved = false;
     }
 
     private String parseMove(final AttackResultAndAmount[] theResults) {

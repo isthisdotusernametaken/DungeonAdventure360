@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class Monster extends DungeonCharacter {
+
+    @Serial
+    private static final long serialVersionUID = -1143618060094549512L;
 
     private static final double HEAL_PERCENT = 0.1;
 

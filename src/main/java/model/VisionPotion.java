@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class VisionPotion extends MapApplicableItem {
+
+    @Serial
+    private static final long serialVersionUID = 5502632545052449037L;
 
     private static final String NAME = createNameFromType(new VisionPotion(0));
     private static final char REPRESENTATION = 'V';

@@ -1,12 +1,15 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Container implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1474934278105133346L;
 
     private static final String UNKNOWN_TYPE = "Unknown item type selected. " +
                                                "Cannot be used.";
@@ -36,13 +39,11 @@ public class Container implements Serializable {
         return myItems.size() != 0;
     }
 
-    boolean canUse(final int theIndex) {
+    boolean canUse(final int theIndex, final boolean theIsInCombat) {
         return Util.isValidIndex(theIndex, myItems.size()) &&
-               myItems.get(theIndex).canChangeCount();
-    }
-
-    boolean canUseInCombat(final int theIndex) {
-        return myItems.get(theIndex) instanceof CharacterApplicableItem;
+               myItems.get(theIndex).canChangeCount() &&
+               (!theIsInCombat ||
+                       myItems.get(theIndex) instanceof CharacterApplicableItem);
     }
 
     String useItem(final int theIndex,

@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class Trap extends DamageDealer implements CharRepresentable {
+
+    @Serial
+    private static final long serialVersionUID = 5633394522695385651L;
 
     private final char myCharRepresentation;
     private final boolean myIsSingleUse;

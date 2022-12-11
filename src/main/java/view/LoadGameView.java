@@ -4,21 +4,32 @@ import controller.Controller;
 
 public class LoadGameView {
 
-    private static final String PROMPT = null;
+    private static final String GAME_LOADED = "Game loaded.\n";
+
+    private static final String LOAD_PROMPT = "Choose a file to load";
 
     static MenuSignal open(final Controller theController) {
-        return MenuSignal.PREVIOUS;
-    }
+        if (!SaveChangesInternalView.askToContinueAndToSaveIfUnsaved(theController)) {
+            return MenuSignal.PREVIOUS;
+        }
 
-    private static void displayFiles(final Controller theController) {
+        final String[] files = theController.getSaveFiles();
+        final Menu selectFileMenu = new Menu(LOAD_PROMPT, files, true, false);
 
-    }
+        int choice;
+        while (true) {
+            choice = selectFileMenu.select();
 
-    private static String readFileName() {
-        return "";
-    }
+            if (Menu.isBack(choice)) {
+                return MenuSignal.PREVIOUS;
+            }
+            if (theController.loadGame(files[choice])) {
+                System.out.println(GAME_LOADED);
 
-    private static String attemptLoadGame(final Controller theController) {
-        return "";
+                return Util.nextMenuFromCombatOrExploration(
+                        theController, false
+                );
+            }
+        }
     }
 }

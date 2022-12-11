@@ -28,7 +28,7 @@ public class ConsoleUI {
 
     private MenuSignal callFromSignal(final MenuSignal theSignal) {
         return switch (theSignal) {
-            case TITLE_SCREEN -> TitleScreen.open();
+            case TITLE_SCREEN -> TitleScreen.open(myController);
             case PLAY_GUIDE -> PlayGuide.open();
             case NEW_GAME -> NewGameView.open(myController);
             case LOAD_GAME -> LoadGameView.open(myController);
@@ -38,10 +38,8 @@ public class ConsoleUI {
             case MAP -> MapView.open(myController);
             case INVENTORY -> InventoryView.open(myController);
             case COMBAT -> CombatView.open(myController);
-            case WIN -> MenuSignal.EXIT; // incomplete
-            case LOSE -> MenuSignal.EXIT; // incomplete
-            case CONFIRM_EXIT -> ConfirmExitView.open(myController);
-            case EXIT -> MenuSignal.EXIT; // incomplete
+            case WIN -> WinView.open(myController);
+            case LOSE -> LoseView.open();
             default -> throw new IllegalStateException(
                     "Unknown menu: " + theSignal
             );

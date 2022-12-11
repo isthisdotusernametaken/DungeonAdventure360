@@ -5,6 +5,10 @@ import controller.Controller;
 public class SaveAndQuitView {
 
     static MenuSignal open(final Controller theController) {
-        return MenuSignal.TITLE_SCREEN;
+        if (SaveChangesInternalView.askToContinueAndToSaveIfUnsaved(theController)) {
+            return MenuSignal.TITLE_SCREEN;
+        }
+
+        return MenuSignal.PREVIOUS;
     }
 }
