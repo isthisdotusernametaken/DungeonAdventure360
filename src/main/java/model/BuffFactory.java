@@ -2,17 +2,19 @@ package model;
 
 public class BuffFactory {
 
-    static Buff create(final BuffType theType, final int theDuration) {
+    static Buff create(final BuffType theType, final int theDuration)
+            throws IllegalArgumentException {
+        final int duration = Util.clampPositiveInt(theDuration);
         return switch (theType) {
-            case STRENGTH -> new StrengthBuff(theDuration);
-            case SPEED -> new SpeedBuff(theDuration);
-            case ACCURACY -> new AccuracyBuff(theDuration);
-            case RESISTANCE -> new ResistanceBuff(theDuration);
-            case BROKEN_BONE -> new BrokenBoneDebuff(theDuration);
-            case BURNING -> new BurningDebuff(theDuration);
-            case BLEEDING -> new BleedingDebuff(theDuration);
-            case POISONED -> new PoisonedDebuff(theDuration);
-            default -> throw new IllegalStateException(
+            case STRENGTH -> new StrengthBuff(duration);
+            case SPEED -> new SpeedBuff(duration);
+            case ACCURACY -> new AccuracyBuff(duration);
+            case RESISTANCE -> new ResistanceBuff(duration);
+            case BROKEN_BONE -> new BrokenBoneDebuff(duration);
+            case BURNING -> new BurningDebuff(duration);
+            case BLEEDING -> new BleedingDebuff(duration);
+            case POISONED -> new PoisonedDebuff(duration);
+            default -> throw new IllegalArgumentException(
                     "Invalid buff type: " + theType
             );
         };

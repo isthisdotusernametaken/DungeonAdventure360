@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class CrushingBlow extends SpecialSkill {
+
+    @Serial
+    private static final long serialVersionUID = 1960099350768448086L;
 
     private static final int COOLDOWN = 5;
     private static final int MIN_DAMAGE = 80;

@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class AccuracyBuff extends Buff {
+
+    @Serial
+    private static final long serialVersionUID = -8402496808168975310L;
 
     AccuracyBuff(final int theDuration) {
         super(

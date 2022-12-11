@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public abstract class MapApplicableItem extends Item {
+
+    @Serial
+    private static final long serialVersionUID = 3961450036630628818L;
 
     private static final String MAP_UPDATED = "Map updated.";
 

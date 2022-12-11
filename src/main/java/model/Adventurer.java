@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class Adventurer extends DungeonCharacter {
+
+    @Serial
+    private static final long serialVersionUID = 6769784030706244929L;
 
     private final SpecialSkill mySpecialSkill;
 

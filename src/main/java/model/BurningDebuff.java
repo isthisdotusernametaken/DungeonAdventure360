@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class BurningDebuff extends Buff {
+
+    @Serial
+    private static final long serialVersionUID = -7370213542881606792L;
 
     BurningDebuff(final int theDuration) {
         super(

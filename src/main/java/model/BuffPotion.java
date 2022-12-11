@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 public class BuffPotion extends CharacterApplicableItem {
+
+    @Serial
+    private static final long serialVersionUID = 8841704767797465686L;
 
     private static final String[] NAMES =
             Arrays.stream(BuffType.getAllPositiveBuffTypes())
@@ -30,7 +34,8 @@ public class BuffPotion extends CharacterApplicableItem {
     }
 
     @Override
-    String applyEffect(final DungeonCharacter theTarget) {
+    String applyEffect(final DungeonCharacter theTarget)
+            throws IllegalArgumentException {
         final int duration = Util.randomIntInc(MIN_DURATION, MAX_DURATION);
         theTarget.applyBuff(myBuffType, duration);
 

@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class HealthPotion extends CharacterApplicableItem {
+
+    @Serial
+    private static final long serialVersionUID = 3436290390297215184L;
 
     private static final String NAME = createNameFromType(
             new HealthPotion(0)

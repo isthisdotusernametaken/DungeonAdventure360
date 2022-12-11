@@ -9,9 +9,20 @@ public class CombatView {
     // "Skill" should always be replaced by skill name
     private static final Menu COMBAT_MENU = new Menu(
             "Choose an action",
-            new String[]{"Attack", "Open Inventory", "Flee", "Skill"},
-            new String[]{"A", "I", "F", "S"},
+            new String[]{
+                    "Attack", "Open Inventory",
+                    "Flee",
+                    "Open Play Guide",
+                    "Skill"
+            },
+            new String[]{
+                    "A", "I",
+                    "F",
+                    "P",
+                    "S"
+            },
             false,
+            true,
             true
     );
     private static final Menu SECRET_MENU = new Menu(
@@ -20,7 +31,8 @@ public class CombatView {
                     "Kill monster"
             },
             true,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController) {
@@ -31,13 +43,16 @@ public class CombatView {
             if (internalSignal == MenuSignal.PREVIOUS) {
                 printCombatants(theController);
 
-                switch (COMBAT_MENU.select(theController.getSpecialSkill())) {
+                switch (COMBAT_MENU.select(
+                            theController.getSpecialSkill(), true
+                        )) {
                     case 0 -> System.out.println(theController.attack());
                     case 1 -> internalSignal = MenuSignal.INVENTORY;
                     case 2 -> internalSignal = MoveInternalView.open(
                             theController, theController::flee, true
                     );
-                    case 3 -> System.out.println(
+                    case 3 -> internalSignal = MenuSignal.PLAY_GUIDE;
+                    case 4 -> System.out.println(
                             theController.useSpecialSkill()
                     );
                     case Menu.SECRET -> openSecretMenu(theController);

@@ -1,8 +1,14 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Buff implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -2519735318269057642L;
+
+    private static final int MAX_TURNS = 999;
 
     private final BuffType myType;
     private final String myChangedStats;
@@ -43,12 +49,8 @@ public abstract class Buff implements Serializable {
         return myDamagePercent;
     }
 
-    final int getDuration() {
-        return myDuration;
-    }
-
     final void changeDuration(final int theTurns) {
-        myDuration += theTurns;
+        myDuration = Util.addAndClampInt(1, MAX_TURNS, myDuration, theTurns);
     }
 
     final void advance() {

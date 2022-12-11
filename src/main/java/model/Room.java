@@ -1,8 +1,13 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 public class Room implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4590698579987805557L;
 
     /**
      * The width and length of the contents of a Room in its String
@@ -45,6 +50,19 @@ public class Room implements Serializable {
         myMonsterName = myMonster == null ? "" : myMonster.getName();
         myIsEntrance = theIsEntrance;
         myIsExit = theIsExit;
+    }
+
+    static List<String> getContentTypesAndRepresentations() {
+        return List.of(
+                ADVENTURER + ": Adventurer",
+                MONSTER + ": Monster",
+                ENTRANCE + ": Entrance",
+                EXIT + ": Exit",
+                BROKEN_TRAP + ": Broken Trap",
+                WALL + ": Wall",
+                HORIZONTAL_DOOR + " or " + VERTICAL_DOOR + ": Door",
+                MORE + ": More contents than could be displayed"
+        );
     }
 
     @Override

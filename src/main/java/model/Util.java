@@ -6,6 +6,8 @@ public class Util {
 
     public static final String NONE = "";
 
+    static final int MAX_INT = 1000;
+
     private static final SplittableRandom RANDOM = new SplittableRandom();
 
     static boolean isValidIndex(final int theIndex, final int theSize) {
@@ -27,10 +29,6 @@ public class Util {
         );
     }
 
-    static int randomIntExc(final int theMin, final int theMax) {
-        return RANDOM.nextInt(theMin, theMax);
-    }
-
     static int randomIntExc(final int theMax) {
         return RANDOM.nextInt(theMax);
     }
@@ -40,14 +38,16 @@ public class Util {
     }
 
     static int clampPositiveInt(final int theValue) {
-        return Math.max(1, theValue);
+        return Math.max(
+                1,
+                Math.min(theValue, MAX_INT)
+        );
     }
 
-    static int clampIntUpExc(final int theMin,
-                             final int theMax,
-                             final int theValue) {
+    static int clampIntZeroToMaxExc(final int theMax,
+                                    final int theValue) {
         return Math.max(
-                theMin,
+                0,
                 Math.min(theValue, theMax - 1)
         );
     }
@@ -71,7 +71,7 @@ public class Util {
                .replaceAll("(.)([A-Z])", "$1 $2");
     }
 
-    static String createNameFromEnumName(final Enum theEnum) {
+    static String createNameFromEnumName(@SuppressWarnings("rawtypes") final Enum theEnum) {
         final StringBuilder builder = new StringBuilder();
         for (String word : theEnum.name().split("_")) {
             builder.append(word.charAt(0))

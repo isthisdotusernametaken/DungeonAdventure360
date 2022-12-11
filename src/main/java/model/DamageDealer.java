@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class DamageDealer implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -9039191023674738936L;
 
     private final String myClass;
     private final int myMinDamage;

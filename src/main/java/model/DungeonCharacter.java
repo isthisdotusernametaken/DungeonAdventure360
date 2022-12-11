@@ -1,9 +1,15 @@
 package model;
 
+import controller.ProgramFileManager;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DungeonCharacter extends DamageDealer {
+
+    @Serial
+    private static final long serialVersionUID = -6220105292148511769L;
 
     private String myName;
     private final int myMaxHP;
@@ -148,8 +154,13 @@ public abstract class DungeonCharacter extends DamageDealer {
             } else if (Util.probabilityTest(
                     adjustedDebuffChance(theDebuffChance, theDamageType))
             ) {
-                applyBuff(theDamageType.getDebuffType(), theDebuffDuration);
-                result = AttackResult.HIT_DEBUFF;
+                try {
+                    applyBuff(theDamageType.getDebuffType(), theDebuffDuration);
+                    result = AttackResult.HIT_DEBUFF;
+                } catch (IllegalArgumentException e) {
+                    ProgramFileManager.getInstance().logException(e, false);
+                    result = AttackResult.HIT_NO_DEBUFF;
+                }
             } else {
                 result = AttackResult.HIT_NO_DEBUFF;
             }
@@ -161,7 +172,7 @@ public abstract class DungeonCharacter extends DamageDealer {
     }
 
     final void applyBuff(final BuffType theBuffType,
-                         final int theDuration) {
+                         final int theDuration) throws IllegalArgumentException {
         Buff buff = getBuff(theBuffType);
         if (buff != null) {
             buff.changeDuration(theDuration);

@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public abstract class CharacterApplicableItem extends Item {
+
+    @Serial
+    private static final long serialVersionUID = -4722484965977712597L;
 
     CharacterApplicableItem(final char theRepresentation,
                             final ItemType theType,
@@ -14,7 +19,8 @@ public abstract class CharacterApplicableItem extends Item {
         );
     }
 
-    final String use(final DungeonCharacter theTarget) {
+    final String use(final DungeonCharacter theTarget)
+            throws IllegalArgumentException {
         final String result = applyEffect(theTarget);
         if (!Util.NONE.equals(result)) {
             consume();
