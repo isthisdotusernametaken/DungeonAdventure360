@@ -190,8 +190,9 @@ public class PlayGuide {
 
         REPRESENTATIONS =
                 "In Room:\n  " + concatenateFormatted(representations.get(0)) +
-                "\nItems:\n  " + concatenateFormatted(representations.get(1)) +
-                "\nTraps:\n  " + concatenateFormatted(representations.get(2)) +
+                "\nMap:\n  " + concatenateFormatted(representations.get(1)) +
+                "\nItems:\n  " + concatenateFormatted(representations.get(2)) +
+                "\nTraps:\n  " + concatenateFormatted(representations.get(3)) +
                 '\n';
     }
 

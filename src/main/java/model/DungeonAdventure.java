@@ -98,6 +98,7 @@ public class DungeonAdventure implements Serializable {
     public static List<List<String>> getCharRepresentations() {
         return List.of(
                 Room.getContentTypesAndRepresentations(),
+                Dungeon.getStairRepresentations(),
                 ItemFactory.getItemsAndRepresentation(),
                 TrapFactory.getInstance().getClassesAndRepresentations()
         );

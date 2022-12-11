@@ -6,13 +6,13 @@ public enum BuffType implements CharRepresentable {
 
     NONE(false, ' '), // Representation should not be used
     STRENGTH(false, 'S'),
-    SPEED(false, '→'),
-    ACCURACY(false, 'Ꙩ'),
+    SPEED(false, '>'),
+    ACCURACY(false, '^'),
     RESISTANCE(false, 'R'),
-    BROKEN_BONE(true, '<'),
-    BURNING(true, '♨'),
+    BROKEN_BONE(true, '{'),
+    BURNING(true, 'F'),
     BLEEDING(true, 'B'),
-    POISONED(true, '☠');
+    POISONED(true, 'C');
 
     private static final BuffType[] POSITIVE_TYPES =
             Arrays.stream(values()).filter(
