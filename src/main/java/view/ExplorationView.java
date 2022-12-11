@@ -13,16 +13,19 @@ public class ExplorationView {
                     "Take stairs up", "Take stairs down",
                     "Collect items",
                     "Move", "Open Inventory", "Open Map",
-                    "Save", "Load", "Quit to Title Screen"
+                    "Save", "Load", "Quit to Title Screen",
+                    "Open Play Guide"
             },
             new String[]{
                     "E",
                     "Up", "Down",
                     "C",
                     "W", "I", "M",
-                    "S", "L", "Q"
+                    "S", "L", "Q",
+                    "P"
             },
             false,
+            true,
             true
     );
     private static final Menu SECRET_MENU = new Menu(
@@ -31,7 +34,8 @@ public class ExplorationView {
                     "Toggle hiding of unexplored rooms on map"
             },
             true,
-            false
+            false,
+            true
     );
 
     private static final String UNEXPLORED_HIDDEN =
@@ -60,6 +64,7 @@ public class ExplorationView {
                 case 7: return MenuSignal.SAVE_GAME;
                 case 8: return MenuSignal.LOAD_GAME;
                 case 9: return MenuSignal.SAVE_AND_QUIT_TO_TITLE;
+                case 10: return MenuSignal.PLAY_GUIDE;
                 case Menu.SECRET:
                     // internalSignal guaranteed still previous
                     openSecretMenu(theController);

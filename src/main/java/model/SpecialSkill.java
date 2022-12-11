@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class SpecialSkill implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -164477215720427212L;
 
     private final String myName;
     private final int myCooldown;

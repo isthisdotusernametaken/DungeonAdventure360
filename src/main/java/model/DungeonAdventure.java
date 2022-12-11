@@ -3,10 +3,15 @@ package model;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
+import controller.ProgramFileManager;
+
 public class DungeonAdventure implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7334732339432863725L;
 
     private static final String DB_ERROR =
             "An error occurred while accessing the database, and the " +
@@ -24,14 +29,29 @@ public class DungeonAdventure implements Serializable {
 
     public DungeonAdventure(final String theAdventurerName,
                             final int theAdventurerClass,
-                            final Difficulty theDifficulty) {
+                            final Difficulty theDifficulty)
+            throws IllegalArgumentException {
+        if (!AdventurerFactory.getInstance().isValidIndex(theAdventurerClass)) {
+            throw new IllegalArgumentException(
+                    "Adventurer class index out of bounds: " +
+                    theAdventurerClass + ".\nCheck " +
+                    "AdventurerFactory.isValidIndex to validate index"
+            );
+        }
+        if (theDifficulty == null) {
+            throw new IllegalArgumentException(
+                    "Difficulty passed to DungeonAdventure constructor must" +
+                    "not be null"
+            );
+        }
+
         myDungeon = DungeonFactory.create(theDifficulty);
         myAdventurerCoordinates = myDungeon.getEntrance();
         myDungeon.getMap().explore(myAdventurerCoordinates);
 
         myAdventurer = AdventurerFactory.getInstance()
                 .create(theAdventurerClass, theDifficulty);
-        if (!Util.NONE.equals(theAdventurerName)) {
+        if (theAdventurerName != null && !Util.NONE.equals(theAdventurerName)) {
             myAdventurer.setName(theAdventurerName);
         }
 
@@ -43,7 +63,7 @@ public class DungeonAdventure implements Serializable {
         myIsUnexploredHidden = true;
     }
 
-    public static boolean buildFactories(final String theLogFile) {
+    public static boolean buildFactories() {
         DBManager dbManager = null;
         try {
             dbManager = new SQLiteDBManager();
@@ -54,13 +74,13 @@ public class DungeonAdventure implements Serializable {
 
             dbManager.close();
         } catch (SQLException | IllegalArgumentException e1) {
-            logDBException(e1, theLogFile);
+            logDBException(e1);
 
             if (dbManager != null) {
                 try {
                     dbManager.close();
                 } catch (SQLException e2) {
-                    logDBException(e2, theLogFile);
+                    logDBException(e2);
                     // Still need to exit, so nothing else here
                 }
             }
@@ -75,6 +95,14 @@ public class DungeonAdventure implements Serializable {
         return AdventurerFactory.getInstance().getClasses();
     }
 
+    public static List<List<String>> getCharRepresentations() {
+        return List.of(
+                Room.getContentTypesAndRepresentations(),
+                ItemFactory.getItemsAndRepresentation(),
+                TrapFactory.getInstance().getClassesAndRepresentations()
+        );
+    }
+
     public static boolean isValidAdventurerClass(final int theIndex) {
         return AdventurerFactory.getInstance().isValidIndex(theIndex);
     }
@@ -83,22 +111,10 @@ public class DungeonAdventure implements Serializable {
         return Util.isValidIndex(theIndex, Difficulty.values().length);
     }
 
-    private static void logDBException(final Exception theException,
-                                       final String theLogFile) {
-        try (FileWriter fw = new FileWriter(theLogFile, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter pw = new PrintWriter(bw)) {
-            pw.println();
-
-            pw.print(new Date());
-            pw.println(':');
-
-            pw.println(DB_ERROR);
-
-            theException.printStackTrace(pw);
-        } catch (IOException e2) {
-            System.out.println(DB_ERROR);
-        }
+    private static void logDBException(final Exception theException) {
+        ProgramFileManager.getInstance().logException(
+                theException, DB_ERROR, false
+        );
     }
 
 
@@ -136,16 +152,18 @@ public class DungeonAdventure implements Serializable {
         return myInventory.viewItemsAsStrings();
     }
 
-    public void addMaxItems() {
+    public void addMaxItems() throws IllegalStateException {
+        requireAlive();
+
         myInventory.addItems(ItemFactory.createAllItemsMaxed());
     }
 
     public boolean canUseInventoryItem(final int theIndex) {
-        return myInventory.canUse(theIndex) &&
-               (!myIsInCombat || myInventory.canUseInCombat(theIndex));
+        return myInventory.canUse(theIndex, myIsInCombat);
     }
 
-    public String useInventoryItem(final int theIndex) {
+    public String useInventoryItem(final int theIndex)
+            throws IllegalStateException {
         requireAlive();
 
         return (canUseInventoryItem(theIndex)) ?
@@ -182,7 +200,8 @@ public class DungeonAdventure implements Serializable {
         return testCombat() && !myTurnAllocator.peekNextTurn();
     }
 
-    public AttackResultAndAmount[] tryMonsterTurn() {
+    public AttackResultAndAmount[] tryMonsterTurn()
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && !myTurnAllocator.peekNextTurn()) {
@@ -212,7 +231,7 @@ public class DungeonAdventure implements Serializable {
                 .toString();
     }
 
-    public AttackResultAndAmount killMonster() {
+    public AttackResultAndAmount killMonster() throws IllegalStateException {
         requireAlive();
 
         final AttackResultAndAmount result =
@@ -231,7 +250,7 @@ public class DungeonAdventure implements Serializable {
         return myIsAlive;
     }
 
-    public AttackResultAndAmount[] attack() {
+    public AttackResultAndAmount[] attack() throws IllegalStateException {
         return runAdventurerTurn(true);
     }
 
@@ -243,13 +262,15 @@ public class DungeonAdventure implements Serializable {
         return myAdventurer.getSpecialSkill().canUse();
     }
 
-    public AttackResultAndAmount[] useSpecialSkill() {
+    public AttackResultAndAmount[] useSpecialSkill()
+            throws IllegalStateException {
         return canUseSpecialSkill() ?
                runAdventurerTurn(false) :
                null;
     }
 
-    public AttackResultAndAmount[] flee(final Direction theDirection) {
+    public AttackResultAndAmount[] flee(final Direction theDirection)
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn() &&
@@ -291,7 +312,8 @@ public class DungeonAdventure implements Serializable {
         return getCurrentRoom().getTrapDebuffType();
     }
 
-    public AttackResultAndAmount[] moveAdventurer(final Direction theDirection) {
+    public AttackResultAndAmount[] moveAdventurer(final Direction theDirection)
+            throws IllegalStateException {
         requireAlive();
 
         return !myIsInCombat && isValidDirection(theDirection) ?
@@ -305,7 +327,8 @@ public class DungeonAdventure implements Serializable {
                myDungeon.hasStairsDown(myAdventurerCoordinates);
     }
 
-    public AttackResultAndAmount[] useStairs(final boolean theIsUp) {
+    public AttackResultAndAmount[] useStairs(final boolean theIsUp)
+            throws IllegalStateException {
         requireAlive();
 
         if (!myIsInCombat && hasStairs(theIsUp)) {
@@ -376,7 +399,8 @@ public class DungeonAdventure implements Serializable {
         return new AttackResultAndAmount[]{monsterBuffResult};
     }
 
-    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack) {
+    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack)
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn()) {
@@ -396,15 +420,10 @@ public class DungeonAdventure implements Serializable {
                 nextTurn();
             }
 
-            return advanceInCombatAndCompileResults(attackResult);
+            return new AttackResultAndAmount[]{advanceInCombat(), attackResult};
         }
 
         return null;
-    }
-
-    private AttackResultAndAmount[] advanceInCombatAndCompileResults(
-            final AttackResultAndAmount theAttackResult) {
-        return new AttackResultAndAmount[]{advanceInCombat(), theAttackResult};
     }
 
     private AttackResultAndAmount advanceOutOfCombat() {
@@ -449,12 +468,15 @@ public class DungeonAdventure implements Serializable {
         myTurnAllocator.nextTurn();
     }
 
-    private void requireAlive() {
+    private void requireAlive() throws IllegalStateException {
         if (!myIsAlive) {
-            throw new IllegalStateException(
+            final IllegalStateException e = new IllegalStateException(
                     "The adventurer is dead, and no actions other than " +
-                    "viewing the final game state are allowed."
+                    "viewing the final game state are allowed.\n"
             );
+
+            ProgramFileManager.getInstance().logException(e, true);
+            throw e;
         }
     }
 }

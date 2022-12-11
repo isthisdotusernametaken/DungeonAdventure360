@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrapFactory extends DamageDealerFactory<Trap> {
 
@@ -22,6 +24,21 @@ public class TrapFactory extends DamageDealerFactory<Trap> {
 
     static TrapFactory getInstance() {
         return INSTANCE;
+    }
+
+    List<String> getClassesAndRepresentations() {
+        final String[] classes = getClasses();
+        final String[] representations = mapToStrings(template ->
+                "" + ((CharRepresentable) template).charRepresentation());
+        final List<String> classesAndRepresentations = new ArrayList<>();
+
+        for (int i = 0; i < classes.length; i++) {
+            classesAndRepresentations.add(
+                    representations[i] + ": " + classes[i]
+            );
+        }
+
+        return classesAndRepresentations;
     }
 
     @Override

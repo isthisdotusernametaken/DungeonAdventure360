@@ -8,52 +8,64 @@ import model.DungeonAdventure;
 import model.Util;
 import view.ConsoleUI;
 
-import java.io.File;
-import java.util.Arrays;
-
 public class Controller {
 
-    public static final String NAME_REGEX =
-            "(?=.*[\\dA-Za-z(),._-])[ \\dA-Za-z()',._-]{1,30}";
+    private static final String AUTOSAVE_FILE = "autosave";
 
-    private static final String LOG_DIR_PATH = System.getenv("APPDATA") +
-            "\\Dungeon Adventure";
-    private static final String LOG_PATH = LOG_DIR_PATH + "\\log.txt";
     private static final String COULD_NOT_START =
-            "The application could not start. For more information, view " +
-            LOG_PATH + '.';
+            "The application could not start.";
+    private static final String FAILURE_DETAILS =
+            "For more information, view ";
 
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
     private DungeonAdventure myGame;
     private final ConsoleUI myUI;
+    private String myPreviousSaveName;
+    private boolean myIsSaved;
 
     private Controller() {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(() -> saveGame(AUTOSAVE_FILE))
+        ); // Catch console closing and save game if nonnull
+
         myUI = new ConsoleUI(this);
     }
 
     public static void main(String[] args) {
-        new File(LOG_DIR_PATH).mkdirs();
-        if (DungeonAdventure.buildFactories(LOG_PATH)) {
-            new Controller().myUI.run();
+        if (ProgramFileManager.tryCreateInstance()) {
+            if (DungeonAdventure.buildFactories()) {
+                new Controller().myUI.run();
+            } else {
+                System.out.println(COULD_NOT_START);
+
+                System.out.print(FAILURE_DETAILS);
+                System.out.println(
+                        ProgramFileManager.getInstance().getLogPath()
+                );
+            }
         } else {
             System.out.println(COULD_NOT_START);
         }
     }
 
     public String[] getSaveFiles() {
-        return null;
+        return ProgramFileManager.getInstance().getSaveFiles();
     }
 
-    public boolean createGame(final String theGameFileName,
-                              final String theAdventurerName,
+    public void reset() {
+        myGame = null;
+        myPreviousSaveName = null;
+        noteUnsaved();
+    }
+
+    public boolean createGame(final String theAdventurerName,
                               final int theAdventurerClass,
                               final int theDifficulty) {
-        if (
-                DungeonAdventure.isValidAdventurerClass(theAdventurerClass) &&
-                DungeonAdventure.isValidDifficulty(theDifficulty)
-        ) {
+        if (DungeonAdventure.isValidAdventurerClass(theAdventurerClass) &&
+                DungeonAdventure.isValidDifficulty(theDifficulty)) {
+            reset();
             myGame = new DungeonAdventure(
                     theAdventurerName,
                     theAdventurerClass,
@@ -67,10 +79,43 @@ public class Controller {
     }
 
     public boolean loadGame(final String theFile) {
+        final DungeonAdventure loaded =
+                ProgramFileManager.getInstance().loadGame(theFile);
+
+        if (loaded != null) {
+            myGame = loaded;
+            myPreviousSaveName = theFile;
+            myIsSaved = true;
+            return true;
+        }
         return false;
     }
 
+    public String getPreviousSaveName() {
+        return myPreviousSaveName;
+    }
+
+    public boolean hasPreviousSaveName() {
+        return myPreviousSaveName != null;
+    }
+
+    public boolean isSaved() {
+        return myIsSaved || myGame == null;
+    }
+
+    public boolean saveGame() {
+        return hasPreviousSaveName() && saveGame(myPreviousSaveName);
+    }
+
     public boolean saveGame(final String theFile) {
+        if (myGame != null &&
+                ProgramFileManager.getInstance().saveGame(theFile, myGame)) {
+            myPreviousSaveName = theFile;
+            myIsSaved = true;
+
+            return true;
+        }
+
         return false;
     }
 
@@ -87,6 +132,8 @@ public class Controller {
     }
 
     public void toggleIsUnexploredHidden() {
+        noteUnsaved();
+
         myGame.toggleIsUnexploredHidden();
     }
 
@@ -98,8 +145,19 @@ public class Controller {
         return myGame.getInventoryItems();
     }
 
-    public void addMaxItems() {
-        myGame.addMaxItems();
+    public String addMaxItems() {
+        noteUnsaved();
+
+        try {
+            myGame.addMaxItems();
+            return Util.NONE;
+        } catch (IllegalStateException e) {
+            // View is advised to use isAlive() to detect whether an operation
+            // can be performed rather than relying on this return.
+            // Already logged, and no illegal operation performed, so no
+            // further handling required
+            return e.getMessage();
+        }
     }
 
     public boolean canUseInventoryItem(final int theIndex) {
@@ -107,7 +165,13 @@ public class Controller {
     }
 
     public String useInventoryItem(final int theIndex) {
-        return myGame.useInventoryItem(theIndex);
+        noteUnsaved();
+
+        try {
+            return myGame.useInventoryItem(theIndex);
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
     }
 
     public boolean roomHasItems() {
@@ -115,11 +179,18 @@ public class Controller {
     }
 
     public String collectItems() {
-        final String[] items = myGame.collectItems();
+        noteUnsaved();
+
+        final String[] items;
+        try {
+            items = myGame.collectItems();
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
 
         if (items.length != 0) {
-            final StringBuilder builder = new StringBuilder("Gained items:")
-                    .append('\n');
+            final StringBuilder builder =
+                    new StringBuilder("Gained items:").append('\n');
 
             for (String item : items) {
                 builder.append(' ').append(item).append('\n');
@@ -143,20 +214,27 @@ public class Controller {
     }
 
     public String tryMonsterTurn() {
-        final AttackResultAndAmount[] results = myGame.tryMonsterTurn();
+        noteUnsaved();
+
+        final AttackResultAndAmount[] results;
+        try {
+            results = myGame.tryMonsterTurn();
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
 
         if (results != null) {
             final String buffDamage = parseBuffDamage(results[0], false);
 
             return results[0].getResult() == AttackResult.KILL ?
-                   buffDamage :
-                   buffDamage + parseHeal(results[1], false) +
-                           parseDamage(
-                                   results[2],
-                                   myGame.getMonsterDebuffType(),
-                                   myGame.getMonsterName(),
-                                   true
-                           );
+                    buffDamage :
+                    buffDamage + parseHeal(results[1], false) +
+                            parseDamage(
+                                    results[2],
+                                    myGame.getMonsterDebuffType(),
+                                    myGame.getMonsterName(),
+                                    true
+                            );
         }
         return Util.NONE;
     }
@@ -166,12 +244,18 @@ public class Controller {
     }
 
     public String killMonster() {
-        return parseDamage(
-                myGame.killMonster(),
-                Util.NONE, // Not used
-                myGame.getAdventurerName(),
-                false
-        );
+        noteUnsaved();
+
+        try {
+            return parseDamage(
+                    myGame.killMonster(),
+                    Util.NONE, // Not used
+                    myGame.getAdventurerName(),
+                    false
+            );
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
     }
 
     public boolean isAlive() {
@@ -179,15 +263,23 @@ public class Controller {
     }
 
     public String attack() {
-        final AttackResultAndAmount[] results = myGame.attack();
+        noteUnsaved();
+
+        final AttackResultAndAmount[] results;
+        try {
+            results = myGame.attack();
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
 
         return parseBuffDamage(results[0], true) +
-               parseDamage(
-                       results[1],
-                       myGame.getAdventurerDebuffType(),
-                       myGame.getAdventurerName(),
-                       false
-               );
+                parseDamage(
+                        results[1],
+                        myGame.getAdventurerDebuffType(),
+                        myGame.getAdventurerName(),
+                        false
+                );
+
     }
 
     public String getSpecialSkill() {
@@ -195,10 +287,17 @@ public class Controller {
     }
 
     public String useSpecialSkill() {
+        noteUnsaved();
+
         if (myGame.canUseSpecialSkill()) {
             final String skillUsed = myGame.getAdventurerName() + " used " +
                     myGame.getSpecialSkill() + ".\n";
-            final AttackResultAndAmount[] results = myGame.useSpecialSkill();
+            final AttackResultAndAmount[] results;
+            try {
+                results = myGame.useSpecialSkill();
+            } catch (IllegalStateException e) { // See comment in addMaxItems()
+                return e.getMessage();
+            }
 
             return parseBuffDamage(results[0], true) + skillUsed + (
                         results[1].getResult() == AttackResult.HEAL ?
@@ -218,7 +317,14 @@ public class Controller {
     }
 
     public String flee(final Direction theDirection) {
-        final AttackResultAndAmount[] results = myGame.flee(theDirection);
+        noteUnsaved();
+
+        final AttackResultAndAmount[] results;
+        try {
+            results = myGame.flee(theDirection);
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
 
         return results[0].getResult() + "\n" + (
                     results[0].getResult() == AttackResult.FLED_SUCCESSFULLY ? (
@@ -231,7 +337,13 @@ public class Controller {
     }
 
     public String moveAdventurer(final Direction theDirection) {
-        return parseMove(myGame.moveAdventurer(theDirection));
+        noteUnsaved();
+
+        try {
+            return parseMove(myGame.moveAdventurer(theDirection));
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
     }
 
     public boolean hasStairs(final boolean theIsUp) {
@@ -239,11 +351,21 @@ public class Controller {
     }
 
     public String useStairs(final boolean theIsUp) {
-        return parseMove(myGame.useStairs(theIsUp));
+        noteUnsaved();
+
+        try {
+            return parseMove(myGame.useStairs(theIsUp));
+        } catch (IllegalStateException e) { // See comment in addMaxItems()
+            return e.getMessage();
+        }
     }
 
     public boolean isValidDirection(final Direction theDirection) {
         return myGame.isValidDirection(theDirection);
+    }
+
+    private void noteUnsaved() {
+        myIsSaved = false;
     }
 
     private String parseMove(final AttackResultAndAmount[] theResults) {

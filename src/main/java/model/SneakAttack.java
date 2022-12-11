@@ -1,6 +1,11 @@
 package model;
 
+import java.io.Serial;
+
 public class SneakAttack extends SpecialSkill {
+
+    @Serial
+    private static final long serialVersionUID = -3094056436398460180L;
 
     private static final int COOLDOWN = 5;
     private static final double SUCCESS_CHANCE = 0.4;

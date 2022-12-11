@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class AdjustedCharacterStats implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3232722312066269409L;
 
     private final DungeonCharacter myCharacter;
     private int myMinDamage;
@@ -11,7 +15,7 @@ public class AdjustedCharacterStats implements Serializable {
     private int mySpeed;
     private final double[] myResistances;
 
-    AdjustedCharacterStats(DungeonCharacter theCharacter) {
+    AdjustedCharacterStats(final DungeonCharacter theCharacter) {
         myResistances = new double[DamageType.values().length];
         myCharacter = theCharacter;
 

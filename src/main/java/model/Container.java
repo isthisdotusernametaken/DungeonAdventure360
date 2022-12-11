@@ -1,15 +1,19 @@
 package model;
 
+import controller.ProgramFileManager;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Container implements Serializable {
 
-    private static final String UNKNOWN_TYPE = "Unknown item type selected. " +
-                                               "Cannot be used.";
+    @Serial
+    private static final long serialVersionUID = 1474934278105133346L;
+
+    private static final String UNUSABLE = "That item cannot be used.";
 
     private final List<Item> myItems;
 
@@ -36,13 +40,10 @@ public class Container implements Serializable {
         return myItems.size() != 0;
     }
 
-    boolean canUse(final int theIndex) {
+    boolean canUse(final int theIndex, final boolean theIsInCombat) {
         return Util.isValidIndex(theIndex, myItems.size()) &&
-               myItems.get(theIndex).canChangeCount();
-    }
-
-    boolean canUseInCombat(final int theIndex) {
-        return myItems.get(theIndex) instanceof CharacterApplicableItem;
+               (!theIsInCombat ||
+                       myItems.get(theIndex) instanceof CharacterApplicableItem);
     }
 
     String useItem(final int theIndex,
@@ -55,7 +56,12 @@ public class Container implements Serializable {
         String result;
 
         if (selectedItem instanceof CharacterApplicableItem) {
-            result = ((CharacterApplicableItem) selectedItem).use(theTarget);
+            try {
+                result = ((CharacterApplicableItem) selectedItem).use(theTarget);
+            } catch (IllegalArgumentException e) {
+                ProgramFileManager.getInstance().logException(e, false);
+                return UNUSABLE;
+            }
         } else if (selectedItem instanceof MapApplicableItem) {
             result = theIsInCombat ?
                      Util.NONE :
@@ -65,7 +71,7 @@ public class Container implements Serializable {
                      Util.NONE :
                      ((RoomApplicableItem) selectedItem).use(theRoom);
         } else {
-            throw new IllegalArgumentException(UNKNOWN_TYPE);
+            return UNUSABLE;
         }
 
         if (selectedItem.getCount() <= 0) {

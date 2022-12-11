@@ -1,10 +1,10 @@
 package view;
 
+import java.util.Arrays;
+
 import controller.Controller;
 import model.Difficulty;
 import model.DungeonAdventure;
-
-import java.util.Arrays;
 
 public class NewGameView {
 
@@ -12,7 +12,8 @@ public class NewGameView {
             "Choose an Adventurer class",
             DungeonAdventure.getAdventurerClasses(),
             true,
-            false
+            false,
+            true
     );
     private static final Menu DIFFICULTY_MENU = new Menu(
             "Choose a difficulty",
@@ -20,11 +21,10 @@ public class NewGameView {
                   .map(Difficulty::toString)
                   .toArray(String[]::new),
             true,
-            false
+            false,
+            true
     );
 
-    private static final String GAME_NAME_PROMPT =
-            "Enter the name of the new game file";
     private static final String ADVENTURER_NAME_PROMPT =
             "Enter the name of the Adventurer (or nothing to have a name " +
             "generated for you)";
@@ -32,7 +32,9 @@ public class NewGameView {
             " (or " + Menu.EXIT_OPTION + " to return to the previous screen):";
 
     static MenuSignal open(final Controller theController) {
-        displayFiles(theController);
+        if (!SaveChangesInternalView.askToContinueAndToSaveIfUnsaved(theController)) {
+            return MenuSignal.PREVIOUS;
+        }
 
         final int adventurerClass = CLASS_MENU.select();
         if (Menu.isBack(adventurerClass)) {
@@ -46,13 +48,9 @@ public class NewGameView {
         if (Menu.isBack(adventurerName)) {
             return MenuSignal.PREVIOUS;
         }
-        final String gameName = readGameFileName();
-        if (Menu.isBack(gameName)) {
-            return MenuSignal.PREVIOUS;
-        }
 
         return theController.createGame(
-                gameName, adventurerName, adventurerClass, difficulty
+                adventurerName, adventurerClass, difficulty
         ) ?
                 MenuSignal.EXPLORATION :
                 MenuSignal.PREVIOUS; // Couldn't create game (might change
@@ -60,21 +58,10 @@ public class NewGameView {
                                      // encountered anyway)
     }
 
-    private static void displayFiles(final Controller theController) {
-
-    }
-
     private static String readAdventurerName() {
         System.out.print(ADVENTURER_NAME_PROMPT);
         System.out.println(BACK_PROMPT);
 
         return InputReader.readNameUntilValid(true);
-    }
-
-    private static String readGameFileName() {
-        System.out.print(GAME_NAME_PROMPT);
-        System.out.println(BACK_PROMPT);
-
-        return InputReader.readNameUntilValid(false);
     }
 }

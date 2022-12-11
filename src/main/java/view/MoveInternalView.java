@@ -1,10 +1,10 @@
 package view;
 
-import controller.Controller;
-import model.Direction;
-
 import java.util.Arrays;
 import java.util.function.Function;
+
+import controller.Controller;
+import model.Direction;
 
 public class MoveInternalView {
 
@@ -17,7 +17,8 @@ public class MoveInternalView {
                     .map(dir -> dir.toString().substring(0, 1))
                     .toArray(String[]::new),
             true,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController,
