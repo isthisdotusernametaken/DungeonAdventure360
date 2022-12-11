@@ -9,6 +9,7 @@ public class WinView {
             new String[]{"Continue", "Quit to Title Screen"},
             new String[]{"C", "Q"},
             false,
+            false,
             false
     );
 

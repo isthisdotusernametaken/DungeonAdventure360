@@ -12,7 +12,8 @@ public class NewGameView {
             "Choose an Adventurer class",
             DungeonAdventure.getAdventurerClasses(),
             true,
-            false
+            false,
+            true
     );
     private static final Menu DIFFICULTY_MENU = new Menu(
             "Choose a difficulty",
@@ -20,7 +21,8 @@ public class NewGameView {
                   .map(Difficulty::toString)
                   .toArray(String[]::new),
             true,
-            false
+            false,
+            true
     );
 
     private static final String ADVENTURER_NAME_PROMPT =

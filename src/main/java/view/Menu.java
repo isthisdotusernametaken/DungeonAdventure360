@@ -24,6 +24,7 @@ public class Menu {
     private final String[] myMenuOptions;
     private final boolean myIncludeBack;
     private final boolean myIncludeSecret;
+    private final boolean myIsColonAfterTitle;
 
     private final List<String> myLowerCaseDescriptions;
     private final List<String> myLowerCaseOptions;
@@ -32,7 +33,8 @@ public class Menu {
          final String[] theMenuDescriptions,
          final String[] theMenuOptions,
          final boolean theIncludeBack,
-         final boolean theIncludeSecret) {
+         final boolean theIncludeSecret,
+         final boolean theIsColonAfterTitle) {
         myTitle = theTitle;
 
         myMenuDescriptions = theMenuDescriptions.clone();
@@ -43,12 +45,14 @@ public class Menu {
 
         myIncludeBack = theIncludeBack;
         myIncludeSecret = theIncludeSecret;
+        myIsColonAfterTitle = theIsColonAfterTitle;
     }
 
     Menu(final String theTitle,
          final String[] theMenuDescriptions,
          final boolean theIncludeBack,
-         final boolean theIncludeSecret) {
+         final boolean theIncludeSecret,
+         final boolean theIsColonAfterTitle) {
         this(
                 theTitle,
                 theMenuDescriptions,
@@ -56,7 +60,8 @@ public class Menu {
                          .mapToObj(index -> "" + index)
                          .toArray(String[]::new),
                 theIncludeBack,
-                theIncludeSecret
+                theIncludeSecret,
+                theIsColonAfterTitle
         );
     }
 
@@ -104,7 +109,7 @@ public class Menu {
     private void printMenu(final boolean theAllIncluded,
                            final boolean[] theIncludedOptions) {
         System.out.print(myTitle);
-        System.out.println(':');
+        System.out.println(myIsColonAfterTitle ? ":" : "");
 
         for (int i = 0; i < myMenuOptions.length; i++) {
             if (isIncluded(theAllIncluded, theIncludedOptions, i)) {

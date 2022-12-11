@@ -15,7 +15,8 @@ public class InventoryView {
                     "Add maximum stack size of all items to inventory"
             },
             true,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController) {
@@ -44,7 +45,7 @@ public class InventoryView {
         final String[] items = theController.getInventoryItems();
 
         return new Menu(
-                SELECT_PROMPT, items, true, true
+                SELECT_PROMPT, items, true, true, true
         ).select(getUnusableItems(theController, items.length));
     }
 
@@ -64,7 +65,7 @@ public class InventoryView {
 
     private static void openSecretMenu(final Controller theController) {
         if (SECRET_MENU.select() == 0) {
-            theController.addMaxItems();
+            System.out.println(theController.addMaxItems());
         }
     }
 }

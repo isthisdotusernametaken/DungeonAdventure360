@@ -128,7 +128,9 @@ public class DungeonAdventure implements Serializable {
         return myInventory.viewItemsAsStrings();
     }
 
-    public void addMaxItems() {
+    public void addMaxItems() throws IllegalStateException {
+        requireAlive();
+
         myInventory.addItems(ItemFactory.createAllItemsMaxed());
     }
 
@@ -136,7 +138,8 @@ public class DungeonAdventure implements Serializable {
         return myInventory.canUse(theIndex, myIsInCombat);
     }
 
-    public String useInventoryItem(final int theIndex) {
+    public String useInventoryItem(final int theIndex)
+            throws IllegalStateException {
         requireAlive();
 
         return (canUseInventoryItem(theIndex)) ?
@@ -173,7 +176,8 @@ public class DungeonAdventure implements Serializable {
         return testCombat() && !myTurnAllocator.peekNextTurn();
     }
 
-    public AttackResultAndAmount[] tryMonsterTurn() {
+    public AttackResultAndAmount[] tryMonsterTurn()
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && !myTurnAllocator.peekNextTurn()) {
@@ -203,7 +207,7 @@ public class DungeonAdventure implements Serializable {
                 .toString();
     }
 
-    public AttackResultAndAmount killMonster() {
+    public AttackResultAndAmount killMonster() throws IllegalStateException {
         requireAlive();
 
         final AttackResultAndAmount result =
@@ -222,7 +226,7 @@ public class DungeonAdventure implements Serializable {
         return myIsAlive;
     }
 
-    public AttackResultAndAmount[] attack() {
+    public AttackResultAndAmount[] attack() throws IllegalStateException {
         return runAdventurerTurn(true);
     }
 
@@ -234,13 +238,15 @@ public class DungeonAdventure implements Serializable {
         return myAdventurer.getSpecialSkill().canUse();
     }
 
-    public AttackResultAndAmount[] useSpecialSkill() {
+    public AttackResultAndAmount[] useSpecialSkill()
+            throws IllegalStateException {
         return canUseSpecialSkill() ?
                runAdventurerTurn(false) :
                null;
     }
 
-    public AttackResultAndAmount[] flee(final Direction theDirection) {
+    public AttackResultAndAmount[] flee(final Direction theDirection)
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn() &&
@@ -282,7 +288,8 @@ public class DungeonAdventure implements Serializable {
         return getCurrentRoom().getTrapDebuffType();
     }
 
-    public AttackResultAndAmount[] moveAdventurer(final Direction theDirection) {
+    public AttackResultAndAmount[] moveAdventurer(final Direction theDirection)
+            throws IllegalStateException {
         requireAlive();
 
         return !myIsInCombat && isValidDirection(theDirection) ?
@@ -296,7 +303,8 @@ public class DungeonAdventure implements Serializable {
                myDungeon.hasStairsDown(myAdventurerCoordinates);
     }
 
-    public AttackResultAndAmount[] useStairs(final boolean theIsUp) {
+    public AttackResultAndAmount[] useStairs(final boolean theIsUp)
+            throws IllegalStateException {
         requireAlive();
 
         if (!myIsInCombat && hasStairs(theIsUp)) {
@@ -367,7 +375,8 @@ public class DungeonAdventure implements Serializable {
         return new AttackResultAndAmount[]{monsterBuffResult};
     }
 
-    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack) {
+    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack)
+            throws IllegalStateException {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn()) {
@@ -444,7 +453,7 @@ public class DungeonAdventure implements Serializable {
         if (!myIsAlive) {
             final IllegalStateException e = new IllegalStateException(
                     "The adventurer is dead, and no actions other than " +
-                    "viewing the final game state are allowed."
+                    "viewing the final game state are allowed.\n"
             );
 
             ProgramFileManager.getInstance().logException(e);

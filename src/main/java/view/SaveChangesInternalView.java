@@ -9,6 +9,7 @@ public class SaveChangesInternalView {
             new String[]{"Save", "Continue without saving"},
             new String[]{"Y", "N"},
             true,
+            false,
             false
     );
 

@@ -15,7 +15,8 @@ public class TitleScreen {
                 "G", "Q"
             },
             false,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController) {

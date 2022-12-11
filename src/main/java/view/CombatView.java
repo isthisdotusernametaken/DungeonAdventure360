@@ -12,6 +12,7 @@ public class CombatView {
             new String[]{"Attack", "Open Inventory", "Flee", "Skill"},
             new String[]{"A", "I", "F", "S"},
             false,
+            true,
             true
     );
     private static final Menu SECRET_MENU = new Menu(
@@ -20,7 +21,8 @@ public class CombatView {
                     "Kill monster"
             },
             true,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController) {

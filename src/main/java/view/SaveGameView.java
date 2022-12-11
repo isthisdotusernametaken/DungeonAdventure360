@@ -18,7 +18,8 @@ public class SaveGameView {
                     SAVE_MOST_RECENT // Should be replaced
             },
             true,
-            false
+            false,
+            true
     );
 
     private static final String ENTER_FILENAME =
@@ -32,7 +33,7 @@ public class SaveGameView {
     static MenuSignal open(final Controller theController) {
         final String[] files = theController.getSaveFiles();
         final Menu selectFileMenu = new Menu(
-                CHOOSE_FILE_PROMPT, files, true, false
+                CHOOSE_FILE_PROMPT, files, true, false, true
         );
 
         int choice;

@@ -17,7 +17,8 @@ public class MoveInternalView {
                     .map(dir -> dir.toString().substring(0, 1))
                     .toArray(String[]::new),
             true,
-            false
+            false,
+            true
     );
 
     static MenuSignal open(final Controller theController,

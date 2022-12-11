@@ -14,7 +14,9 @@ public class LoadGameView {
         }
 
         final String[] files = theController.getSaveFiles();
-        final Menu selectFileMenu = new Menu(LOAD_PROMPT, files, true, false);
+        final Menu selectFileMenu = new Menu(
+                LOAD_PROMPT, files, true, false, true
+        );
 
         int choice;
         while (true) {

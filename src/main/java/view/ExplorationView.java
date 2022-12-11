@@ -23,6 +23,7 @@ public class ExplorationView {
                     "S", "L", "Q"
             },
             false,
+            true,
             true
     );
     private static final Menu SECRET_MENU = new Menu(
@@ -31,7 +32,8 @@ public class ExplorationView {
                     "Toggle hiding of unexplored rooms on map"
             },
             true,
-            false
+            false,
+            true
     );
 
     private static final String UNEXPLORED_HIDDEN =
