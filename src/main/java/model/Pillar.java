@@ -14,7 +14,7 @@ public class Pillar extends Item {
     private static final char INHERITANCE_REPRESENTATION = 'I';
     private static final char POLYMORPHISM_REPRESENTATION = 'P';
 
-    private Pillar(final ItemType theType,
+     Pillar(final ItemType theType,
                    final char theCharRepresentation) {
         super(
                 theCharRepresentation,

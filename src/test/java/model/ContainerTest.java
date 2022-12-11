@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ContainerTest {
 
     private final boolean[] theBoolean = {true};
-    private Container myContainer = new Container(
+    private final Container myContainer = new Container(
             new VisionPotion(2),
             new BuffPotion(1, BuffType.STRENGTH)
     );
 
-    private Monster myMonster = new Monster(
+    private final Monster myMonster = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -49,19 +49,16 @@ public class ContainerTest {
     RoomCoordinates myCoords = new RoomCoordinates(1,2,3);
 
     @Test
-    void testGetSize() {
-         assertEquals(2,myContainer.size());
-    }
-
-    @Test
     void testViewItemAsStrings() {
-        assertEquals("[Vision Potion: 2, Strength Potion: 1]", Arrays.toString(myContainer.viewItemsAsStrings()));
+        String expected = "[Vision Potion: 2, Strength Potion: 1]";
+
+        assertEquals(expected, Arrays.toString(myContainer.viewItemsAsStrings()));
     }
 
     @Test
     void testViewItems() {
         Item[] actual = myContainer.viewItems();
-        Item[] expected = new Item[myContainer.size()];
+        Item[] expected = new Item[2];
         expected[0] =  new VisionPotion(2);
         expected[1] =  new BuffPotion(1, BuffType.STRENGTH);
 
@@ -71,14 +68,13 @@ public class ContainerTest {
     @Test
     void testUseItem() {
         myContainer.useItem(1, myMonster, myMap, myRoom, myCoords, true); //Not sure about this one
-        assertEquals(2,myContainer.size());
     }
 
     @Test
     void testAddItem() {
+        String expected = "[Vision Potion: 2, Strength Potion: 1, Health Potion: 1]";
         myContainer.addItem(new HealthPotion(1));
-        assertEquals(3,myContainer.size());
-        assertEquals("[Vision Potion: 2, Strength Potion: 1, Health Potion: 1]",
-                Arrays.toString(myContainer.viewItemsAsStrings()));
+
+        assertEquals(expected, Arrays.toString(myContainer.viewItemsAsStrings()));
     }
 }

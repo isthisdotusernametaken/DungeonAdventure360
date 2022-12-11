@@ -241,7 +241,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         }
     }
 
-    private boolean applyDamage(final int theDamage) {
+    public boolean applyDamage(final int theDamage) {
         myHP -= theDamage;
 
         return isDead();
