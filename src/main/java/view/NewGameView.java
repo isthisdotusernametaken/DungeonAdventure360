@@ -1,10 +1,10 @@
 package view;
 
+import java.util.Arrays;
+
 import controller.Controller;
 import model.Difficulty;
 import model.DungeonAdventure;
-
-import java.util.Arrays;
 
 public class NewGameView {
 

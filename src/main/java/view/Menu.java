@@ -87,10 +87,11 @@ public class Menu {
         return promptAndReadOptionUntilValid(true, ALL_INCLUDED);
     }
 
-    int select(final String theVariableChoice) {
+    int select(final String theVariableChoice,
+               final boolean theVariableChoiceIsIncluded) {
         final int lastIndex = myMenuDescriptions.length - 1;
 
-        if (theVariableChoice == null) {
+        if (!theVariableChoiceIsIncluded) {
             return select(new int[]{lastIndex});
         }
 

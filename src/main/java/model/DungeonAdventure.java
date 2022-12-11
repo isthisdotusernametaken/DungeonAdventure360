@@ -1,11 +1,12 @@
 package model;
 
-import controller.ProgramFileManager;
-
 import java.io.*;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
+
+import controller.ProgramFileManager;
 
 public class DungeonAdventure implements Serializable {
 
@@ -77,6 +78,14 @@ public class DungeonAdventure implements Serializable {
 
     public static String[] getAdventurerClasses() {
         return AdventurerFactory.getInstance().getClasses();
+    }
+
+    public static List<List<String>> getCharRepresentations() {
+        return List.of(
+                Room.getContentTypesAndRepresentations(),
+                ItemFactory.getItemsAndRepresentation(),
+                TrapFactory.getInstance().getClassesAndRepresentations()
+        );
     }
 
     public static boolean isValidAdventurerClass(final int theIndex) {

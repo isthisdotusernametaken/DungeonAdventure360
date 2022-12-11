@@ -3,6 +3,7 @@ package model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public abstract class DamageDealerFactory<T extends DamageDealer> {
 
@@ -16,9 +17,12 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
     }
 
     String[] getClasses() {
+        return mapToStrings(DamageDealer::getClassName);
+    }
+
+    String[] mapToStrings(final Function<T, String> theMappingFunc) {
         return myTemplates.get(0).stream()
-               .map(DamageDealer::getClassName)
-               .toArray(String[]::new);
+                .map(theMappingFunc).toArray(String[]::new);
     }
 
     boolean isValidIndex(final int theIndex) {
@@ -32,16 +36,6 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
                 ),
                 theDifficulty
         );
-    }
-
-    List<T> createAll(final Difficulty theDifficulty) {
-        final List<T> templates = myTemplates.get(theDifficulty.ordinal());
-        final List<T> copies = new ArrayList<>(templates.size());
-        for (T template : templates) {
-            copies.add(createFromTemplate(template));
-        }
-
-        return copies;
     }
 
     T create(final int theClassIndex, final Difficulty theDifficulty) {

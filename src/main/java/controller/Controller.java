@@ -10,6 +10,8 @@ import view.ConsoleUI;
 
 public class Controller {
 
+    private static final String AUTOSAVE_FILE = "autosave";
+
     private static final String COULD_NOT_START =
             "The application could not start.";
     private static final String FAILURE_DETAILS =
@@ -24,6 +26,10 @@ public class Controller {
     private boolean myIsSaved;
 
     private Controller() {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(() -> saveGame(AUTOSAVE_FILE))
+        ); // Catch console closing and save game if nonnull
+
         myUI = new ConsoleUI(this);
     }
 
@@ -102,7 +108,8 @@ public class Controller {
     }
 
     public boolean saveGame(final String theFile) {
-        if (ProgramFileManager.getInstance().saveGame(theFile, myGame)) {
+        if (myGame != null &&
+                ProgramFileManager.getInstance().saveGame(theFile, myGame)) {
             myPreviousSaveName = theFile;
             myIsSaved = true;
 

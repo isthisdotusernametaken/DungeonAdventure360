@@ -7,6 +7,18 @@ public class ItemFactory {
 
     private static final Item[] ALL_ITEMS = createAllItemsWeighted();
 
+    static List<String> getItemsAndRepresentation() {
+        final List<String> itemsAndRepresentations = new ArrayList<>();
+
+        for (Item item : createAllItemsMaxed()) {
+            itemsAndRepresentations.add(
+                    item.charRepresentation() + ": " + item.getName()
+            );
+        }
+
+        return itemsAndRepresentations;
+    }
+
     static Item createRandom() {
         return ALL_ITEMS[Util.randomIntExc(ALL_ITEMS.length)].copy();
     }

@@ -11,8 +11,7 @@ public class Container implements Serializable {
     @Serial
     private static final long serialVersionUID = 1474934278105133346L;
 
-    private static final String UNKNOWN_TYPE = "Unknown item type selected. " +
-                                               "Cannot be used.";
+    private static final String UNUSABLE = "That item cannot be used.";
 
     private final List<Item> myItems;
 
@@ -41,7 +40,6 @@ public class Container implements Serializable {
 
     boolean canUse(final int theIndex, final boolean theIsInCombat) {
         return Util.isValidIndex(theIndex, myItems.size()) &&
-               myItems.get(theIndex).canChangeCount() &&
                (!theIsInCombat ||
                        myItems.get(theIndex) instanceof CharacterApplicableItem);
     }
@@ -66,7 +64,7 @@ public class Container implements Serializable {
                      Util.NONE :
                      ((RoomApplicableItem) selectedItem).use(theRoom);
         } else {
-            throw new IllegalArgumentException(UNKNOWN_TYPE);
+            return UNUSABLE;
         }
 
         if (selectedItem.getCount() <= 0) {

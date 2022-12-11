@@ -1,8 +1,8 @@
 package view;
 
-import controller.Controller;
-
 import java.util.Arrays;
+
+import controller.Controller;
 
 public class SaveGameView {
 
@@ -39,7 +39,9 @@ public class SaveGameView {
         int choice;
         while (true) {
             choice = NEW_OR_OVERWRITE_MENU.select(
-                    theController.getPreviousSaveName()
+                    SAVE_MOST_RECENT + " (" +
+                    theController.getPreviousSaveName() + ")",
+                    theController.hasPreviousSaveName()
             );
 
             if (Menu.isBack(choice)) {
