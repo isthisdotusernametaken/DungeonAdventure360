@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 import java.util.Arrays;
 
-public class Pillar extends Item {
+public final class Pillar extends Item {
 
     @Serial
     private static final long serialVersionUID = -1853421696253825055L;

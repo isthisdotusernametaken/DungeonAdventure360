@@ -8,7 +8,7 @@ import model.DungeonAdventure;
 import model.Util;
 import view.ConsoleUI;
 
-public class Controller {
+public final class Controller {
 
     private static final String AUTOSAVE_FILE = "autosave";
 
@@ -20,8 +20,8 @@ public class Controller {
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
-    private DungeonAdventure myGame;
     private final ConsoleUI myUI;
+    private DungeonAdventure myGame;
     private String myPreviousSaveName;
     private boolean myIsSaved;
 
@@ -33,7 +33,7 @@ public class Controller {
         myUI = new ConsoleUI(this);
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] theArgs) {
         if (ProgramFileManager.tryCreateInstance()) {
             if (DungeonAdventure.buildFactories()) {
                 new Controller().myUI.run();

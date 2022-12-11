@@ -2,7 +2,7 @@ package model;
 
 import java.sql.SQLException;
 
-public class MonsterFactory extends DungeonCharacterFactory<Monster> {
+public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
 
     private static final String STATS_TABLE = "Monsters";
     private static final String FIRST_NAME_TABLE = "MonsterFirstNames";

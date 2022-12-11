@@ -16,7 +16,7 @@ public enum BuffType implements CharRepresentable {
 
     private static final BuffType[] POSITIVE_TYPES =
             Arrays.stream(values()).filter(
-                    (type) -> type != NONE && !type.isDebuff()
+                    type -> type != NONE && !type.isDebuff()
             ).toArray(BuffType[]::new);
 
     private final boolean myIsDebuff;

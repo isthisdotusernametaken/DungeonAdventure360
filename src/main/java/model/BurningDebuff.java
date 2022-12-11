@@ -18,7 +18,7 @@ public class BurningDebuff extends Buff {
     }
 
     @Override
-    void adjustStats(AdjustedCharacterStats theStats) {
+    void adjustStats(final AdjustedCharacterStats theStats) {
         theStats.multiplyResistances(getStatMultiplier());
     }
 }

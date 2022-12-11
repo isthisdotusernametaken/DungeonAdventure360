@@ -13,7 +13,7 @@ public class Menu {
 
     private static final int BACK = -2;
 
-    private final int INVALID_SELECTION = -1;
+    private static final int INVALID_SELECTION = -1;
     private static final String INVALID_SELECTION_MESSAGE =
             "Invalid menu option selected.";
 

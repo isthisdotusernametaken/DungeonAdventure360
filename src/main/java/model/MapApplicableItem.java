@@ -31,6 +31,5 @@ public abstract class MapApplicableItem extends Item {
         return Util.NONE;
     }
 
-    abstract boolean applyEffect(final Map theTarget,
-                                 final RoomCoordinates theCoords);
+    abstract boolean applyEffect(Map theTarget, RoomCoordinates theCoords);
 }

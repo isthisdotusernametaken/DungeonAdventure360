@@ -56,8 +56,8 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     void multiplyDamage(final double theMultiplier) {
-        myMinDamage *= theMultiplier;
-        myMaxDamage *= theMultiplier;
+        myMinDamage = Util.clampPositiveInt((int) (myMinDamage * theMultiplier));
+        myMaxDamage = Util.clampPositiveInt((int) (myMaxDamage * theMultiplier));
     }
 
     void multiplyHitChance(final double theMultiplier) {

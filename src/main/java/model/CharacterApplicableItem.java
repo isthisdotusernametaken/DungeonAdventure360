@@ -29,5 +29,5 @@ public abstract class CharacterApplicableItem extends Item {
         return Item.CANNOT_USE_HERE;
     }
 
-    abstract String applyEffect(final DungeonCharacter theTarget);
+    abstract String applyEffect(DungeonCharacter theTarget);
 }

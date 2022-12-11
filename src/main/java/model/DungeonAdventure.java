@@ -1,6 +1,7 @@
 package model;
 
-import java.io.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -98,7 +99,7 @@ public class DungeonAdventure implements Serializable {
     public static List<List<String>> getCharRepresentations() {
         return List.of(
                 Room.getContentTypesAndRepresentations(),
-                Dungeon.getStairRepresentations(),
+                Dungeon.getMapRepresentations(),
                 ItemFactory.getItemsAndRepresentation(),
                 TrapFactory.getInstance().getClassesAndRepresentations()
         );
@@ -228,8 +229,10 @@ public class DungeonAdventure implements Serializable {
     }
 
     public String getMonsterDebuffType() {
-        return getCurrentRoom().getMonster().getDamageType().getDebuffType()
-                .toString();
+        return getCurrentRoom().getMonster() != null ?
+               getCurrentRoom().getMonster().getDamageType().getDebuffType()
+                       .toString() :
+               Util.NONE;
     }
 
     public AttackResultAndAmount killMonster() throws IllegalStateException {
@@ -405,7 +408,7 @@ public class DungeonAdventure implements Serializable {
         requireAlive();
 
         if (myIsInCombat && myTurnAllocator.peekNextTurn()) {
-            AttackResultAndAmount attackResult;
+            final AttackResultAndAmount attackResult;
             if (theIsBasicAttack) {
                 attackResult = getCurrentRoom().attackMonster(myAdventurer);
             } else {

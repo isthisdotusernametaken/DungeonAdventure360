@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrapFactory extends DamageDealerFactory<Trap> {
+public final class TrapFactory extends DamageDealerFactory<Trap> {
 
     private static final String STATS_TABLE = "Traps";
 

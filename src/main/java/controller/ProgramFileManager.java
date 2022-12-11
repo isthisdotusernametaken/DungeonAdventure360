@@ -16,7 +16,7 @@ import java.util.List;
 
 import model.DungeonAdventure;
 
-public class ProgramFileManager {
+public final class ProgramFileManager {
 
     private static ProgramFileManager INSTANCE;
 

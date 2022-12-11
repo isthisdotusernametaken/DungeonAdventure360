@@ -19,8 +19,8 @@ public class SQLiteDBManager implements DBManager {
     private final Connection myConnection;
     private final Statement myStatement;
 
-    SQLiteDBManager() throws SQLException{
-        SQLiteDataSource dataSource = new SQLiteDataSource();
+    SQLiteDBManager() throws SQLException {
+        final SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:" + DB_FILE);
 
         try {
