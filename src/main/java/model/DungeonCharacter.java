@@ -173,6 +173,10 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     final void applyBuff(final BuffType theBuffType,
                          final int theDuration) throws IllegalArgumentException {
+        if (theBuffType == BuffType.NONE) {
+            return;
+        }
+
         Buff buff = getBuff(theBuffType);
         if (buff != null) {
             buff.changeDuration(theDuration);
