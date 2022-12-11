@@ -14,8 +14,6 @@ public class ArrayDungeon extends Dungeon {
     private static final double TRAP_CHANCE_PER_ROOM = 0.2;
     private static final double ITEM_CHANCE_PER_ROOM = 0.4;
 
-    private static final char UP_STAIRS = '↑';
-    private static final char DOWN_STAIRS = '↓';
     private static final String UNKNOWN_ROOM = createUnknownRoomString('~');
     // left/top wall + width/height of room contents + right/bottom wall
     private static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;

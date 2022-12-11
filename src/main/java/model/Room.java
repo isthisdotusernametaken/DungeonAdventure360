@@ -20,7 +20,7 @@ public class Room implements Serializable {
     private static final char ADVENTURER = '@';
     private static final char MONSTER = 'M';
     private static final char EMPTY = ' ';
-    private static final char MORE = '…';
+    private static final char MORE = '.';
     private static final char ENTRANCE = 'i';
     private static final char EXIT = 'o';
     private static final char BROKEN_TRAP = 'X';
