@@ -6,15 +6,16 @@ import java.util.List;
 
 public class Room implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 4590698579987805557L;
-
     /**
      * The width and length of the contents of a Room in its String
      * representation.
      * Should be >= 3
      */
     static final int ROOM_SIZE = 3;
+
+    @Serial
+    private static final long serialVersionUID = 4590698579987805557L;
+
     private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
     private static final char ADVENTURER = '@';
@@ -71,13 +72,13 @@ public class Room implements Serializable {
     }
 
     String toString(final boolean theHasAdventurer) {
-        StringBuilder theBuilder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
-        appendHorizontalWall(theBuilder, Direction.NORTH);
-        appendVerticalWallsAndContents(theBuilder, theHasAdventurer);
-        appendHorizontalWall(theBuilder, Direction.SOUTH);
+        appendHorizontalWall(builder, Direction.NORTH);
+        appendVerticalWallsAndContents(builder, theHasAdventurer);
+        appendHorizontalWall(builder, Direction.SOUTH);
 
-        return theBuilder.toString();
+        return builder.toString();
     }
 
     Container getContainer() {
@@ -167,7 +168,7 @@ public class Room implements Serializable {
     // *nts*
     private void appendVerticalWallsAndContents(final StringBuilder theBuilder,
                                                 final boolean theHasAdventurer) {
-        char[][] contents = roomContents(theHasAdventurer);
+        final char[][] contents = roomContents(theHasAdventurer);
 
         appendWallAndContentsLine(
                 theBuilder,
@@ -194,8 +195,8 @@ public class Room implements Serializable {
     }
 
     private char[][] roomContents(final boolean theHasAdventurer) {
-        char[][] contents = new char[ROOM_SIZE][ROOM_SIZE];
-        int[] position = new int[2]; // row, col
+        final char[][] contents = new char[ROOM_SIZE][ROOM_SIZE];
+        final int[] position = new int[2]; // row, col
         position[0] = position[1] = ROOM_SIZE - 1;
 
         if (theHasAdventurer) {
@@ -238,10 +239,10 @@ public class Room implements Serializable {
         stepBack(thePosition);
     }
 
-    private void stepBack(final int[] position) {
-        if (--position[1] < 0) {
-            position[0]--;
-            position[1] = ROOM_SIZE - 1;
+    private void stepBack(final int[] thePosition) {
+        if (--thePosition[1] < 0) {
+            thePosition[0]--;
+            thePosition[1] = ROOM_SIZE - 1;
         }
     }
 

@@ -17,7 +17,7 @@ public class NameGenerator {
         final String lastName = myLastNames[Util.randomIntExc(myLastNames.length)];
         final String firstName = myFirstNames[Util.randomIntExc(myFirstNames.length)];
 
-        return ("").equals(lastName) ?
+        return "".equals(lastName) ?
                firstName :
                firstName + ' ' + lastName;
     }

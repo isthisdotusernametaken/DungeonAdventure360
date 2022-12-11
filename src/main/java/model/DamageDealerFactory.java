@@ -45,13 +45,12 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
         );
     }
 
-    abstract T buildTemplate(final TemplateGenerator theTable)
+    abstract T buildTemplate(TemplateGenerator theTable)
             throws SQLException, IllegalArgumentException;
 
-    abstract T buildModifiedTemplate(final T theTemplate,
-                                     final Difficulty theDifficulty);
+    abstract T buildModifiedTemplate(T theTemplate, Difficulty theDifficulty);
 
-    abstract T createFromTemplate(final T theTemplate);
+    abstract T createFromTemplate(T theTemplate);
 
     private List<T> getUnmodifiedTemplates(final TemplateGenerator theTable)
             throws SQLException, IllegalArgumentException {

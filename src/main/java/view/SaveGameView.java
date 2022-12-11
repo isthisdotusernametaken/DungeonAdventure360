@@ -52,7 +52,7 @@ public class SaveGameView {
                 case 1 -> overwriteExisting(theController, files, selectFileMenu);
                 case 2 -> theController.saveGame();
                 default -> false; // Should never be encountered
-            }) {
+                }) {
                 System.out.println(GAME_SAVED);
                 break;
             }

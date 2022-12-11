@@ -6,7 +6,7 @@ public class ConsoleUI {
 
     private final Controller myController;
 
-    public ConsoleUI(Controller theController) {
+    public ConsoleUI(final Controller theController) {
         myController = theController;
     }
 

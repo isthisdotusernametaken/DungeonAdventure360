@@ -2,7 +2,7 @@ package model;
 
 public class MapFactory {
 
-    static Map create(RoomCoordinates theDimensions) {
+    static Map create(final RoomCoordinates theDimensions) {
         return new ArrayMap(theDimensions);
     }
 }

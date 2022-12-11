@@ -18,7 +18,7 @@ public class PoisonedDebuff extends Buff {
     }
 
     @Override
-    void adjustStats(AdjustedCharacterStats theStats) {
+    void adjustStats(final AdjustedCharacterStats theStats) {
         theStats.multiplyDamage(getStatMultiplier());
         theStats.multiplyResistances(getStatMultiplier());
     }

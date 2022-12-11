@@ -28,5 +28,5 @@ public abstract class RoomApplicableItem extends Item {
         return Item.CANNOT_USE_HERE;
     }
 
-    abstract String applyEffect(final Room theTarget);
+    abstract String applyEffect(Room theTarget);
 }

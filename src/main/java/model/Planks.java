@@ -11,7 +11,7 @@ public class Planks extends RoomApplicableItem {
     private static final char REPRESENTATION = '=';
     private static final String SUCCESS_MSG = "Trap boarded.\n";
 
-    Planks(int theCount) {
+    Planks(final int theCount) {
         super(
                 REPRESENTATION,
                 ItemType.PLANKS,

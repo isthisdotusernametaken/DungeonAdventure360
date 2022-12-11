@@ -18,7 +18,7 @@ public class SpeedBuff extends Buff {
     }
 
     @Override
-    void adjustStats(AdjustedCharacterStats theStats) {
+    void adjustStats(final AdjustedCharacterStats theStats) {
         theStats.multiplySpeed(getStatMultiplier());
     }
 }

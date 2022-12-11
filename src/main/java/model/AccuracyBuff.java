@@ -18,7 +18,7 @@ public class AccuracyBuff extends Buff {
     }
 
     @Override
-    void adjustStats(AdjustedCharacterStats theStats) {
+    void adjustStats(final AdjustedCharacterStats theStats) {
         theStats.multiplyHitChance(getStatMultiplier());
     }
 }

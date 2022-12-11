@@ -10,7 +10,7 @@ public class VisionPotion extends MapApplicableItem {
     private static final String NAME = createNameFromType(new VisionPotion(0));
     private static final char REPRESENTATION = 'V';
 
-    VisionPotion(int theCount) {
+    VisionPotion(final int theCount) {
         super(
                 REPRESENTATION,
                 ItemType.VISION_POTION,

@@ -1,12 +1,12 @@
 package model;
 
-import controller.ProgramFileManager;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import controller.ProgramFileManager;
 
 public class Container implements Serializable {
 
@@ -26,7 +26,7 @@ public class Container implements Serializable {
     }
 
     Item[] viewItems() {
-        Item[] items = new Item[myItems.size()];
+        final Item[] items = new Item[myItems.size()];
 
         int i = 0;
         for (Item item : myItems) {
@@ -53,7 +53,7 @@ public class Container implements Serializable {
                    final RoomCoordinates theCoords,
                    final boolean theIsInCombat) {
         final Item selectedItem = myItems.get(theIndex);
-        String result;
+        final String result;
 
         if (selectedItem instanceof CharacterApplicableItem) {
             try {

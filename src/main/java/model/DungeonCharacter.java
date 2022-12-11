@@ -1,10 +1,10 @@
 package model;
 
-import controller.ProgramFileManager;
-
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+
+import controller.ProgramFileManager;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
@@ -131,12 +131,12 @@ public abstract class DungeonCharacter extends DamageDealer {
     final int heal(final int theAmount) {
         clearDebuffs();
 
-        final int theSum = myHP + theAmount;
-        if (theSum > myMaxHP) {
+        final int sum = myHP + theAmount;
+        if (sum > myMaxHP) {
             myHP = myMaxHP;
-            return theAmount - (theSum - myMaxHP);
+            return theAmount - (sum - myMaxHP);
         }
-        myHP = theSum;
+        myHP = sum;
         return theAmount;
     }
 
@@ -173,6 +173,10 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     final void applyBuff(final BuffType theBuffType,
                          final int theDuration) throws IllegalArgumentException {
+        if (theBuffType == BuffType.NONE) {
+            return;
+        }
+
         Buff buff = getBuff(theBuffType);
         if (buff != null) {
             buff.changeDuration(theDuration);
@@ -193,7 +197,7 @@ public abstract class DungeonCharacter extends DamageDealer {
     }
 
     private AttackResultAndAmount advanceBuffs(final boolean theAllBuffs) {
-        List<Buff> toRemove = new ArrayList<>();
+        final List<Buff> toRemove = new ArrayList<>();
 
         final int previousHP = myHP;
         boolean dead = false;
@@ -244,7 +248,7 @@ public abstract class DungeonCharacter extends DamageDealer {
     }
 
     private void clearDebuffs() {
-        int buffCount = myBuffs.size();
+        final int buffCount = myBuffs.size();
         myBuffs.removeIf(buff -> buff.getType().isDebuff());
 
         if (myBuffs.size() != buffCount) {

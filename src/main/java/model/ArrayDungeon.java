@@ -14,7 +14,7 @@ public class ArrayDungeon extends Dungeon {
     private static final double TRAP_CHANCE_PER_ROOM = 0.2;
     private static final double ITEM_CHANCE_PER_ROOM = 0.4;
 
-    private static final String UNKNOWN_ROOM = createUnknownRoomString('~');
+    private static final String UNKNOWN_ROOM = createUnknownRoomString();
     // left/top wall + width/height of room contents + right/bottom wall
     private static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;
     private static final int HALF_TOTAL_ROOM_SIZE = TOTAL_ROOM_SIZE / 2;
@@ -60,8 +60,8 @@ public class ArrayDungeon extends Dungeon {
         );
     }
 
-    private static String createUnknownRoomString(final char theUnknown) {
-        final String unknownRoomRow = ("" + theUnknown)
+    private static String createUnknownRoomString() {
+        final String unknownRoomRow = ("" + UNKNOWN)
                                       .repeat(TOTAL_ROOM_SIZE);
 
         return (unknownRoomRow + '\n')
@@ -193,7 +193,11 @@ public class ArrayDungeon extends Dungeon {
                               final int theFloor,
                               final char theStairsChar,
                               final boolean theAppendNewLine) {
-        appendSpaces(myStairs[theFloor].getX(), theBuilder);
+        appendSpaces(
+                theBuilder,
+                myStairs[theFloor].getX() * TOTAL_ROOM_SIZE +
+                        HALF_TOTAL_ROOM_SIZE
+        );
 
         theBuilder.append(theStairsChar);
 
@@ -202,19 +206,9 @@ public class ArrayDungeon extends Dungeon {
         }
     }
 
-    private void appendSpaces(final int theX,
-                              final StringBuilder theBuilder) {
-        appendSpaces(
-                theBuilder,
-                theX * TOTAL_ROOM_SIZE + HALF_TOTAL_ROOM_SIZE
-        );
-    }
-
     private void appendSpaces(final StringBuilder theBuilder,
                               final int theSpaces) {
-        for (int i = 0; i < theSpaces; i++) {
-            theBuilder.append(' ');
-        }
+        theBuilder.append(" ".repeat(theSpaces));
     }
 
     private void appendRow(final StringBuilder theBuilder,
@@ -224,7 +218,7 @@ public class ArrayDungeon extends Dungeon {
                            final boolean theHideUnknown) {
         final String[][] rooms = Arrays.stream(viewRowAsArray(
                 theFloor, theRow, theAdventurerCoords, theHideUnknown
-        )).map((s) -> s.split("\n")).toArray(String[][]::new);
+        )).map(s -> s.split("\n")).toArray(String[][]::new);
 
         for (int i = 0; i < TOTAL_ROOM_SIZE; i++) {
             for (String[] room : rooms) {
@@ -500,9 +494,10 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
-        private static void addTerminalPointsAndPillars(final RoomCoordinates theDimensions,
-                                                        final Room[][][] theMaze,
-                                                        final RoomCoordinates[] theTerminalPoints) {
+        private static void addTerminalPointsAndPillars(
+                final RoomCoordinates theDimensions,
+                final Room[][][] theMaze,
+                final RoomCoordinates[] theTerminalPoints) {
             final Pillar[] pillars = Pillar.createPillars();
             final RoomCoordinates[] terminalPointsAndPillars = randomTerminalPointsAndPillars(
                     theDimensions, pillars.length
@@ -556,8 +551,9 @@ public class ArrayDungeon extends Dungeon {
             return rooms;
         }
 
-        private static RoomCoordinates randomDifferentCoords(final RoomCoordinates theDimensions,
-                                                             final RoomCoordinates ... theOtherCoords) {
+        private static RoomCoordinates randomDifferentCoords(
+                final RoomCoordinates theDimensions,
+                final RoomCoordinates ... theOtherCoords) {
             RoomCoordinates newCoords;
             do {
                 newCoords = randomCoords(theDimensions);
@@ -566,10 +562,11 @@ public class ArrayDungeon extends Dungeon {
             return newCoords;
         }
 
-        private static RoomCoordinates randomDifferentCoordsOnWall(final RoomCoordinates theDimensions,
-                                                                   final int theFloor,
-                                                                   final boolean theNorthAndSouthOnly,
-                                                                   final RoomCoordinates theOtherCoords) {
+        private static RoomCoordinates randomDifferentCoordsOnWall(
+                final RoomCoordinates theDimensions,
+                final int theFloor,
+                final boolean theNorthAndSouthOnly,
+                final RoomCoordinates theOtherCoords) {
             RoomCoordinates newCoords;
             do {
                 newCoords = randomCoordsOnWall(
@@ -606,7 +603,10 @@ public class ArrayDungeon extends Dungeon {
         private static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
                                                           final int theFloor,
                                                           final boolean theNorthAndSouthOnly) {
-            return switch (Util.randomIntExc(theNorthAndSouthOnly ? 2 : 4)) {
+            final int directionCount = Direction.values().length;
+            return switch (Util.randomIntExc(
+                    theNorthAndSouthOnly ? directionCount / 2 : directionCount
+                )) {
                 // North wall
                 case 0 -> new RoomCoordinates(
                         theFloor,

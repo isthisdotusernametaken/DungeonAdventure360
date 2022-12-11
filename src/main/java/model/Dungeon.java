@@ -6,11 +6,12 @@ import java.util.List;
 
 public abstract class Dungeon implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = -6235438913940504967L;
-
     static final char UP_STAIRS = '^';
     static final char DOWN_STAIRS = 'v';
+    static final char UNKNOWN = '~';
+
+    @Serial
+    private static final long serialVersionUID = -6235438913940504967L;
 
     private final Map myMap;
 
@@ -18,10 +19,11 @@ public abstract class Dungeon implements Serializable {
         myMap = theMap;
     }
 
-    static List<String> getStairRepresentations() {
+    static List<String> getMapRepresentations() {
         return List.of(
                 UP_STAIRS + ": Stairs to floor above",
-                DOWN_STAIRS + ": Stairs to floor below"
+                DOWN_STAIRS + ": Stairs to floor below",
+                UNKNOWN + ": Unexplored area"
         );
     }
 
