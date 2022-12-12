@@ -41,10 +41,10 @@ public class SpeedTest {
         private final double mySlope;
         private final double myOffset;
 
-        LinearEquation(final double theFirstX,
-                       final double theFirstY,
-                       final double theSecondX,
-                       final double theSecondY) {
+        private LinearEquation(final double theFirstX,
+                               final double theFirstY,
+                               final double theSecondX,
+                               final double theSecondY) {
             mySlope = calculateSlope(
                     theFirstX, theFirstY,
                     theSecondX, theSecondY
@@ -53,10 +53,6 @@ public class SpeedTest {
                     theFirstX, theFirstY,
                     mySlope
             );
-        }
-
-        double evaluate(final double theX) {
-            return mySlope * theX + myOffset;
         }
 
         private static double calculateSlope(final double theFirstX,
@@ -70,6 +66,10 @@ public class SpeedTest {
                                               final double theFirstY,
                                               final double theSlope) {
             return theFirstY - theSlope * theFirstX;
+        }
+
+        private double evaluate(final double theX) {
+            return mySlope * theX + myOffset;
         }
     }
 }
