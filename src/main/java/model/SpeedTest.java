@@ -55,10 +55,6 @@ public class SpeedTest {
             );
         }
 
-        double evaluate(final double theX) {
-            return mySlope * theX + myOffset;
-        }
-
         private static double calculateSlope(final double theFirstX,
                                              final double theFirstY,
                                              final double theSecondX,
@@ -70,6 +66,10 @@ public class SpeedTest {
                                               final double theFirstY,
                                               final double theSlope) {
             return theFirstY - theSlope * theFirstX;
+        }
+
+        double evaluate(final double theX) {
+            return mySlope * theX + myOffset;
         }
     }
 }
