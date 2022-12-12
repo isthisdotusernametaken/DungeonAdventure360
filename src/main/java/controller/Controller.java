@@ -34,19 +34,28 @@ public final class Controller {
     }
 
     public static void main(final String[] theArgs) {
-        if (ProgramFileManager.tryCreateInstance()) {
-            if (DungeonAdventure.buildFactories()) {
-                new Controller().myUI.run();
+        try {
+            if (ProgramFileManager.tryCreateInstance()) {
+                if (DungeonAdventure.buildFactories()) {
+                    new Controller().myUI.run();
+                } else {
+                    System.out.println(COULD_NOT_START);
+
+                    System.out.print(FAILURE_DETAILS);
+                    System.out.println(
+                            ProgramFileManager.getInstance().getLogPath()
+                    );
+                }
             } else {
                 System.out.println(COULD_NOT_START);
-
-                System.out.print(FAILURE_DETAILS);
-                System.out.println(
-                        ProgramFileManager.getInstance().getLogPath()
-                );
             }
-        } else {
-            System.out.println(COULD_NOT_START);
+        } catch (Exception e) {
+            // Should never be encountered. Last resort to avoid printing
+            // exception to user
+            if (ProgramFileManager.tryCreateInstance()) {
+                ProgramFileManager.getInstance().logException(e, false);
+            }
+            System.out.println("Unexpected exit.");
         }
     }
 
