@@ -208,7 +208,7 @@ public class ArrayDungeon extends Dungeon {
 
     private void appendSpaces(final StringBuilder theBuilder,
                               final int theSpaces) {
-        theBuilder.append(" ".repeat(theSpaces));
+        theBuilder.append(" ".repeat(Math.max(0, theSpaces)));
     }
 
     private void appendRow(final StringBuilder theBuilder,
