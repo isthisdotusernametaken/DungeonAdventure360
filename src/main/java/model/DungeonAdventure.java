@@ -459,8 +459,8 @@ public class DungeonAdventure implements Serializable {
 
     private void recalculateTurnAllocation() {
         myTurnAllocator = new TurnAllocator(
-                myAdventurer.getSpeed(),
-                getCurrentRoom().getMonster().getSpeed()
+                myAdventurer.getAdjustedSpeed(),
+                getCurrentRoom().getMonster().getAdjustedSpeed()
         );
     }
 
