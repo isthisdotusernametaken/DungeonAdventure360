@@ -362,11 +362,16 @@ public class DungeonAdventure implements Serializable {
         if (!theCoords.isSameRoom(myAdventurerCoordinates)) {
             myAdventurerCoordinates = theCoords;
             myDungeon.getMap().explore(myAdventurerCoordinates);
+
             final AttackResultAndAmount buffDamage = advanceOutOfCombat();
+            final AttackResultAndAmount trapDamage = myIsAlive ?
+                    getCurrentRoom().activateTrap(myAdventurer) :
+                    AttackResultAndAmount.getNoAmount(AttackResult.NO_ACTION);
+            testDead(trapDamage);
 
             return new AttackResultAndAmount[]{
                     buffDamage,
-                    getCurrentRoom().activateTrap(myAdventurer)
+                    trapDamage
             };
         }
 
@@ -434,7 +439,10 @@ public class DungeonAdventure implements Serializable {
         testEnterCombat();
         myAdventurer.getSpecialSkill().advance();
 
-        return myAdventurer.advanceDebuffs();
+        final AttackResultAndAmount result = myAdventurer.advanceDebuffs();
+        testDead(result);
+
+        return result;
     }
 
     private AttackResultAndAmount advanceInCombat() {
