@@ -9,6 +9,15 @@ import java.util.stream.Stream;
 
 import controller.ProgramFileManager;
 
+/**
+ * This class manages the interactions between the other high-level classes in
+ * the model to produce the overall behavior for exploring, using items, and
+ * combat.
+ *
+ * If a menu has cheats (such as revealing all rooms on the map) they can be
+ * accessed with the hidden menu option "oop" (without quotes; defined in
+ * view.InputReader).
+ */
 public class DungeonAdventure implements Serializable {
 
     @Serial
