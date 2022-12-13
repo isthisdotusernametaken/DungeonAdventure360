@@ -81,8 +81,8 @@ public class PlayGuide {
         Combat is turn based, and the number and order of turns given to the
         Adventurer and the Monster is based on their relative speeds. For
         example, if the Adventurer's speed is 7 and the Monster's speed is 3,
-        the ratio of the speeds is 2 + ⅓, and the Adventurer will go first and
-        have 2 turns with a ⅓ chance to have an extra turn, followed by one
+        the ratio of the speeds is 2 + 1/3, and the Adventurer will go first and
+        have 2 turns with a 1/3 chance to have an extra turn, followed by one
         turn for the Monster before this cycle repeats.
         
         If the relative speeds of the Adventurer and Monster are changed at the
@@ -98,7 +98,7 @@ public class PlayGuide {
         combat to a nearby room on the same floor.
         The player can also open their inventory and use items such as health
         potions and buff potions during their turn, which does not use the
-        Adventurer's turn — be careful not to use all your items too fast,
+        Adventurer's turn - be careful not to use all your items too fast,
         though, since you may run out when you need them in combat later.
         
         The Monster and Adventurer can inflict debuffs on each other with their
