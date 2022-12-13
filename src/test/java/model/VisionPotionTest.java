@@ -5,20 +5,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VisionPotionTest {
-    private final VisionPotion myVisionPotion = new VisionPotion(99);
-    private final RoomCoordinates myCoordinates = new RoomCoordinates(1,2,2);
-    private final Map myMap = new ArrayMap(myCoordinates);
+    private static final VisionPotion myVisionPotion = new VisionPotion(99);
+    private static final RoomCoordinates myCoordinates = new RoomCoordinates(1,2,2);
+    private static final Map myMap = new ArrayMap(myCoordinates);
 
     @Test
     void testApplyEffect() {
-        assertEquals(false, myVisionPotion.applyEffect(myMap, myCoordinates)); //Not sure about this
+        boolean expected = false;
+
+        assertEquals(expected, myVisionPotion.applyEffect(myMap, myCoordinates)); //Not sure about this
     }
 
     @Test
     void testCopy() {
-        Item expected = new VisionPotion(2);
+        Item myItem = new VisionPotion(2);
+        ItemType expected = myItem.getType();
 
-        assertEquals(expected.getType(), myVisionPotion.getType());
+        assertEquals(expected, myVisionPotion.getType());
     }
 
     @Test

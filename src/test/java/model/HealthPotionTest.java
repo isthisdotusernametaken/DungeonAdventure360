@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class HealthPotionTest {
-    private final HealthPotion myHealthPotion = new HealthPotion(99);
-    private final DungeonCharacter myCharacter =  new Adventurer(
+    private static final HealthPotion myHealthPotion = new HealthPotion(99);
+    private static final DungeonCharacter myCharacter =  new Adventurer(
             "Dark LORD",
             "Warrior",
             200,

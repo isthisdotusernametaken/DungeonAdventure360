@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ItemTest {
 
     private static final int SIZE = 4;
-    private Item[] myItems = new Item[SIZE];
+    private static final Item[] myItems = new Item[SIZE];
 
     @BeforeEach
     void createObjectArray() {
@@ -28,6 +28,7 @@ public class ItemTest {
                 "Health Potion",
                 "Strength Potion"
         };
+
         for (int i = 0; i < SIZE; i++) {
             assertEquals(expected[i], myItems[i].getName());
         }
@@ -41,6 +42,7 @@ public class ItemTest {
                 "Health Potion: 1",
                 "Strength Potion: 1"
         };
+
         for (int i = 0; i < SIZE; i++) {
             assertEquals(expected[i], myItems[i].toString());
         }
@@ -49,23 +51,24 @@ public class ItemTest {
     @Test
     void testCharRepresentation() {
         char[] expected = {'=', 'V', 'H', 'S'};
+
         for (int i = 0; i < SIZE; i++) {
             assertEquals(expected[i], myItems[i].charRepresentation());
         }
     }
 
-    @Test
-    void testCanChangeCount() {
-        boolean[] expected = {
-                true,
-                true,
-                true,
-                true
-        };
-        for (int i = 0; i < SIZE; i++) {
-            assertEquals(expected[i], myItems[i].canChangeCount());
-        }
-    }
+//    @Test
+//    void testCanChangeCount() {
+//        boolean[] expected = {
+//                true,
+//                true,
+//                true,
+//                true
+//        };
+//        for (int i = 0; i < SIZE; i++) {
+//            assertEquals(expected[i], myItems[i].canChangeCount());
+//        }
+//    }
 
     @Test
     void testGetCount() {
@@ -75,6 +78,7 @@ public class ItemTest {
                 1,
                 1
         };
+
         for (int i = 0; i < SIZE; i++) {
             assertEquals(expected[i], myItems[i].getCount());
         }
@@ -83,13 +87,14 @@ public class ItemTest {
     @Test
     void testAddToStack() {
         int[] expected = {
-                10000,
-                10001,
-                10002,
-                10003
+                997,
+                998,
+                999,
+                999
         };
+
         for (int i = 0; i < SIZE; i++) {
-            myItems[i].addToStack(9999 + i);
+            myItems[i].addToStack(996 + i);
             assertEquals(expected[i], myItems[i].getCount());
         }
     }
@@ -97,13 +102,14 @@ public class ItemTest {
     @Test
     void testConsume() {
         int[] expected = {
-                9999,
-                10000,
-                10001,
-                10002
+                990,
+                991,
+                992,
+                993
         };
+
         for (int i = 0; i < SIZE; i++) {
-            myItems[i].addToStack(9999 + i);
+            myItems[i].addToStack(990 + i);
             myItems[i].consume();
             assertEquals(expected[i], myItems[i].getCount());
         }
@@ -111,7 +117,9 @@ public class ItemTest {
 
     @Test
     void testIsSameType() {
-        assertTrue(myItems[1].isSameType(new VisionPotion(2)));
+        Item expected = myItems[1];
+
+        assertTrue(expected.isSameType(new VisionPotion(2)));
     }
 
 }

@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PillarTest {
-    private Pillar myPillar = new Pillar(ItemType.ABSTRACTION, 'H');
-    final Pillar[] myAPillar = Pillar.createPillars();
+    private static final Pillar myPillar = new Pillar(ItemType.ABSTRACTION, 'H');
+    private static final Pillar[] myAPillar = Pillar.createPillars();
 
     @Test
     void testCopy() {
-        Item expected = new Pillar(ItemType.ABSTRACTION, 'H') ;
-        assertEquals(expected.getType(), myPillar.copy().getType());
+        Item myItem = new Pillar(ItemType.ABSTRACTION, 'H') ;
+        ItemType expected = myItem.getType();
+
+        assertEquals(
+                expected,
+                myPillar.copy().getType());
     }
 
     @Test
@@ -24,13 +28,16 @@ public class PillarTest {
         };
 
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i].getType(), myAPillar[i].getType());
+            assertEquals(
+                    expected[i].getType(),
+                    myAPillar[i].getType());
         }
     }
 
     @Test
     void testGetName() {
         String expected = "Abstraction";
+
         assertEquals(expected, myPillar.getName());
     }
 }

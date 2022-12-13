@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuffPotionTest {
-    private final BuffPotion myBuffPotion = new BuffPotion(99, BuffType.STRENGTH);
 
+    private final BuffPotion myBuffPotion = new BuffPotion(99, BuffType.STRENGTH);
     private final DungeonCharacter myCharacter =  new Adventurer(
             "Dark LORD",
             "Warrior",

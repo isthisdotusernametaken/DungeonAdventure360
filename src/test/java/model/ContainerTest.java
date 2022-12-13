@@ -13,7 +13,6 @@ public class ContainerTest {
             new VisionPotion(2),
             new BuffPotion(1, BuffType.STRENGTH)
     );
-
     private final Monster myMonster = new Monster(
             "Skeleton",
             "Skeleton",
@@ -29,7 +28,6 @@ public class ContainerTest {
             0.3,
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2})
     );
-
     Trap myTrap = new Trap(
             "Pit",
             true,
@@ -42,7 +40,6 @@ public class ContainerTest {
             DamageType.SHARP,
             0,
             'P');
-
     Map myMap = new ArrayMap(new RoomCoordinates(1,2,3));
     Item myItem = new VisionPotion(1);
     Room myRoom = new Room(theBoolean, myTrap, myMonster, true, true, myItem );

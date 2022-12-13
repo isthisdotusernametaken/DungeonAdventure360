@@ -32,13 +32,13 @@ public class BuffTypeTest {
     void getCharRepresentation() {
         assertEquals(' ', BuffType.NONE.charRepresentation());
         assertEquals('S', BuffType.STRENGTH.charRepresentation());
-        assertEquals('→', BuffType.SPEED.charRepresentation());
-        assertEquals('Ꙩ', BuffType.ACCURACY.charRepresentation());
+        assertEquals('>', BuffType.SPEED.charRepresentation());
+        assertEquals('^', BuffType.ACCURACY.charRepresentation());
         assertEquals('R', BuffType.RESISTANCE.charRepresentation());
-        assertEquals('<', BuffType.BROKEN_BONE.charRepresentation());
-        assertEquals('♨', BuffType.BURNING.charRepresentation());
+        assertEquals('{', BuffType.BROKEN_BONE.charRepresentation());
+        assertEquals('F', BuffType.BURNING.charRepresentation());
         assertEquals('B', BuffType.BLEEDING.charRepresentation());
-        assertEquals('☠', BuffType.POISONED.charRepresentation());
+        assertEquals('C', BuffType.POISONED.charRepresentation());
     }
 
     @Test

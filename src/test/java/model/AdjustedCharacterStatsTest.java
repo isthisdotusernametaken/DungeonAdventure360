@@ -54,6 +54,7 @@ public class AdjustedCharacterStatsTest {
     @Test
     void multiplyDamageTest () {
         stats.multiplyDamage(2);
+
         assertEquals(30, stats.getMinDamage());
         assertEquals(50, stats.getMaxDamage());
     }
@@ -61,18 +62,21 @@ public class AdjustedCharacterStatsTest {
     @Test
     void multiplyHitChanceTest () {
         stats.multiplyHitChance(200000);
+
         assertEquals(1.0, stats.getHitChance());
     }
 
     @Test
     void multiplySpeedTest () {
         stats.multiplySpeed(9999);
-        assertEquals(39996, stats.getSpeed());
+
+        assertEquals(1000, stats.getSpeed());
     }
 
     @Test
     void multiplyResistancesTest () {
         stats.multiplyResistances(99999999);
+
         assertEquals(1.0, stats.getResistance(DamageType.NORMAL));
         assertEquals(1.0, stats.getResistance(DamageType.SHARP));
         assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
@@ -86,6 +90,7 @@ public class AdjustedCharacterStatsTest {
         stats.multiplyHitChance(200000);
         stats.multiplySpeed(9999);
         stats.resetStats();
+
         assertEquals(15, stats.getMinDamage());
         assertEquals(25, stats.getMaxDamage());
         assertEquals(0.5, stats.getHitChance());
@@ -96,6 +101,7 @@ public class AdjustedCharacterStatsTest {
     void resetResistancesTest () {
         stats.multiplyResistances(2);
         stats.resetResistances();
+
         assertEquals(0.1, stats.getResistance(DamageType.NORMAL));
         assertEquals(0.1, stats.getResistance(DamageType.SHARP));
         assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
