@@ -1,16 +1,26 @@
 package view;
 
-import java.util.Arrays;
-
 import controller.Controller;
+
+import java.util.Arrays;
 
 public class SaveGameView {
 
+    /**
+     * String description to alert the game is saved.
+     */
     private static final String GAME_SAVED =
             "Game saved.\n";
 
+    /**
+     * String description to alert the game is saved to most recently saved file.
+     */
     private static final String SAVE_MOST_RECENT =
             "Save to most recently saved file";
+
+    /**
+     * Sets up a New or Overwrite menu.
+     */
     private static final Menu NEW_OR_OVERWRITE_MENU = new Menu(
             "Choose a saving option",
             new String[]{
@@ -22,14 +32,35 @@ public class SaveGameView {
             true
     );
 
+    /**
+     * String format template to prompt for player's input for save file's name.
+     */
     private static final String ENTER_FILENAME =
             "Enter the name of a nonexistent file to save your file to (or " +
             Menu.EXIT_OPTION + " to return to the previous menu).";
+
+    /**
+     * String format template to prompt for player's input for save file's name.
+     */
     private static final String CHOOSE_FILE_PROMPT =
             "Select a file to save your game to";
+
+    /**
+     * String description to alert the saved file game is already existed.
+     */
     private static final String FILE_EXISTS =
             "That file already exists.\n";
 
+
+    /**
+     * Displays the Save Game Menu, gets and performs action for the
+     * selected menu option chosen by the player.
+     *
+     * @param theController  The game controller to call public methods of the model in response so the game updates,
+     *                       and to return the result of interacting with the game
+     *                       to the UI in a format the UI can print.
+     * @return The menu signal in the save game menu.
+     */
     static MenuSignal open(final Controller theController) {
         final String[] files = theController.getSaveFiles();
         final Menu selectFileMenu = new Menu(
@@ -61,6 +92,16 @@ public class SaveGameView {
         return MenuSignal.PREVIOUS;
     }
 
+    /**
+     * Creates new save file's name
+     *
+     * @param theController  The game controller to call public methods of the model in response so the game updates,
+     *                       and to return the result of interacting with the game
+     *                       to the UI in a format the UI can print.
+     * @param theFiles       The list of the existed saved files.
+     *
+     * @return The boolean true or false if the file has already existed or exit option is selected
+     */
     private static boolean createNew(final Controller theController,
                                      final String[] theFiles) {
         String file;
@@ -79,6 +120,17 @@ public class SaveGameView {
         }
     }
 
+    /**
+     * Overwrites the content of the existing saved file.
+     *
+     * @param theController  The game controller to call public methods of the model in response so the game updates,
+     *                       and to return the result of interacting with the game
+     *                       to the UI in a format the UI can print.
+     * @param theFiles       The list of the existed saved files.
+     * @param theMenu        The menu class to get the player's input selection.
+     *
+     * @return The boolean true or false if the overwrite process is successfully done.
+     */
     private static boolean overwriteExisting(final Controller theController,
                                              final String[] theFiles,
                                              final Menu theMenu) {

@@ -5,7 +5,7 @@ import controller.Controller;
 public class ConsoleUI {
 
     /**
-     * The game controller to handle and access other utilities of the game
+     * The game controller to handle and access other utilities of the game.
      */
     private final Controller myController;
 
@@ -14,7 +14,7 @@ public class ConsoleUI {
     }
 
     /**
-     * Begins the processing of the console user interface menu for the dungeon game
+     * Begins the processing of the console user interface menu for the dungeon game.
      *
      */
     public void run() {
@@ -34,12 +34,11 @@ public class ConsoleUI {
     }
 
     /**
-     * Calls and performs actions of the
-     * selected menu option chosen by the player
+     * Calls and opens the selected menu option chosen by the player.
      *
      * @param theSignal The menu signal of the dungeon game to decide
-     *                  which menu option to function
-     * @return The type of menu signal after the actions has already performed or finished
+     *                  which menu option to function.
+     * @return The type of menu signal after the actions has already performed or finished.
      */
     private MenuSignal callFromSignal(final MenuSignal theSignal) {
         return switch (theSignal) {

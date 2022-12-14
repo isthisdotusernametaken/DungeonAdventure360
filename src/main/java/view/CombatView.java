@@ -13,7 +13,7 @@ public class CombatView {
     /**
      * Setting up a Combat Menu panel for in combat-use only.
      * The Combat Menu includes the menu descriptions
-     * and the menu options associated with that descriptions
+     * and the menu key options associated with that descriptions.
      *
      */
     private static final Menu COMBAT_MENU = new Menu(
@@ -36,8 +36,8 @@ public class CombatView {
     );
 
     /**
-     * Setting up Secret Menu panel for combat-use.
-     * The menu will serve as the cheat option for player
+     * Sets up Secret Menu panel for combat-use.
+     * The menu will serve as the cheat option for player.
      *
      */
     private static final Menu SECRET_MENU = new Menu(
@@ -52,12 +52,12 @@ public class CombatView {
 
     /**
      * Displays the Combat Menu, gets and performs action for the
-     * selected menu option chosen by the player
+     * selected menu option chosen by the player.
      *
      * @param theController  The game controller to call public methods of the model in response so the game updates,
      *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print
-     * @return The menu signal in the combat menu chosen by the player
+     *                       to the UI in a format the UI can print.
+     * @return The menu signal in the combat menu chosen by the player.
      */
     static MenuSignal open(final Controller theController) {
         MenuSignal internalSignal = MenuSignal.PREVIOUS;
@@ -95,13 +95,13 @@ public class CombatView {
 
     /**
      * Plays the monster turn after the player's turn has already finished
-     * and displays the statistics result after the monster performed its attack
+     * and displays the statistics result after the monster performed its attack.
      *
      *
      * @param theController  The game controller to call public methods of the model in response so the game updates,
      *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print
-     * @return The menu signal after the monster performs its attack
+     *                       to the UI in a format the UI can print.
+     * @return The menu signal after the monster performs its attack.
      */
     private static MenuSignal playMonsterTurns(final Controller theController) {
         while (theController.isMonsterTurn()) {
@@ -129,11 +129,11 @@ public class CombatView {
     }
 
     /**
-     * Displays all the current stats of the combatants during battle
+     * Displays all the current stats of the combatants during battle.
      *
      * @param theController  The game controller to call public methods of the model in response so the game updates,
      *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print
+     *                       to the UI in a format the UI can print.
      */
     private static void printCombatants(final Controller theController) {
         System.out.println(theController.getAdventurer());
@@ -141,12 +141,12 @@ public class CombatView {
     }
 
     /**
-     * Accesses the secret menu and kills the monster when
-     * the option is selected by player
+     * Accesses the secret menu and perform cheat action in combat mode
+     * when selected by the player.
      *
      * @param theController  The game controller to call public methods of the model in response so the game updates,
      *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print
+     *                       to the UI in a format the UI can print.
      */
     private static void openSecretMenu(final Controller theController) {
         if (SECRET_MENU.select() == 0) {

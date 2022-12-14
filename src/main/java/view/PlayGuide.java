@@ -1,13 +1,16 @@
 package view;
 
-import java.util.List;
-import java.util.function.BinaryOperator;
-
 import model.DungeonAdventure;
 import model.Util;
 
+import java.util.List;
+import java.util.function.BinaryOperator;
+
 public class PlayGuide {
 
+    /**
+     * String format template for the main guide.
+     */
     private static final String MAIN_GUIDE = """
         Collect all 4 Pillars of OO (Abstraction, Encapsulation, Inheritance,
         and Polymorphism) and reach the exit to win.
@@ -15,6 +18,10 @@ public class PlayGuide {
         drops to 0, the dungeon will consume you...
         
         Select a guide to view""";
+
+    /**
+     * String format template for the User Interface guide.
+     */
     private static final String UI_GUIDE = """
         The player's interaction with the UI involves menus and prompts.
         
@@ -28,6 +35,10 @@ public class PlayGuide {
         Adventurer," and waiting for the user to enter a name to assign to the
         Adventurer).
         """;
+
+    /**
+     * String format template for the adventurer guide.
+     */
     private static final String ADVENTURER_GUIDE = """
         The player is represented by a character known as an Adventurer.
         
@@ -39,6 +50,10 @@ public class PlayGuide {
         The player must choose an Adventurer to begin a game, and the player
         will keep that Adventurer for the entirety of that game.
         """;
+
+    /**
+     * String format template for the exploration guide.
+     */
     private static final String EXPLORATION_GUIDE = """
         The main view that the player will see is the Exploration menu.
         
@@ -74,6 +89,10 @@ public class PlayGuide {
         
         The play guide can be opened from the Exploration menu at any time.
         """;
+
+    /**
+     * String format template for the combat guide.
+     */
     private static final String COMBAT_GUIDE = """
         When the Adventurer enters a room that contains a Monster, the Combat
         menu will automatically open.
@@ -114,6 +133,10 @@ public class PlayGuide {
         
         The play guide can be opened from the Combat menu at any time.
         """;
+
+    /**
+     * String format template for the inventory guide.
+     */
     private static final String INVENTORY_GUIDE = """
         While exploring or in combat, the player can open their inventory to
         view and use their current items.
@@ -131,13 +154,18 @@ public class PlayGuide {
         The player can add items to their inventory by collecting them from the
         current room.
         """;
-
     private static Menu GUIDE_MENU;
     private static String REPRESENTATIONS;
 
     private static final BinaryOperator<String> CONCATENATOR =
             (str1, str2) -> str1 + "\n  " + str2;
 
+    /**
+     * Displays the Play Guide Menu, gets and performs action for the
+     * selected menu option chosen by the player.
+     *
+     * @return The menu signal in the play guide menu chosen by the player.
+     */
     static MenuSignal open() {
         final Menu guideMenu = getGuideMenu();
 
@@ -161,6 +189,11 @@ public class PlayGuide {
         }
     }
 
+    /**
+     * Constructs and sets the Play Guide menus of the game.
+     *
+     * @return The play guide menu.
+     */
     private static Menu getGuideMenu() {
         if (GUIDE_MENU == null) {
             buildRepresentationsGuide();
@@ -183,6 +216,9 @@ public class PlayGuide {
         return GUIDE_MENU;
     }
 
+    /**
+     * Constructs the representation guide.
+     */
     private static void buildRepresentationsGuide() {
         final List<List<String>> representations =
                 DungeonAdventure.getCharRepresentations();
@@ -195,6 +231,7 @@ public class PlayGuide {
                 "\nTraps:\n  " + concatenateFormatted(representations.get(3)) +
                 '\n';
     }
+
 
     private static String concatenateFormatted(final List<String> theStrings) {
         return theStrings.stream().reduce(CONCATENATOR).orElse(Util.NONE);
