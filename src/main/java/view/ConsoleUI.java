@@ -4,12 +4,19 @@ import controller.Controller;
 
 public class ConsoleUI {
 
+    /**
+     * The game controller to handle and access other utilities of the game
+     */
     private final Controller myController;
 
     public ConsoleUI(final Controller theController) {
         myController = theController;
     }
 
+    /**
+     * Begins the processing of the console user interface menu for the dungeon game
+     *
+     */
     public void run() {
         MenuSignal previousMenu = MenuSignal.TITLE_SCREEN;
         MenuSignal currentMenu = MenuSignal.TITLE_SCREEN;
@@ -26,6 +33,14 @@ public class ConsoleUI {
         }
     }
 
+    /**
+     * Calls and performs actions of the
+     * selected menu option chosen by the player
+     *
+     * @param theSignal The menu signal of the dungeon game to decide
+     *                  which menu option to function
+     * @return The type of menu signal after the actions has already performed or finished
+     */
     private MenuSignal callFromSignal(final MenuSignal theSignal) {
         return switch (theSignal) {
             case TITLE_SCREEN -> TitleScreen.open(myController);
