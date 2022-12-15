@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ContainerTest {
 
-    private final boolean[] theBoolean = {true};
+    private static final boolean[] theBoolean = {true};
     private final Container myContainer = new Container(
             new VisionPotion(2),
             new BuffPotion(1, BuffType.STRENGTH)
     );
-    private final Monster myMonster = new Monster(
+    private static final Monster myMonster = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -28,7 +28,7 @@ public class ContainerTest {
             0.3,
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2})
     );
-    Trap myTrap = new Trap(
+    private static final Trap myTrap = new Trap(
             "Pit",
             true,
             true,
@@ -40,10 +40,10 @@ public class ContainerTest {
             DamageType.SHARP,
             0,
             'P');
-    Map myMap = new ArrayMap(new RoomCoordinates(1,2,3));
-    Item myItem = new VisionPotion(1);
-    Room myRoom = new Room(theBoolean, myTrap, myMonster, true, true, myItem );
-    RoomCoordinates myCoords = new RoomCoordinates(1,2,3);
+    private static final Map myMap = new ArrayMap(new RoomCoordinates(1,2,3));
+    private static final Item myItem = new VisionPotion(1);
+    private static final Room myRoom = new Room(theBoolean, myTrap, myMonster, true, true, myItem );
+    private static final RoomCoordinates myCoords = new RoomCoordinates(1,2,3);
 
     @Test
     void testViewItemAsStrings() {
