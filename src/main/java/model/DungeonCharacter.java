@@ -1,10 +1,10 @@
 package model;
 
-import controller.ProgramFileManager;
-
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+
+import controller.ProgramFileManager;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
