@@ -1,40 +1,40 @@
 package view;
 
-import model.Util;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import model.Util;
+
+/**
+ * This class centralizes the behavior for reading valid input from the
+ * console.
+ */
 public class InputReader {
 
     /**
      * A scanner to get console input from the player.
-     *
      */
     private static Scanner CONSOLE_INPUT = new Scanner(System.in);
 
     /**
-     * Integer value representing the allowed minimum length for player's name.
-     *
+     * Integer value representing the allowed minimum length for names within
+     * the program, including game names and Adventurer names.
      */
     private static final int MIN_NAME_LENGTH = 1;
 
     /**
-     * Integer value representing the allowed maximum length for player's name.
-     *
+     * Integer value representing the allowed maximum length for names.
      */
     private static final int MAX_NAME_LENGTH = 30;
 
     /**
-     * Characters representing the allowed special characters for player's name.
-     *
+     * Characters representing the allowed special characters for names.
      */
     private static final String SPECIAL_CHARS = "()',._-";
 
     /**
-     * Regex string representing the allowed patterns and range of characters and length
-     * for player's name.
-     *
+     * Regex string representing the allowed patterns and range of characters
+     * and length for names.
      */
     private static final String NAME_REGEX =
             "(?=.*[\\dA-Za-z" + SPECIAL_CHARS + "])" +
@@ -42,8 +42,7 @@ public class InputReader {
             "{" + MIN_NAME_LENGTH + "," + MAX_NAME_LENGTH + "}";
 
     /**
-     * String format template to prompt for player name
-     *
+     * Description and prompt to enter a name that fits the regex
      */
     private static final String NAME_PROMPT =
             "Enter a name between " + MIN_NAME_LENGTH + " and " +
@@ -53,20 +52,17 @@ public class InputReader {
 
 
     /**
-     * String format template to wait for input prompt from the player.
-     *
+     * Prompt for any input.
      */
     private static final String WAIT_PROMPT = "Press enter to continue.";
 
     /**
-     * String format template to alert invalid input from the player.
-     *
+     * Reporting that entered input was invalid
      */
     private static final String INVALID_INPUT = "Invalid input. Try again.\n";
 
     /**
-     * String format template to get secret option.
-     *
+     * Hidden option to open a secret menu wherever one exists in the game
      */
     private static final String SECRET_OPTION = "oop";
 
@@ -88,11 +84,12 @@ public class InputReader {
     }
 
     /**
-     * Scans, reads and checks the string name entered by the player to see
-     * if it matches the allowed string name format of the game.
+     * Repeatedly reads and checks the name entered by the player until it
+     * matches the allowed name format of the game.
      *
-     * @param theAllowEmpty The boolean indicates if the string name is allowed to be empty.
-     * @return The result string entered by the player.
+     * @param theAllowEmpty The boolean indicates if the name is allowed to be
+     *                      empty.
+     * @return The validated name entered by the player.
      */
     static String readNameUntilValid(final boolean theAllowEmpty) {
         String result;
@@ -116,10 +113,10 @@ public class InputReader {
     }
 
     /**
-     * Displays the string context asking/prompting for player next input.
+     * Waits for the player to press enter and indicates this to the player.
      *
-     * @return The boolean true or false if the player has
-     *          selected the secret menu.
+     * @return Whether the player has selected the secret option. May be
+     *         ignored if not needed.
      */
     static boolean waitForEnter() {
         System.out.println(WAIT_PROMPT);
@@ -127,12 +124,10 @@ public class InputReader {
     }
 
     /**
-     * Scans and checks the player's input if matches
-     * the secret menu's string context to open secret menu.
+     * Checks whether the player has selected the secret option.
      *
      * @param theInput The input entered by the player.
-     * @return The boolean true or false if the player has
-     *          selected the secret menu.
+     * @return Whether the player has selected the secret menu.
      */
     static boolean isSecret(final String theInput) {
         return SECRET_OPTION.equalsIgnoreCase(theInput);

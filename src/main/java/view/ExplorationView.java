@@ -1,16 +1,19 @@
 package view;
 
-import controller.Controller;
-
 import java.util.Arrays;
 
+import controller.Controller;
+
+/**
+ * This class represents the game when the Adventurer is in a room without a
+ * Monster and accepts and executes the player's choices in this context.
+ */
 public class ExplorationView {
 
     /**
      * Sets up an Exploration Menu panel when not in combat.
      * The Exploration Menu includes the menu descriptions
      * and the menu key options associated with that descriptions.
-     *
      */
     private static final Menu ROOM_MENU = new Menu(
             "Choose an action",
@@ -38,7 +41,6 @@ public class ExplorationView {
     /**
      * Sets up Secret Menu panel for exploration-use.
      * The menu will serve as the cheat option for player.
-     *
      */
     private static final Menu SECRET_MENU = new Menu(
             "Choose a secret option",
@@ -51,20 +53,22 @@ public class ExplorationView {
     );
 
     /**
-     * String description for the unexplored rooms.
-     *
+     * String description for whether unexplored rooms are hidden.
      */
     private static final String UNEXPLORED_HIDDEN =
             "Unexplored rooms hidden: ";
 
     /**
-     * Displays the Exploration Menu, gets and performs action for the
-     * selected menu option chosen by the player.
+     * Displays the Exploration Menu and gets and performs action for the
+     * menu option chosen by the player.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal in the exploration menu chosen by the player.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The menu signal associated with either combat or exploration if
+     *         the player chooses to move, or associated with the selected menu
+     *         option.
      */
     static MenuSignal open(final Controller theController) {
         System.out.println(theController.getRoom());
@@ -101,13 +105,15 @@ public class ExplorationView {
     }
 
     /**
-     * Checks, gets and adds the invalid options available for the player to the exploration menu.
+     * Checks the invalid options available for the player to
+     * the exploration menu and provides them in an array.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The range of integer array depends on how many invalid options has satisfied the condition
-     *         to be available in the exploration menu.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The options to exclude from the menu. The array's size depends
+     *         on how many invalid options there are.
      */
     private static int[] getInvalidRoomOptions(final Controller theController) {
         final int[] invalid = new int[4];
@@ -133,10 +139,11 @@ public class ExplorationView {
      * Perform action of going up the stair or going down the stair when
      * selected by the player from the exploration menu.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal to return to the exploration menu.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The menu signal for losing or for the next room.
      */
     private static MenuSignal useStairs(final Controller theController,
                                         final boolean theIsUp) {
@@ -149,8 +156,7 @@ public class ExplorationView {
      * Accesses the secret menu and performs cheat action in exploration mode
      * when selected by the player.
      *
-     * @param theController The game controller to handle
-     *                     and access other utilities of the game.
+     * @param theController The controller to update the game with
      */
     private static void openSecretMenu(final Controller theController) {
         System.out.print(UNEXPLORED_HIDDEN);

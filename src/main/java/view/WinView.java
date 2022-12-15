@@ -2,10 +2,14 @@ package view;
 
 import controller.Controller;
 
+/**
+ * This class displays the winning message and allows the player to continue
+ * their game or quit to the title screen.
+ */
 public class WinView {
 
     /**
-     * Sets up a Win View Menu.
+     * Menu to choose between continuing and quiting.
      */
     private static final Menu MENU = new Menu(
             "Congratulations! You beat the dungeon! Would you like to continue?",
@@ -17,12 +21,17 @@ public class WinView {
     );
 
     /**
-     * Displays the Win View Menu and prompts for the player's input to save the game
+     * Displays the win message and lets the player choose between continuing
+     * the current game or quiting to the menu. If the player chooses to quit
+     * to the menu, they will first be prompted to save if there are unsaved
+     * changes.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal in the win view menu.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The menu signal to return to the previous screen (exploration)
+     *         or return to the title screen.
      */
     static MenuSignal open(final Controller theController) {
         while (true) {

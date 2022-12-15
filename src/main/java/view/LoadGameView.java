@@ -2,18 +2,19 @@ package view;
 
 import controller.Controller;
 
+/**
+ * This class displays and executes the player's choices for loading instances
+ * of the game.
+ */
 public class LoadGameView {
 
     /**
-     * String format template to alert the game has loaded.
-     *
+     * Alert that a game was loaded.
      */
     private static final String GAME_LOADED = "Game loaded.\n";
 
-
     /**
-     * String format template to prompt player's input for file load.
-     *
+     * Prompt for player's input for file to load.
      */
     private static final String LOAD_PROMPT = "Choose a file to load";
 
@@ -21,10 +22,12 @@ public class LoadGameView {
      * Displays the Load Menu, gets and performs action for the
      * selected menu option chosen by the player.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal to open the next menu type.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The menu signal to return to the previous menu if canceled or
+     *         open the current menu for the loaded game.
      */
     static MenuSignal open(final Controller theController) {
         if (!SaveChangesInternalView.askToContinueAndToSaveIfUnsaved(theController)) {

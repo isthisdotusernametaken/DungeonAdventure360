@@ -1,18 +1,19 @@
 package view;
 
-import controller.Controller;
-import model.Direction;
-
 import java.util.Arrays;
 import java.util.function.Function;
 
+import controller.Controller;
+import model.Direction;
+
+/**
+ * This class is opened directly by other screens in the view (rather than with
+ * a MenuSignal) to move to a nearby room.
+ */
 public class MoveInternalView {
 
     /**
-     * Sets up a Move Internal Menu panel when not in combat.
-     * The Move Internal includes the menu descriptions
-     * and the menu key options associated with that descriptions.
-     *
+     * Sets up a Menu to choose a direction to move.
      */
     private static final Menu MENU = new Menu(
             "Choose a direction to move",
@@ -28,13 +29,19 @@ public class MoveInternalView {
     );
 
     /**
-     * Displays the Move Internal Menu, gets and performs action for the
-     * selected menu option chosen by the player.
+     * Displays the movement menu and gets and performs the selected movement
+     * action.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal in the move internal menu chosen by the player.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @param theMovementOperation The movement action to attempt (moving to a
+     *                             new room out of combat, or fleeing)
+     * @param theIsInCombatView Whether the combat menu should be opened anew
+     *                          or (if already in the combat menu) returned to
+     * @return The menu signal for the current room after attempting the
+     *         provided movement operation.
      */
     static MenuSignal open(final Controller theController,
                            final Function<Direction, String> theMovementOperation,
@@ -59,12 +66,14 @@ public class MoveInternalView {
     }
 
     /**
-     * Gets and checks invalid directions in the current room.
+     * Gets which doors are valid in the current room.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The range of integer array depends on how many invalid directions.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The options to exclude from the menu. The array's size depends
+     *         on how many invalid options there are.
      */
     private static int[] getInvalidDirections(final Controller theController) {
         final int[] invalidDirections = new int[Direction.values().length];

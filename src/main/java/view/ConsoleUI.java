@@ -2,6 +2,11 @@ package view;
 
 import controller.Controller;
 
+/**
+ * This class starts the UI and repeatedly calls the next menu (as specified by
+ * the user's choices in the previous menu) until the user chooses to exit the
+ * game.
+ */
 public class ConsoleUI {
 
     /**
@@ -9,13 +14,22 @@ public class ConsoleUI {
      */
     private final Controller myController;
 
+    /**
+     * Creates a new ConsoleUI that will use the specified controller to
+     * interact with the game.
+     *
+     * @param theController The game controller to call public methods of the
+     *                      model in response so the game updates,
+     *                      and to return the result of interacting with the
+     *                      game to the UI in a format the UI can print.
+     */
     public ConsoleUI(final Controller theController) {
         myController = theController;
     }
 
     /**
-     * Begins the processing of the console user interface menu for the dungeon game.
-     *
+     * Opens whichever menu the previous menu specifies until the exit signal
+     * is received.
      */
     public void run() {
         MenuSignal previousMenu = MenuSignal.TITLE_SCREEN;
@@ -34,11 +48,10 @@ public class ConsoleUI {
     }
 
     /**
-     * Calls and opens the selected menu option chosen by the player.
+     * Opens and returns the result from the specified menu.
      *
-     * @param theSignal The menu signal of the dungeon game to decide
-     *                  which menu option to function.
-     * @return The type of menu signal after the actions has already performed or finished.
+     * @param theSignal The signal for which menu to open.
+     * @return The next menu signal after the actions have been performed.
      */
     private MenuSignal callFromSignal(final MenuSignal theSignal) {
         return switch (theSignal) {

@@ -1,15 +1,18 @@
 package view;
 
-import model.DungeonAdventure;
-import model.Util;
-
 import java.util.List;
 import java.util.function.BinaryOperator;
 
+import model.DungeonAdventure;
+import model.Util;
+
+/**
+ * This class displays information about the game and how to play it.
+ */
 public class PlayGuide {
 
     /**
-     * String format template for the main guide.
+     * Overall description of game. Printed when guide is first opened
      */
     private static final String MAIN_GUIDE = """
         Collect all 4 Pillars of OO (Abstraction, Encapsulation, Inheritance,
@@ -20,7 +23,7 @@ public class PlayGuide {
         Select a guide to view""";
 
     /**
-     * String format template for the User Interface guide.
+     * Guide for interacting with the UI.
      */
     private static final String UI_GUIDE = """
         The player's interaction with the UI involves menus and prompts.
@@ -37,7 +40,7 @@ public class PlayGuide {
         """;
 
     /**
-     * String format template for the adventurer guide.
+     * Guide for player characters.
      */
     private static final String ADVENTURER_GUIDE = """
         The player is represented by a character known as an Adventurer.
@@ -52,7 +55,7 @@ public class PlayGuide {
         """;
 
     /**
-     * String format template for the exploration guide.
+     * Guide for how to explore the dungeon
      */
     private static final String EXPLORATION_GUIDE = """
         The main view that the player will see is the Exploration menu.
@@ -91,7 +94,7 @@ public class PlayGuide {
         """;
 
     /**
-     * String format template for the combat guide.
+     * Guide for how to engage in combat
      */
     private static final String COMBAT_GUIDE = """
         When the Adventurer enters a room that contains a Monster, the Combat
@@ -135,7 +138,7 @@ public class PlayGuide {
         """;
 
     /**
-     * String format template for the inventory guide.
+     * Guide for how to use the inventory
      */
     private static final String INVENTORY_GUIDE = """
         While exploring or in combat, the player can open their inventory to
@@ -154,17 +157,29 @@ public class PlayGuide {
         The player can add items to their inventory by collecting them from the
         current room.
         """;
-    private static Menu GUIDE_MENU;
+    /**
+     * Guide for what the symbols in the game mean. Generated lazily from
+     * representations in other classes and in DB at runtime.
+     */
     private static String REPRESENTATIONS;
+    /**
+     * Menu for selecting a guide to view
+     */
+    private static Menu GUIDE_MENU;
 
+    /**
+     * Concatenates a String onto another String on the next line with a
+     * 2-space indent
+     */
     private static final BinaryOperator<String> CONCATENATOR =
             (str1, str2) -> str1 + "\n  " + str2;
 
     /**
-     * Displays the Play Guide Menu, gets and performs action for the
-     * selected menu option chosen by the player.
+     * Displays the main guide and allows the player to choose another guide to
+     * view.
      *
-     * @return The menu signal in the play guide menu chosen by the player.
+     * @return The signal to return to the previous menu after the guide is
+     * closed.
      */
     static MenuSignal open() {
         final Menu guideMenu = getGuideMenu();
@@ -190,9 +205,10 @@ public class PlayGuide {
     }
 
     /**
-     * Constructs and sets the Play Guide menus of the game.
+     * Returns the menu for selecting a guide, creating the menu if it does not
+     * exist yet.
      *
-     * @return The play guide menu.
+     * @return the menu to select a guide to view.
      */
     private static Menu getGuideMenu() {
         if (GUIDE_MENU == null) {
@@ -217,12 +233,11 @@ public class PlayGuide {
     }
 
     /**
-     * Constructs the representation guide.
+     * Constructs the guide for what the game's symbols mean.
      */
     private static void buildRepresentationsGuide() {
         final List<List<String>> representations =
                 DungeonAdventure.getCharRepresentations();
-
 
         REPRESENTATIONS =
                 "In Room:\n  " + concatenateFormatted(representations.get(0)) +
@@ -232,7 +247,14 @@ public class PlayGuide {
                 '\n';
     }
 
-
+    /**
+     * Concatenates the provided list of Strings into a single, multi-line
+     * String.
+     *
+     * @param theStrings The String List to format as a String
+     * @return A String with all the provides Strings on their own indented
+     *         lines.
+     */
     private static String concatenateFormatted(final List<String> theStrings) {
         return theStrings.stream().reduce(CONCATENATOR).orElse(Util.NONE);
     }

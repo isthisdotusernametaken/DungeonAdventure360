@@ -2,11 +2,14 @@ package view;
 
 import controller.Controller;
 
+/**
+ * This class prompts for the user to save if unsaved changes exist and
+ * indicates to the caller whether the action should then be continued.
+ */
 public class SaveChangesInternalView {
 
-
     /**
-     * Sets up a Save Changes Menu panel.
+     * Menu to prompt for saving unsaved changes.
      */
     private static final Menu MENU = new Menu(
             "You have unsaved changes. Would you like to save the game first?",
@@ -17,14 +20,16 @@ public class SaveChangesInternalView {
             false
     );
 
-
     /**
      * Prompts for player to choose if they want to save the changes
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The boolean true or false chosen by the player
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return True if the action should be continued (the game is saved or the
+     *         user chooses to continue anyway). False if the action should be
+     *         cancelled (the game is not saved and the user chose to go back).
      */
     static boolean askToContinueAndToSaveIfUnsaved(final Controller theController) {
         if (theController.isSaved()) {

@@ -2,11 +2,14 @@ package view;
 
 import controller.Controller;
 
+/**
+ * This class displays the options to start or exit the game. It is displayed
+ * when the application first opens.
+ */
 public class TitleScreen {
 
-
     /**
-     * Sets up a Title Screen Menu panel/Main Menu panel.
+     * Menu to start a game, view the guide, or close the application.
      */
     private static final Menu TITLE_MENU = new Menu(
             "Dungeon Adventure",
@@ -24,13 +27,15 @@ public class TitleScreen {
     );
 
     /**
-     * Displays the Title Screen Menu, gets and performs action for the
-     * selected menu option chosen by the player.
+     * Displays the title screen's menu and performs the action selected by the
+     * player.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal in the title menu.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return A menu signal to start the game, open the play guide, or close
+     *         the application.
      */
     static MenuSignal open(final Controller theController) {
         theController.reset();

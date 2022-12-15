@@ -1,22 +1,26 @@
 package view;
 
-import controller.Controller;
-
 import java.util.Arrays;
 
+import controller.Controller;
+
+/**
+ * This class displays the contents of the player's inventory and allows the
+ * use of the items that are visible in the current context (combat or
+ * exploration).
+ */
 public class InventoryView {
 
     /**
-     * String format template to prompt for player's input for inventory menu.
+     * Prompt for player's input for inventory menu.
      */
     private static final String SELECT_PROMPT =
             "Select an item to use, or press " + Menu.EXIT_OPTION +
             " to return";
 
     /**
-     * Sets up a Secret Menu panel for inventory-use.
+     * Sets up a Secret Menu panel for inventory use.
      * The menu will serve as the cheat option for player.
-     *
      */
     private static final Menu SECRET_MENU = new Menu(
             "Choose a secret option",
@@ -29,13 +33,15 @@ public class InventoryView {
     );
 
     /**
-     * Displays the Inventory Menu, gets and performs action for the
-     * selected menu option chosen by the player.
+     * Displays the Inventory menu and tries to use the selected item or
+     * performs another action selected by the player.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The menu signal to go back to the previous menu panel if selected choice is to go back.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The menu signal to go back to the previous menu when the
+     *         inventory is closed.
      */
     static MenuSignal open(final Controller theController) {
         int choice;
@@ -59,12 +65,14 @@ public class InventoryView {
     }
 
     /**
-     * Gets the list of collected item in the inventory.
+     * Displays and selects an item, back, or the secret option.
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The integer associated with the selected item's location in the inventory.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The integer associated with the selected item's location in the
+     *         inventory, or the signal for another option.
      */
     private static int selectItem(final Controller theController) {
         // Redone every loop because may change after use or cheat
@@ -76,13 +84,15 @@ public class InventoryView {
     }
 
     /**
-     * Gets and checks the amount of unusable items from the item list in.
-     * the inventory
+     * Finds which items in the inventory should not be viewed in the current
+     * context (does not display items that don't apply to combat)
      *
-     * @param theController  The game controller to call public methods of the model in response so the game updates,
-     *                       and to return the result of interacting with the game
-     *                       to the UI in a format the UI can print.
-     * @return The range of integer array depends on how many available items in the inventory.
+     * @param theController  The game controller to call public methods of the
+     *                       model in response so the game updates,
+     *                       and to return the result of interacting with the
+     *                       game to the UI in a format the UI can print.
+     * @return The options to exclude from the menu. The array's size depends
+     *         on how many invalid options there are.
      */
     private static int[] getUnusableItems(final Controller theController,
                                           final int theItemCount) {
@@ -102,8 +112,8 @@ public class InventoryView {
      * Accesses the secret menu and performs cheat action in the inventory
      * when selected by the player.
      *
-     * @param theController The game controller to handle
-     *                     and access other utilities of the game.
+     * @param theController The game controller to handle and access other
+     *                      utilities of the game.
      */
     private static void openSecretMenu(final Controller theController) {
         if (SECRET_MENU.select() == 0) {
