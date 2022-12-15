@@ -23,10 +23,10 @@ public class TemplateGeneratorTest {
                     DB_MANAGER, "Adventurers"
             );
         } catch (SQLException | IllegalArgumentException e) {
-            // Mock shouldn't throw SQLException, so should never be
-            // encountered. Even if encountered, successfully avoids incorrect
-            // static checking by compiler marking constructorHelper as
-            // possibly returning null
+            // Mock shouldn't throw exception while opening table, so should
+            // never be encountered. Even if encountered, successfully avoids
+            // incorrect static checking by compiler marking constructorHelper
+            // as possibly returning null
             e.printStackTrace();
         }
     }
