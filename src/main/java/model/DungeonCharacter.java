@@ -1,10 +1,10 @@
 package model;
 
+import controller.ProgramFileManager;
+
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-
-import controller.ProgramFileManager;
 
 public abstract class DungeonCharacter extends DamageDealer {
 
@@ -196,7 +196,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         return advanceBuffs(false);
     }
 
-    private AttackResultAndAmount advanceBuffs(final boolean theAllBuffs) {
+    public AttackResultAndAmount advanceBuffs(final boolean theAllBuffs) {
         final List<Buff> toRemove = new ArrayList<>();
 
         final int previousHP = myHP;
@@ -229,7 +229,7 @@ public abstract class DungeonCharacter extends DamageDealer {
                        );
     }
 
-    private void reapplyBuffs() {
+    public void reapplyBuffs() {
         myAdjustedStats.resetStats();
 
         for (Buff buff : myBuffs) {
@@ -237,7 +237,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         }
     }
 
-    private Buff getBuff(final BuffType theBuffType) {
+    public Buff getBuff(final BuffType theBuffType) {
         for (Buff buff : myBuffs) {
             if (buff.getType() == theBuffType) {
                 return buff;
@@ -247,7 +247,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         return null;
     }
 
-    private void clearDebuffs() {
+    public void clearDebuffs() {
         final int buffCount = myBuffs.size();
         myBuffs.removeIf(buff -> buff.getType().isDebuff());
 
@@ -262,11 +262,11 @@ public abstract class DungeonCharacter extends DamageDealer {
         return isDead();
     }
 
-    private boolean isDead() {
+    public boolean isDead() {
         return myHP <= 0;
     }
 
-    private boolean applyDamageFromBuff(final Buff theBuff) {
+    public boolean applyDamageFromBuff(final Buff theBuff) {
         if (theBuff.getDamagePercent() != 0.0) {
             return applyDamage(percentOfMaxHP(theBuff.getDamagePercent()));
         }
@@ -274,11 +274,11 @@ public abstract class DungeonCharacter extends DamageDealer {
         return false; // No damage applied, so if not dead before, can't be now
     }
 
-    private double inverseAdjustedResistance(final DamageType theDamageType) {
+    public double inverseAdjustedResistance(final DamageType theDamageType) {
         return 1.0 - getAdjustedResistance(theDamageType);
     }
 
-    private int applyAdjustedDamage(final int theBaseDamage,
+    public int applyAdjustedDamage(final int theBaseDamage,
                                     final DamageType theDamageType) {
         final int damage = (int) (
                 theBaseDamage * inverseAdjustedResistance(theDamageType)
@@ -288,7 +288,7 @@ public abstract class DungeonCharacter extends DamageDealer {
         return damage;
     }
 
-    private double adjustedDebuffChance(final double theBaseDebuffChance,
+    public double adjustedDebuffChance(final double theBaseDebuffChance,
                                         final DamageType theDamageType) {
         return theBaseDebuffChance * inverseAdjustedResistance(theDamageType);
     }
@@ -299,7 +299,7 @@ public abstract class DungeonCharacter extends DamageDealer {
                " Turn" + (getDebuffDuration() != 1 ? "s" : "");
     }
 
-    private String getBuffsAsString() {
+    public String getBuffsAsString() {
         if (!myBuffs.isEmpty()) {
             final StringBuilder builder = new StringBuilder(" Buffs:\n");
 
