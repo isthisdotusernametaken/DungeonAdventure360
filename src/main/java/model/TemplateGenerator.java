@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class TemplateGenerator {
 
-    private static final String INVALID_TABLE =
-            "No such table exists: ";
     private static final String INVALID_FIELD =
             "Invalid field (possibly wrong data type): ";
     private static final String NULL_FIELD =
@@ -29,7 +27,6 @@ public class TemplateGenerator {
     TemplateGenerator(final DBManager theDBManager, final String theTable)
             throws SQLException, IllegalArgumentException {
         myTable = theDBManager.readTable(theTable);
-        exceptionOnNoTable(theTable);
 
         myTableName = theTable;
         myColumn = 1;
@@ -148,15 +145,6 @@ public class TemplateGenerator {
                 ": row " + myTable.getRow() +
                 ", column " + (myColumn - 1) +
                 ")";
-    }
-
-    private void exceptionOnNoTable(final String theTable)
-            throws IllegalArgumentException {
-        if (myTable == null) {
-            throw new IllegalArgumentException(
-                    INVALID_TABLE + theTable
-            );
-        }
     }
 
     private SQLException invalidFieldException() throws SQLException {
