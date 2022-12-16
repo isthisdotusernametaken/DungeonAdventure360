@@ -15,15 +15,15 @@ public class ArrayMap extends Map {
                                 [theDimensions.getY()];
     }
 
+    @Override
     boolean isExplored(final int theFloor,
                        final int theX,
                        final int theY) {
-        return theFloor >= 0 && theFloor < myExplored.length &&
-               theX >= 0 && theX < myExplored[0].length &&
-               theY >= 0 && theY < myExplored[0][0].length &&
+        return isInBounds(theFloor, theX, theY) &&
                myExplored[theFloor][theX][theY];
     }
 
+    @Override
     boolean isExplored(final RoomCoordinates theCoords) {
         return isExplored(
                 theCoords.getFloor(),
@@ -32,23 +32,30 @@ public class ArrayMap extends Map {
         );
     }
 
+    @Override
     void explore(final int theFloor,
                  final int theX,
                  final int theY) {
-        if (
-                theFloor >= 0 && theFloor < myExplored.length &&
-                theX >= 0 && theX < myExplored[0].length &&
-                theY >= 0 && theY < myExplored[0][0].length
-        ) {
+        if (isInBounds(theFloor, theX, theY)) {
             myExplored[theFloor][theX][theY] = true;
         }
     }
 
+    @Override
     void explore(final RoomCoordinates theCoords) {
         explore(
                 theCoords.getFloor(),
                 theCoords.getX(),
                 theCoords.getY()
         );
+    }
+
+    @Override
+    boolean isInBounds(final int theFloor,
+                       final int theX,
+                       final int theY) {
+        return theFloor >= 0 && theFloor < myExplored.length &&
+               theX >= 0 && theX < myExplored[0].length &&
+               theY >= 0 && theY < myExplored[0][0].length;
     }
 }
