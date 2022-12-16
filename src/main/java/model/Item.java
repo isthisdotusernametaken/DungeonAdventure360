@@ -24,7 +24,7 @@ public abstract class Item implements CharRepresentable, Serializable {
         myRepresentation = theRepresentation;
         myType = theType;
         myCanChangeCount = theCanChangeCount;
-        myCount = theCount;
+        myCount = Util.clampPositiveInt(theCount, MAX_STACK_SIZE);
     }
 
     static String createNameFromType(final Item theItem) {

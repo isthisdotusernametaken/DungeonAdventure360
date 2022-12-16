@@ -38,9 +38,13 @@ public class Util {
     }
 
     static int clampPositiveInt(final int theValue) {
+        return clampPositiveInt(theValue, MAX_INT);
+    }
+
+    static int clampPositiveInt(final int theValue, final int theMax) {
         return Math.max(
                 1,
-                Math.min(theValue, MAX_INT)
+                Math.min(theValue, theMax)
         );
     }
 

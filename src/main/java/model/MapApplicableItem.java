@@ -28,7 +28,7 @@ public abstract class MapApplicableItem extends Item {
             return MAP_UPDATED;
         }
 
-        return Util.NONE;
+        return Item.CANNOT_USE_HERE;
     }
 
     abstract boolean applyEffect(Map theTarget, RoomCoordinates theCoords);
