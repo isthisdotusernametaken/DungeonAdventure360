@@ -8,9 +8,9 @@ public class RoomCoordinates implements Serializable {
     @Serial
     private static final long serialVersionUID = -4630802384169539704L;
 
-    private final int myFloor;
-    private final int myX;
-    private final int myY;
+    final int myFloor;
+    final int myX;
+    final int myY;
 
     RoomCoordinates(final int theFloor,
                     final int theX,
@@ -76,7 +76,7 @@ public class RoomCoordinates implements Serializable {
                myY == theY;
     }
 
-    private RoomCoordinates addX(final int theChange, final int theMaxX) {
+    RoomCoordinates addX(final int theChange, final int theMaxX) {
         return new RoomCoordinates(
                 myFloor,
                 Util.clampIntZeroToMaxExc(theMaxX, myX + theChange),
@@ -84,7 +84,7 @@ public class RoomCoordinates implements Serializable {
         );
     }
 
-    private RoomCoordinates addY(final int theChange, final int theMaxY) {
+    RoomCoordinates addY(final int theChange, final int theMaxY) {
         return new RoomCoordinates(
                 myFloor,
                 myX,
