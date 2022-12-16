@@ -1,8 +1,9 @@
 package model;
 
-import static model.TestingUtil.assertIsAttemptDamageResultType;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import static model.TestingUtil.assertIsAttemptDamageResultType;
 
 public class TrapTest {
 
@@ -79,7 +80,7 @@ public class TrapTest {
     void testActivateResult() {
         TRAP.myIsBroken = false;
 
-        assertIsAttemptDamageResultType(TRAP.activate(ADVENTURER).getResult());
+        assertIsAttemptDamageResultType(TRAP.activate(ADVENTURER).getResult(), AttackResult.DODGE);
     }
 
     @Test

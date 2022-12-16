@@ -4,12 +4,13 @@ import java.io.Serial;
 
 public class Planks extends RoomApplicableItem {
 
+    static final String SUCCESS_MSG = "Trap boarded.\n";
+
     @Serial
     private static final long serialVersionUID = -4102401273626104641L;
 
     private static final String NAME = createNameFromType(new Planks(0));
     private static final char REPRESENTATION = '=';
-    private static final String SUCCESS_MSG = "Trap boarded.\n";
 
     Planks(final int theCount) {
         super(

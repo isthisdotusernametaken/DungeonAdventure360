@@ -36,23 +36,12 @@ public class HealthPotionTest {
 
     @Test
     void testCopyType() {
-        Item expected = new HealthPotion(98);
-
-        assertEquals(expected.getType(), HEALTH_POTION.copy().getType());
+        assertEquals(HEALTH_POTION.getType(), HEALTH_POTION.copy().getType());
     }
 
     @Test
     void testCopyCount() {
-        Item expected = new HealthPotion(98);
-
-        assertEquals(expected.getCount(), HEALTH_POTION.copy().getCount());
-    }
-
-    @Test
-    void testCopyNotSameItem() {
-        Item expected = new BuffPotion(99, BuffType.STRENGTH);
-
-        assertNotEquals(expected.getType(), HEALTH_POTION.copy().getType());
+        assertEquals(HEALTH_POTION.getCount(), HEALTH_POTION.copy().getCount());
     }
 
     @Test

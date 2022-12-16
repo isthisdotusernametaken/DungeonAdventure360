@@ -56,6 +56,8 @@ public class AdjustedCharacterStatsTest {
 
         assertEquals(30, STATS.getMinDamage());
         assertEquals(50, STATS.getMaxDamage());
+
+        STATS.resetStats();
     }
 
     @Test
@@ -63,6 +65,8 @@ public class AdjustedCharacterStatsTest {
         STATS.multiplyHitChance(200000);
 
         assertEquals(1.0, STATS.getHitChance());
+
+        STATS.resetStats();
     }
 
     @Test
@@ -70,6 +74,8 @@ public class AdjustedCharacterStatsTest {
         STATS.multiplySpeed(9999);
 
         assertEquals(1000, STATS.getSpeed());
+
+        STATS.resetStats();
     }
 
     @Test
@@ -81,6 +87,8 @@ public class AdjustedCharacterStatsTest {
         assertEquals(0.0, STATS.getResistance(DamageType.BLUNT));
         assertEquals(1.0, STATS.getResistance(DamageType.FIRE));
         assertEquals(1.0, STATS.getResistance(DamageType.POISON));
+
+        STATS.resetStats();
     }
 
     @Test
