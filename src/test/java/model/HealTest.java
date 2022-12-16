@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class HealTest {
 
-    private static final Heal mySkill = new Heal();
-
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final DungeonCharacter ADVENTURER = new Adventurer(
             "Dark LORD",
             "Priestess",
             150,
@@ -21,8 +19,7 @@ public class HealTest {
             0.15,
             new ResistanceData(new double[]{0.3, 0.15, 0.1, 0.6, 0.6}),
             new Heal());
-
-    private final DungeonCharacter myMonster = new Monster(
+    private static final DungeonCharacter MONSTER = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -39,9 +36,15 @@ public class HealTest {
     );
 
     @Test
-    void testApply() {
-        AttackResult actual = mySkill.apply(myCharacter, myMonster).getResult();
+    void testApplyResult() {
+        assertEquals(
+                AttackResult.HEAL, new Heal().apply(ADVENTURER, MONSTER).getResult()
+        );
+    }
 
-        assertTrue(actual.equals(AttackResult.HEAL));
+    @Test
+    void testApplyAmount() {
+        ADVENTURER.myHP--;
+        assertEquals(1, new Heal().apply(ADVENTURER, MONSTER).getAmount());
     }
 }

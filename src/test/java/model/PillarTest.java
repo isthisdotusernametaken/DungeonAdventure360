@@ -3,41 +3,40 @@ package model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-
 public class PillarTest {
-    private static final Pillar myPillar = new Pillar(ItemType.ABSTRACTION, 'H');
-    private static final Pillar[] myAPillar = Pillar.createPillars();
 
     @Test
-    void testCopy() {
-        Item myItem = new Pillar(ItemType.ABSTRACTION, 'H') ;
-        ItemType expected = myItem.getType();
-
-        assertEquals(
-                expected,
-                myPillar.copy().getType());
+    void testCopyIdentical() {
+        final Pillar pillar = Pillar.createPillars()[0];
+        assertEquals(pillar, pillar.copy());
     }
 
     @Test
     void testCreatePillars() {
-        Pillar[] expected = {
-                new Pillar(ItemType.ABSTRACTION, 'H'),
+        final Pillar[] expected = {
+                new Pillar(ItemType.ABSTRACTION, 'A'),
                 new Pillar(ItemType.ENCAPSULATION, 'E'),
                 new Pillar(ItemType.INHERITANCE, 'I'),
                 new Pillar(ItemType.POLYMORPHISM, 'P')
         };
+        final Pillar[] actual = Pillar.createPillars();
 
         for (int i = 0; i < expected.length; i++) {
             assertEquals(
                     expected[i].getType(),
-                    myAPillar[i].getType());
+                    actual[i].getType()
+            );
+            assertEquals(
+                    expected[i].charRepresentation(),
+                    actual[i].charRepresentation()
+            );
         }
     }
 
     @Test
     void testGetName() {
-        String expected = "Abstraction";
+        final Pillar pillar = Pillar.createPillars()[3];
 
-        assertEquals(expected, myPillar.getName());
+        assertEquals("Polymorphism", pillar.getName());
     }
 }

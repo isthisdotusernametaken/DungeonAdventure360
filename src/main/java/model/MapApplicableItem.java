@@ -4,10 +4,10 @@ import java.io.Serial;
 
 public abstract class MapApplicableItem extends Item {
 
+    static final String MAP_UPDATED = "Map updated.";
+
     @Serial
     private static final long serialVersionUID = 3961450036630628818L;
-
-    private static final String MAP_UPDATED = "Map updated.";
 
     MapApplicableItem(final char theRepresentation,
                       final ItemType theType,

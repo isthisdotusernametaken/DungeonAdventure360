@@ -1,13 +1,14 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import static model.TestingUtil.assertIsAttemptDamageResultType;
 
 public class CrushingBlowTest {
 
-    private static final CrushingBlow mySkill = new CrushingBlow();
+    private static final CrushingBlow SKILL = new CrushingBlow();
 
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final DungeonCharacter ADVENTURER = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -22,7 +23,7 @@ public class CrushingBlowTest {
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
             new CrushingBlow());
 
-    private final DungeonCharacter myMonster = new Monster(
+    private final DungeonCharacter MONSTER = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -40,11 +41,6 @@ public class CrushingBlowTest {
 
     @Test
     void testApply() {
-        AttackResult actual = mySkill.apply(myCharacter, myMonster).getResult();
-
-        assertTrue(
-                actual.equals(AttackResult.KILL) ||
-                        actual.equals(AttackResult.MISS) ||
-                        actual.equals(AttackResult.HIT_NO_DEBUFF));
+        assertIsAttemptDamageResultType(SKILL.apply(ADVENTURER, MONSTER).getResult());
     }
 }

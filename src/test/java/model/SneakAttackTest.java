@@ -1,13 +1,14 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import static model.TestingUtil.assertIsAttemptDamageResultType;
 
 public class SneakAttackTest {
 
-    private static final SneakAttack mySkill = new SneakAttack();
+    private static final SneakAttack SKILL = new SneakAttack();
 
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final DungeonCharacter ADVENTURER = new Adventurer(
             "Dark LORD",
             "Thief",
             125,
@@ -21,8 +22,7 @@ public class SneakAttackTest {
             0.1,
             new ResistanceData(new double[]{0.3, 0.3, 0.15, 0.3, 0.3}),
             new SneakAttack());
-
-    private final DungeonCharacter myMonster = new Monster(
+    private static final DungeonCharacter MONSTER = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -40,14 +40,10 @@ public class SneakAttackTest {
 
     @Test
     void testApply() {
-        AttackResult actual = mySkill.apply(myCharacter, myMonster).getResult();
-
-        assertTrue(
-                actual.equals(AttackResult.KILL) ||
-                        actual.equals(AttackResult.MISS) ||
-                        actual.equals(AttackResult.HIT_NO_DEBUFF) ||
-                        actual.equals(AttackResult.HIT_DEBUFF) ||
-                        actual.equals(AttackResult.EXTRA_TURN_DEBUFF) ||
-                        actual.equals(AttackResult.EXTRA_TURN_NO_DEBUFF));
+        assertIsAttemptDamageResultType(
+                SKILL.apply(ADVENTURER, MONSTER).getResult(),
+                AttackResult.EXTRA_TURN_DEBUFF,
+                AttackResult.EXTRA_TURN_NO_DEBUFF
+        );
     }
 }

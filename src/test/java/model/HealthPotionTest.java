@@ -3,8 +3,9 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 public class HealthPotionTest {
-    private static final HealthPotion myHealthPotion = new HealthPotion(99);
-    private static final DungeonCharacter myCharacter =  new Adventurer(
+
+    private static final HealthPotion HEALTH_POTION = new HealthPotion(99);
+    private static final DungeonCharacter CHARACTER =  new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -23,34 +24,41 @@ public class HealthPotionTest {
     @Test
     void testApplyEffect() {
         String expected = "Healed 10 hp and cleared all debuffs.";
-        myCharacter.applyDamage(10);
+        CHARACTER.applyDamage(10);
 
-        assertEquals(expected, myHealthPotion.applyEffect(myCharacter));
+        assertEquals(expected, HEALTH_POTION.applyEffect(CHARACTER));
     }
 
     @Test
     void testApplyEffectCharacterFullHP() {
-        assertEquals("", myHealthPotion.applyEffect(myCharacter));
+        assertEquals("", HEALTH_POTION.applyEffect(CHARACTER));
     }
 
     @Test
-    void testCopy() {
+    void testCopyType() {
         Item expected = new HealthPotion(98);
 
-        assertEquals(expected.getType(), myHealthPotion.copy().getType());
+        assertEquals(expected.getType(), HEALTH_POTION.copy().getType());
+    }
+
+    @Test
+    void testCopyCount() {
+        Item expected = new HealthPotion(98);
+
+        assertEquals(expected.getCount(), HEALTH_POTION.copy().getCount());
     }
 
     @Test
     void testCopyNotSameItem() {
         Item expected = new BuffPotion(99, BuffType.STRENGTH);
 
-        assertNotEquals(expected.getType(), myHealthPotion.copy().getType());
+        assertNotEquals(expected.getType(), HEALTH_POTION.copy().getType());
     }
 
     @Test
     void testGetName() {
         String expected = "Health Potion";
 
-        assertEquals(expected, myHealthPotion.getName());
+        assertEquals(expected, HEALTH_POTION.getName());
     }
 }

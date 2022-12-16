@@ -7,13 +7,9 @@ import static model.TestingUtil.assertResistanceDataEqualsArray;
 
 public class ResistanceDataTest {
 
-    private static final ResistanceData RES_DATA = new ResistanceData(
-            new double[DamageType.values().length]
-    );
-
     @Test
     void testConstructorInitializeArray() {
-        double[] resistances = new double[DamageType.values().length];
+        final double[] resistances = new double[DamageType.values().length];
         for (int i = 0; i < resistances.length; i++) {
             resistances[i] = 0.1 * i;
         }
@@ -23,21 +19,19 @@ public class ResistanceDataTest {
         );
     }
 
-//    @Test
-//    void testGetResistanceDamageType() {
-//        DamageType type = DamageType.SHARP;
-//        double resistance = 0.777;
-//        RES_DATA.myResistances[type.ordinal()] = resistance;
-//
-//        assertEquals(resistance, RES_DATA.getResistance(type));
-//    }
-
     @Test
-    void testGetResistanceInt() {
-        int index = 0;
-        double resistance = 0.5;
-        RES_DATA.myResistances[index] = resistance;
+    void testGetResistance() {
+        // No case to handle unexpected arguments is necessary because only
+        // AdjustedCharacterStats uses this method, and its array size is
+        // determined by the corresponding character's ResistanceData's array
+        // size
+        final ResistanceData resistances = new ResistanceData(
+                new double[DamageType.values().length]
+        );
+        final int index = 0;
+        final double resistance = 0.5;
+        resistances.myResistances[index] = resistance;
 
-        assertEquals(resistance, RES_DATA.getResistance(index));
+        assertEquals(resistance, resistances.getResistance(index));
     }
 }

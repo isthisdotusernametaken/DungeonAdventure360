@@ -23,7 +23,7 @@ public class MonsterTest {
 
     @Test
     void testToString() {
-        String expected = """
+        final String expected = """
                 Skeleton
                  Skeleton, 110/110 HP
                  Base Damage: 15-25, Sharp, 50% Accuracy
@@ -39,14 +39,14 @@ public class MonsterTest {
 
     @Test
     void testGetHealChance() {
-        double expected = 0.3;
+        final double expected = 0.3;
 
         assertEquals(expected, myMonster.getHealChance());
     }
 
     @Test
     void testAttemptHeal() {
-        AttackResult actual = myMonster.attemptHeal().getResult();
+        final AttackResult actual = myMonster.attemptHeal().getResult();
 
         assertTrue(
                 actual.equals(AttackResult.HEAL) ||

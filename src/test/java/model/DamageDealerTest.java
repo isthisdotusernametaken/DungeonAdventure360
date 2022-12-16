@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class DamageDealerTest {
 
-    private static final DamageDealer myDamageDealer = new Adventurer(
+    private static final DamageDealer DAMAGE_DEALER_1 = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -20,7 +20,7 @@ public class DamageDealerTest {
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
             new CrushingBlow());
 
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final DungeonCharacter DAMAGE_DEALER_2 = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -37,91 +37,69 @@ public class DamageDealerTest {
 
     @Test
     void testGetClassName() {
-        String expected = "Warrior";
-
-        assertEquals(expected, myDamageDealer.getClassName());
+        assertEquals("Warrior", DAMAGE_DEALER_1.getClassName());
     }
 
     @Test
     void testGetMinDamage() {
-        int expected = 25;
-
-        assertEquals(expected, myDamageDealer.getMinDamage());
+        assertEquals(25, DAMAGE_DEALER_1.getMinDamage());
     }
 
     @Test
     void testGetMaxDamage() {
-        int expected = 40;
-
-        assertEquals(expected, myDamageDealer.getMaxDamage());
+        assertEquals(40, DAMAGE_DEALER_1.getMaxDamage());
     }
 
     @Test
     void testGetHitChance() {
-        double expected = 0.7;
-
-        assertEquals(expected, myDamageDealer.getHitChance());
+        assertEquals(0.7, DAMAGE_DEALER_1.getHitChance());
     }
 
     @Test
     void testGeDebuffChance() {
-        double expected = 0.2;
-
-        assertEquals(expected, myDamageDealer.getDebuffChance());
+        assertEquals(0.2, DAMAGE_DEALER_1.getDebuffChance());
     }
 
     @Test
     void testGetDebuffDuration() {
-        int expected = 2;
-
-        assertEquals(expected, myDamageDealer.getDebuffDuration());
+        assertEquals(2, DAMAGE_DEALER_1.getDebuffDuration());
     }
 
     @Test
     void testGetDamageType() {
-        DamageType expected = DamageType.BLUNT;
-
-        assertEquals(expected, myDamageDealer.getDamageType());
+        assertEquals(DamageType.BLUNT, DAMAGE_DEALER_1.getDamageType());
     }
 
     @Test
     void testGetSpeed() {
-        int expected = 4;
-
-        assertEquals(expected, myDamageDealer.getSpeed());
+        assertEquals(4, DAMAGE_DEALER_1.getSpeed());
     }
 
     @Test
     void testGetAdjustedMinDamage() {
-        int expected = 25;
-
-        assertEquals(expected, myDamageDealer.getMinDamage());
+        assertEquals(25, DAMAGE_DEALER_1.getMinDamage());
     }
 
     @Test
     void testGetAdjustedMaxDamage() {
-        int expected = 40;
-
-        assertEquals(expected, myDamageDealer.getMaxDamage());
+        assertEquals(40, DAMAGE_DEALER_1.getMaxDamage());
     }
 
     @Test
     void testGetAdjustedHitChance() {
-        double expected = 0.7;
-
-        assertEquals(expected, myDamageDealer.getHitChance());
+        assertEquals(0.7, DAMAGE_DEALER_1.getHitChance());
     }
 
     @Test
     void testGetAdjustedSpeed() {
-        int expected = 4;
-
-        assertEquals(expected, myDamageDealer.getSpeed());
+        assertEquals(4, DAMAGE_DEALER_1.getSpeed());
     }
 
     @Test
     void testAttemptDamage() {
-        AttackResult actual = myDamageDealer.attemptDamage(myCharacter, true).getResult();
+        final AttackResult actual = DAMAGE_DEALER_1.attemptDamage(
+                DAMAGE_DEALER_2, true
+        ).getResult();
 
         assertTrue(
                 actual.equals(new AttackResultAndAmount(AttackResult.BLOCK, 2).getResult()) ||

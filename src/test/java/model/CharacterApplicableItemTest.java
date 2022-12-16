@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class CharacterApplicableItemTest {
+
     private final HealthPotion myHealthPotion = new HealthPotion(99);
     private final DungeonCharacter myCharacter =  new Adventurer(
             "Dark LORD",

@@ -13,7 +13,7 @@ public abstract class DungeonCharacter extends DamageDealer {
 
     private String myName;
     private final int myMaxHP;
-    private int myHP;
+    int myHP;
     private final double myBlockChance;
     private final ResistanceData myResistances;
     private final AdjustedCharacterStats myAdjustedStats;

@@ -48,9 +48,15 @@ public class BuffPotionTest {
     }
 
     @Test
-    void testCopy() {
+    void testCopyType() {
         Item expected = new BuffPotion(1, BuffType.STRENGTH);
-        assertEquals(expected.getType(), myBuffPotion.getType());
+        assertEquals(expected.getType(), expected.copy().getType());
+    }
+
+    @Test
+    void testCopyCount() {
+        Item expected = new BuffPotion(10, BuffType.STRENGTH);
+        assertEquals(expected.getCount(), expected.copy().getCount());
     }
 
     @Test

@@ -1,24 +1,13 @@
 package model;
 
+import static model.TestingUtil.assertIsAttemptDamageResultType;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class TrapTest {
 
-    private static final Trap myTrap = new Trap(
-            "Pit",
-            true,
-            true,
-            1,
-            2,
-            0.0,
-            0.0,
-            0,
-            DamageType.SHARP,
-            0,
-            'P');
-
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final Trap TRAP = buildTrap(false, true);
+    private static final DungeonCharacter ADVENTURER = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -31,44 +20,74 @@ public class TrapTest {
             4,
             0.3,
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
-            new CrushingBlow());
+            new CrushingBlow()
+    );
+
+    private static Trap buildTrap(final boolean theIsSingleUse,
+                                  final boolean theIsBoardable) {
+        return new Trap(
+                "Pit",
+                theIsSingleUse,
+                theIsBoardable,
+                1,
+                2,
+                0.0,
+                0.0,
+                0,
+                DamageType.SHARP,
+                0,
+                'P'
+        );
+    }
 
     @Test
     void testCharRepresentation() {
-        char expected = 'P';
+        final char expected = 'P';
 
-        assertEquals(expected,myTrap.charRepresentation());
+        assertEquals(expected, TRAP.charRepresentation());
     }
 
     @Test
     void testIsSingleUse() {
-        boolean expected = true;
-
-        assertEquals(expected, myTrap.isSingleUse());
+        assertFalse(TRAP.isSingleUse());
     }
 
 
     @Test
     void testIsBoardable() {
-        boolean expected = true;
-
-        assertEquals(expected, myTrap.isBoardable());
+        assertTrue(TRAP.isBoardable());
     }
 
     @Test
-    void testBoard() {
-        boolean expected = true;
-
-        assertEquals(expected, myTrap.board());
+    void testBoardSuccess() {
+        TRAP.myIsBroken = false;
+        assertTrue(TRAP.board());
     }
 
     @Test
-    void testActivate() {
-        AttackResult actual = myTrap.activate(myCharacter).getResult();
+    void testBoardAlreadyBoarded() {
+        TRAP.myIsBroken = true;
+        assertFalse(TRAP.board());
+    }
 
-        assertTrue(
-                actual.equals(AttackResult.MISS) ||
-                actual.equals(AttackResult.DODGE) ||
-                actual.equals(AttackResult.HIT_NO_DEBUFF));
+    @Test
+    void testBoardUnboardable() {
+        assertFalse(buildTrap(true, false).board());
+    }
+
+    @Test
+    void testActivateResult() {
+        TRAP.myIsBroken = false;
+
+        assertIsAttemptDamageResultType(TRAP.activate(ADVENTURER).getResult());
+    }
+
+    @Test
+    void testActivateBreakingSingleUse() {
+        final Trap trap = buildTrap(true, false);
+
+        assertFalse(trap.isBroken());
+        trap.activate(ADVENTURER);
+        assertTrue(trap.isBroken());
     }
 }

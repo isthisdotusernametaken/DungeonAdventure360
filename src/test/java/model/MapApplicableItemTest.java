@@ -4,15 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class MapApplicableItemTest {
-
-    private static final MapApplicableItem myMapApplicableItem = new VisionPotion(2);
-    private static final RoomCoordinates myCoordinates = new RoomCoordinates(10,4,4);
-    private static final Map myMap = new ArrayMap(myCoordinates);
-
     @Test
     void testUse() {
-        String expected = "";
+        final MapApplicableItem mapApplicable = new VisionPotion(6);
 
-        assertEquals(expected, myMapApplicableItem.use(myMap, myCoordinates));
+        assertEquals(
+                MapApplicableItem.MAP_UPDATED,
+                mapApplicable.use(
+                        new ArrayMap(new RoomCoordinates(2,4,4)),
+                        new RoomCoordinates(0, 0, 0)
+                )
+        );
     }
 }

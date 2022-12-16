@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class DungeonCharacterTest {
+    
     private final DungeonCharacter myCharacter = new Adventurer(
             "Dark LORD",
             "Warrior",
@@ -44,21 +45,21 @@ public class DungeonCharacterTest {
 
     @Test
     void testGetMaxHP() {
-        int expected = 200;
+        final int expected = 200;
 
         assertEquals(expected, myCharacter.getMaxHP());
     }
 
     @Test
     void testGetHP() {
-        int expected = 200;
+        final int expected = 200;
 
         assertEquals(expected, myCharacter.getHP());
     }
 
     @Test
     void testGetBlockChance() {
-        double expected = 0.3;
+        final double expected = 0.3;
 
         assertEquals(expected, myCharacter.getBlockChance());
     }
@@ -76,28 +77,28 @@ public class DungeonCharacterTest {
 
     @Test
     void testGetAdjustedMinDamage() {
-        int expected = 25;
+        final int expected = 25;
 
         assertEquals(expected, myCharacter.getMinDamage());
     }
 
     @Test
     void testGetAdjustedMaxDamage() {
-        int expected = 40;
+        final int expected = 40;
 
         assertEquals(expected, myCharacter.getMaxDamage());
     }
 
     @Test
     void testGetAdjustedHitChance() {
-        double expected = 0.7;
+        final double expected = 0.7;
 
         assertEquals(expected, myCharacter.getHitChance());
     }
 
     @Test
     void testGetAdjustedSpeed() {
-        int expected = 4;
+        final int expected = 4;
 
         assertEquals(expected, myCharacter.getSpeed());
     }
@@ -123,21 +124,21 @@ public class DungeonCharacterTest {
 
     @Test
     void testPercentOfMaxHP() {
-        int expected = 20;
+        final int expected = 20;
 
         assertEquals(expected, myCharacter.percentOfMaxHP(0.1));
     }
 
     @Test
     void testHeal() {
-        int expected = 0;
+        final int expected = 0;
 
         assertEquals(expected, myCharacter.heal(1000)); //Should be 0, no damage applied
     }
 
     @Test
     void testApplyDamageAndBuff() {
-        AttackResult expected = AttackResult.KILL;
+        final AttackResult expected = AttackResult.KILL;
 
         assertEquals(expected, myCharacter.applyDamageAndBuff(
                 DamageType.BLUNT,
@@ -149,7 +150,7 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testApplyNewBuff_1() {
+    void testApplyNewBuffMessage() {
         myCharacter.applyBuff(BuffType.STRENGTH, 10);
         String expected = """
                  Buffs:
@@ -160,9 +161,9 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testApplyNewBuff_2() {
+    void testApplyNewBuffStatAdjustment() {
         myCharacter.applyBuff(BuffType.STRENGTH, 10);
-        double expected = 60;
+        final double expected = 60;
 
         assertEquals(expected, myCharacter.getAdjustedMaxDamage());
     }
@@ -204,7 +205,7 @@ public class DungeonCharacterTest {
                  Buffs:
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
                 """;
-        AttackResult expected = AttackResult.NO_ACTION;
+        final AttackResult expected = AttackResult.NO_ACTION;
 
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
@@ -223,7 +224,7 @@ public class DungeonCharacterTest {
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
                 """;
-        AttackResult expected = AttackResult.BUFF_DAMAGE;
+        final AttackResult expected = AttackResult.BUFF_DAMAGE;
 
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
@@ -247,12 +248,12 @@ public class DungeonCharacterTest {
     void testAdvanceDebuffs_2() {
         myCharacter.applyBuff(BuffType.BLEEDING,1);
         myCharacter.applyBuff(BuffType.BROKEN_BONE,1);
-        myCharacter.advanceDebuffs().getResult();
+        myCharacter.advanceDebuffs();
 
         String stringExpected = """
                  No buffs
                 """;
-        AttackResult expected = AttackResult.NO_ACTION;
+        final AttackResult expected = AttackResult.NO_ACTION;
 
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
@@ -264,14 +265,14 @@ public class DungeonCharacterTest {
     void testAdvanceDebuffs_3() {
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
-        myCharacter.advanceDebuffs().getResult();
+        myCharacter.advanceDebuffs();
 
         String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
                 """;
-        AttackResult expected = AttackResult.BUFF_DAMAGE;
+        final AttackResult expected = AttackResult.BUFF_DAMAGE;
 
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
@@ -290,7 +291,7 @@ public class DungeonCharacterTest {
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
                 """;
-        AttackResult expected = AttackResult.BUFF_DAMAGE;
+        final AttackResult expected = AttackResult.BUFF_DAMAGE;
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
                 expected,
@@ -308,7 +309,7 @@ public class DungeonCharacterTest {
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
                 """;
-        AttackResult expected = AttackResult.BUFF_DAMAGE;
+        final AttackResult expected = AttackResult.BUFF_DAMAGE;
         assertEquals(stringExpected, myCharacter.getBuffsAsString());
         assertEquals(
                 expected,
@@ -358,21 +359,21 @@ public class DungeonCharacterTest {
 
     @Test
     void testApplyDamage_1() {
-        boolean expected = true;
+        final boolean expected = true;
 
         assertEquals(expected, myCharacter.applyDamage(200));
     }
 
     @Test
     void testApplyDamage_2() {
-        boolean expected = false;
+        final boolean expected = false;
 
         assertEquals(expected, myCharacter.applyDamage(20));
     }
 
     @Test
     void testIsDead() {
-        boolean expected = false;
+        final boolean expected = false;
 
         assertEquals(expected, myCharacter.isDead());
     }
@@ -380,7 +381,7 @@ public class DungeonCharacterTest {
     @Test
     void testApplyDamageFromBuff() {
         Buff myBuff = new StrengthBuff(2);
-        boolean expected = false;
+        final boolean expected = false;
 
         assertEquals(
                 expected,
@@ -389,7 +390,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testInverseAdjustedResistance() {
-        double expected = 0.8;
+        final double expected = 0.8;
 
         assertEquals(
                 expected,
@@ -398,7 +399,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testApplyAdjustedDamage() {
-        int expected = (int) (myCharacter.getAdjustedMinDamage() * 0.8);
+        final int expected = (int) (myCharacter.getAdjustedMinDamage() * 0.8);
 
         assertEquals(
                 expected,
@@ -407,7 +408,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testAdjustedDebuffChance() {
-        double expected = myCharacter.getDebuffChance() * 0.8;
+        final double expected = myCharacter.getDebuffChance() * 0.8;
 
         assertEquals(
                 expected,

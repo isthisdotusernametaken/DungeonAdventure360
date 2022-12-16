@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.function.Executable;
 
@@ -33,5 +34,27 @@ public class TestingUtil {
     static void unexpectedExceptionFailure(final Exception theException) {
         theException.printStackTrace(); // Mock doesn't throw SQLException. Should
         fail(UNEXPECTED_EXCEPTION);     // never be encountered
+    }
+
+    static void assertIsAttemptDamageResultType(final AttackResult theResult,
+                                                final AttackResult ... theOtherOptions) {
+        boolean success =
+                theResult == AttackResult.NO_ACTION ||
+                theResult == AttackResult.MISS ||
+                theResult == AttackResult.BLOCK ||
+                theResult == AttackResult.HIT_DEBUFF ||
+                theResult == AttackResult.HIT_NO_DEBUFF ||
+                theResult == AttackResult.KILL;
+
+        if (!success) {
+            for (AttackResult allowedResult : theOtherOptions) {
+                if (theResult == allowedResult) {
+                    success = true;
+                    break;
+                }
+            }
+        }
+
+        assertTrue(success);
     }
 }

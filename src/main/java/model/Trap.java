@@ -8,8 +8,8 @@ public class Trap extends DamageDealer implements CharRepresentable {
     private static final long serialVersionUID = 5633394522695385651L;
 
     private final char myCharRepresentation;
-    private final boolean myIsSingleUse;
-    private boolean myIsBroken;
+    final boolean myIsSingleUse;
+    boolean myIsBroken;
     private final boolean myIsBoardable;
 
     Trap(final String theClass,

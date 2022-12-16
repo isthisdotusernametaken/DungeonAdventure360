@@ -3,11 +3,11 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import static model.TestingUtil.assertIsAttemptDamageResultType;
+
 public class SpecialSkillTest {
 
-    private final static SpecialSkill SPECIAL_SKILL = new CrushingBlow();
-
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private static final DungeonCharacter ADVENTURER = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -21,8 +21,7 @@ public class SpecialSkillTest {
             0.3,
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
             new CrushingBlow());
-
-    private final DungeonCharacter myMonster = new Monster(
+    private static final DungeonCharacter MONSTER = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -42,29 +41,36 @@ public class SpecialSkillTest {
     void testToString() {
         String expected = "Crushing Blow";
 
-        assertEquals(expected, SPECIAL_SKILL.toString());
+        assertEquals(expected, new CrushingBlow().toString());
     }
 
     @Test
     void testAdvance() {
-        int expected = 0; //0 because it has not been used yet
-        SPECIAL_SKILL.advance();
+        final SpecialSkill skill = new Heal();
 
-        assertEquals(expected, SPECIAL_SKILL.myRemainingCooldown);
+        skill.myRemainingCooldown = 2;
+        assertEquals(2, skill.myRemainingCooldown);
+        skill.advance();
+        assertEquals(1, skill.myRemainingCooldown);
     }
 
     @Test
-    void testCanUse() {
-        assertTrue(SPECIAL_SKILL.canUse());
+    void testCanUseNoCooldown() {
+        assertTrue(new SneakAttack().canUse());
+    }
+
+    @Test
+    void testCanUseCooldown() {
+        final SpecialSkill skill = new SneakAttack();
+        skill.myRemainingCooldown = 1;
+
+        assertFalse(skill.canUse());
     }
 
     @Test
     void testUse() {
-        AttackResult actual = SPECIAL_SKILL.use(myCharacter, myMonster).getResult();
-
-        assertTrue(
-                actual.equals(AttackResult.KILL) ||
-                actual.equals(AttackResult.MISS) ||
-                actual.equals(AttackResult.HIT_NO_DEBUFF));
+        assertIsAttemptDamageResultType(
+                new CrushingBlow().use(ADVENTURER, MONSTER).getResult()
+        );
     }
 }

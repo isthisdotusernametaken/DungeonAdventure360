@@ -31,24 +31,17 @@ public class BuffTest {
         assertEquals(0.0, myBuff.getDamagePercent());
     }
 
-//    @Test
-//    void testGetDuration() {
-//        assertNotEquals(2, myBuff.getDuration());
-//        assertEquals(1, myBuff.getDuration());
-//    }
-//
-//    @Test
-//    void testChangeDuration() {
-//        myBuff.changeDuration(4);
-//        assertNotEquals(4, myBuff.getDuration());
-//        assertEquals(5, myBuff.getDuration());
-//    }
-//
-//    @Test
-//    void testAdvanceBuffDuration() {
-//        myBuff.advance();
-//        assertEquals(0, myBuff.getDuration());
-//    }
+    @Test
+    void testChangeDuration() {
+        myBuff.changeDuration(4);
+        assertEquals(5, myBuff.myDuration);
+    }
+
+    @Test
+    void testAdvanceBuffDuration() {
+        myBuff.advance();
+        assertEquals(0, myBuff.myDuration);
+    }
 
     @Test
     void testIsCompleted() {
