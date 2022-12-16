@@ -8,12 +8,12 @@ public class AdjustedCharacterStats implements Serializable {
     @Serial
     private static final long serialVersionUID = -3232722312066269409L;
 
-    private final DungeonCharacter myCharacter;
+    final DungeonCharacter myCharacter;
+    final double[] myResistances;
     private int myMinDamage;
     private int myMaxDamage;
     private double myHitChance;
     private int mySpeed;
-    private final double[] myResistances;
 
     AdjustedCharacterStats(final DungeonCharacter theCharacter) {
         myResistances = new double[DamageType.values().length];

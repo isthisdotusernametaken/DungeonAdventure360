@@ -4,14 +4,14 @@ import java.util.Arrays;
 
 public class AttackResultAndAmount {
 
-    private static final AttackResultAndAmount[] NO_AMOUNTS =
+    static final AttackResultAndAmount[] NO_AMOUNTS =
             Arrays.stream(AttackResult.values())
                   .map(result -> new AttackResultAndAmount(result, 0))
                   .toArray(AttackResultAndAmount[]::new);
 
 
-    private final AttackResult myResult;
-    private final int myAmount;
+    final AttackResult myResult;
+    final int myAmount;
 
     AttackResultAndAmount(final AttackResult theResult,
                           final int theAmount) {

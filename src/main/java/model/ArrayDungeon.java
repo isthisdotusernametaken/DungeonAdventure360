@@ -7,22 +7,22 @@ import java.util.Stack;
 
 public class ArrayDungeon extends Dungeon {
 
+    static final double MONSTER_CHANCE_PER_ROOM = 0.3;
+    static final double TRAP_CHANCE_PER_ROOM = 0.2;
+    static final double ITEM_CHANCE_PER_ROOM = 0.4;
+
+    static final String UNKNOWN_ROOM = createUnknownRoomString();
+    // left/top wall + width/height of room contents + right/bottom wall
+    static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;
+    static final int HALF_TOTAL_ROOM_SIZE = TOTAL_ROOM_SIZE / 2;
+
     @Serial
     private static final long serialVersionUID = 6134960628901176398L;
 
-    private static final double MONSTER_CHANCE_PER_ROOM = 0.3;
-    private static final double TRAP_CHANCE_PER_ROOM = 0.2;
-    private static final double ITEM_CHANCE_PER_ROOM = 0.4;
-
-    private static final String UNKNOWN_ROOM = createUnknownRoomString();
-    // left/top wall + width/height of room contents + right/bottom wall
-    private static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;
-    private static final int HALF_TOTAL_ROOM_SIZE = TOTAL_ROOM_SIZE / 2;
-
-    private final Room[][][] myRooms;
-    private final RoomCoordinates[] myStairs;
-    private final RoomCoordinates[] myTerminalPoints;
-    private final RoomCoordinates myDimensions;
+    final Room[][][] myRooms;
+    final RoomCoordinates[] myStairs;
+    final RoomCoordinates[] myTerminalPoints;
+    final RoomCoordinates myDimensions;
 
     /**
      * Creates a new Dungeon of Rooms with the provided number of floors, rows,
@@ -60,7 +60,7 @@ public class ArrayDungeon extends Dungeon {
         );
     }
 
-    private static String createUnknownRoomString() {
+    static String createUnknownRoomString() {
         final String unknownRoomRow = ("" + UNKNOWN)
                                       .repeat(TOTAL_ROOM_SIZE);
 
@@ -125,10 +125,10 @@ public class ArrayDungeon extends Dungeon {
         return myTerminalPoints[0];
     }
 
-    private void appendStairs(final StringBuilder theBuilder,
-                              final int theFloor,
-                              final boolean theNorth,
-                              final boolean theHideUnknown) {
+    void appendStairs(final StringBuilder theBuilder,
+                      final int theFloor,
+                      final boolean theNorth,
+                      final boolean theHideUnknown) {
         final int targetY = theNorth ? 0 : myDimensions.getY() - 1;
         final boolean hasUpStairs = hasKnownStairs(
                 0, theFloor, targetY, theFloor - 1,
@@ -158,11 +158,11 @@ public class ArrayDungeon extends Dungeon {
         }
     }
 
-    private boolean hasKnownStairs(final int theInvalidFloor,
-                                   final int theFloor,
-                                   final int theTargetY,
-                                   final int theStairsIndex,
-                                   final boolean theHideUnknown) {
+    boolean hasKnownStairs(final int theInvalidFloor,
+                           final int theFloor,
+                           final int theTargetY,
+                           final int theStairsIndex,
+                           final boolean theHideUnknown) {
         return theFloor != theInvalidFloor &&
                myStairs[theStairsIndex].getY() == theTargetY &&
                (
@@ -171,11 +171,11 @@ public class ArrayDungeon extends Dungeon {
                );
     }
 
-    private void appendTwoStairs(final StringBuilder theBuilder,
-                                 final int theFirstFloor,
-                                 final int theSecondFloor,
-                                 final char theFirstFloorChar,
-                                 final char theSecondFloorChar) {
+    void appendTwoStairs(final StringBuilder theBuilder,
+                         final int theFirstFloor,
+                         final int theSecondFloor,
+                         final char theFirstFloorChar,
+                         final char theSecondFloorChar) {
         appendStairs(
                 theBuilder, theFirstFloor, theFirstFloorChar, false
         );
@@ -189,10 +189,10 @@ public class ArrayDungeon extends Dungeon {
         theBuilder.append(theSecondFloorChar).append('\n');
     }
 
-    private void appendStairs(final StringBuilder theBuilder,
-                              final int theFloor,
-                              final char theStairsChar,
-                              final boolean theAppendNewLine) {
+    void appendStairs(final StringBuilder theBuilder,
+                      final int theFloor,
+                      final char theStairsChar,
+                      final boolean theAppendNewLine) {
         appendSpaces(
                 theBuilder,
                 myStairs[theFloor].getX() * TOTAL_ROOM_SIZE +
@@ -206,16 +206,16 @@ public class ArrayDungeon extends Dungeon {
         }
     }
 
-    private void appendSpaces(final StringBuilder theBuilder,
+    void appendSpaces(final StringBuilder theBuilder,
                               final int theSpaces) {
         theBuilder.append(" ".repeat(Math.max(0, theSpaces)));
     }
 
-    private void appendRow(final StringBuilder theBuilder,
-                           final int theFloor,
-                           final int theRow,
-                           final RoomCoordinates theAdventurerCoords,
-                           final boolean theHideUnknown) {
+    void appendRow(final StringBuilder theBuilder,
+                   final int theFloor,
+                   final int theRow,
+                   final RoomCoordinates theAdventurerCoords,
+                   final boolean theHideUnknown) {
         final String[][] rooms = Arrays.stream(viewRowAsArray(
                 theFloor, theRow, theAdventurerCoords, theHideUnknown
         )).map(s -> s.split("\n")).toArray(String[][]::new);
@@ -228,10 +228,10 @@ public class ArrayDungeon extends Dungeon {
         }
     }
 
-    private String[] viewRowAsArray(final int theFloor,
-                                    final int theRow,
-                                    final RoomCoordinates theAdventurerCoords,
-                                    final boolean theHideUnknown) {
+    String[] viewRowAsArray(final int theFloor,
+                            final int theRow,
+                            final RoomCoordinates theAdventurerCoords,
+                            final boolean theHideUnknown) {
         final String[] rooms = new String[myRooms[0][0].length];
 
         for (int i = 0; i < rooms.length; i++) {
@@ -249,11 +249,11 @@ public class ArrayDungeon extends Dungeon {
         return rooms;
     }
 
-    private static class MazeGenerator {
+    static class MazeGenerator {
 
-        private static final int[] NO_UNVISITED_NEIGHBORS = new int[0];
+        static final int[] NO_UNVISITED_NEIGHBORS = new int[0];
 
-        private static RoomCoordinates[] generateStairs(final RoomCoordinates theDimensions) {
+        static RoomCoordinates[] generateStairs(final RoomCoordinates theDimensions) {
             // 1 flight between each pair of consecutive floors
             // (FloorStairsFloor...FloorStairsFloor)
             final RoomCoordinates[] stairs = new RoomCoordinates[
@@ -272,12 +272,12 @@ public class ArrayDungeon extends Dungeon {
             return stairs;
         }
 
-        private static Room[][][] generateMaze(final RoomCoordinates theDimensions,
-                                               final double theMonsterChance,
-                                               final double theTrapChance,
-                                               final double theItemChance,
-                                               final Difficulty theDifficulty,
-                                               final RoomCoordinates[] theTerminalPoints) {
+        static Room[][][] generateMaze(final RoomCoordinates theDimensions,
+                                       final double theMonsterChance,
+                                       final double theTrapChance,
+                                       final double theItemChance,
+                                       final Difficulty theDifficulty,
+                                       final RoomCoordinates[] theTerminalPoints) {
             final Room[][][] maze = new Room[theDimensions.getFloor()]
                                             [theDimensions.getX()]
                                             [theDimensions.getY()];
@@ -294,13 +294,13 @@ public class ArrayDungeon extends Dungeon {
             return maze;
         }
 
-        private static void addFloor(final Room[][][] theMaze,
-                                     final RoomCoordinates theDimensions,
-                                     final int theFloor,
-                                     final double theMonsterChance,
-                                     final double theTrapChance,
-                                     final double theItemChance,
-                                     final Difficulty theDifficulty) {
+        static void addFloor(final Room[][][] theMaze,
+                             final RoomCoordinates theDimensions,
+                             final int theFloor,
+                             final double theMonsterChance,
+                             final double theTrapChance,
+                             final double theItemChance,
+                             final Difficulty theDifficulty) {
             final boolean[][][] layout = generateFloorLayout(
                     theDimensions, theFloor
             );
@@ -318,8 +318,8 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
-        private static boolean[][][] generateFloorLayout(final RoomCoordinates theDimensions,
-                                                         final int theFloor) {
+        static boolean[][][] generateFloorLayout(final RoomCoordinates theDimensions,
+                                                 final int theFloor) {
             // Direction.values().length should always be 4 (used in place of a
             // new named constant in this class)
             final boolean[][][] doors = new boolean[theDimensions.getX()]
@@ -348,10 +348,10 @@ public class ArrayDungeon extends Dungeon {
             return doors;
         }
 
-        private static void visitStartingCell(final boolean[][] theVisited,
-                                              final Stack<int[]> theDfsCells,
-                                              final RoomCoordinates theDimensions,
-                                              final int theFloor) {
+        static void visitStartingCell(final boolean[][] theVisited,
+                                      final Stack<int[]> theDfsCells,
+                                      final RoomCoordinates theDimensions,
+                                      final int theFloor) {
             final RoomCoordinates start = randomCoordsOnWall(
                     theDimensions, theFloor
             );
@@ -359,8 +359,8 @@ public class ArrayDungeon extends Dungeon {
             theDfsCells.push(new int[]{start.getX(), start.getY()});
         }
 
-        private static int[] randomUnvisitedNeighbor(final boolean[][] theVisited,
-                                                     final int[] theCell) {
+        static int[] randomUnvisitedNeighbor(final boolean[][] theVisited,
+                                             final int[] theCell) {
             final ArrayList<int[]> unvisited = new ArrayList<>(
                     Direction.values().length - 1
             ); // Only 3 possible unvisited for all cells (first cell on wall)
@@ -383,16 +383,16 @@ public class ArrayDungeon extends Dungeon {
                    unvisited.get(Util.randomIntExc(unvisited.size()));
         }
 
-        private static boolean isValidAndUnvisited(final boolean[][] theVisited,
-                                                   final int theX, final int theY) {
+        static boolean isValidAndUnvisited(final boolean[][] theVisited,
+                                           final int theX, final int theY) {
             return theX >= 0 && theX < theVisited.length &&
                    theY >= 0 && theY < theVisited[0].length &&
                    !theVisited[theX][theY];
         }
 
-        private static void addDoorsBetween(final boolean[][][] theDoors,
-                                            final int[] theFirstCell,
-                                            final int[] theSecondCell) {
+        static void addDoorsBetween(final boolean[][][] theDoors,
+                                    final int[] theFirstCell,
+                                    final int[] theSecondCell) {
             final boolean[] firstDoors = theDoors[theFirstCell[0]]
                                                  [theFirstCell[1]];
             final boolean[] secondDoors = theDoors[theSecondCell[0]]
@@ -408,10 +408,10 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
-        private static void addHorizontalDoors(final boolean[] theFirstDoors,
-                                               final boolean[] theSecondDoors,
-                                               final int[] theFirstCell,
-                                               final int[] theSecondCell) {
+        static void addHorizontalDoors(final boolean[] theFirstDoors,
+                                       final boolean[] theSecondDoors,
+                                       final int[] theFirstCell,
+                                       final int[] theSecondCell) {
             final int xDiff = theFirstCell[0] - theSecondCell[0];
             if (xDiff == 1) { // Second is west of first
                 theFirstDoors[Direction.WEST.ordinal()] = true;
@@ -422,10 +422,10 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
-        private static void addVerticalDoors(final boolean[] theFirstDoors,
-                                             final boolean[] theSecondDoors,
-                                             final int[] theFirstCell,
-                                             final int[] theSecondCell) {
+        static void addVerticalDoors(final boolean[] theFirstDoors,
+                                     final boolean[] theSecondDoors,
+                                     final int[] theFirstCell,
+                                     final int[] theSecondCell) {
             final int yDiff = theFirstCell[1] - theSecondCell[1];
             if (yDiff == 1) { // Second is north of first
                 theFirstDoors[Direction.NORTH.ordinal()] = true;
@@ -436,15 +436,15 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
-        private static void addRoom(final Room[][][] theMaze,
-                                    final int theFloor,
-                                    final int theX,
-                                    final int theY,
-                                    final boolean[] theDoors,
-                                    final double theMonsterChance,
-                                    final double theTrapChance,
-                                    final double theItemChance,
-                                    final Difficulty theDifficulty) {
+        static void addRoom(final Room[][][] theMaze,
+                            final int theFloor,
+                            final int theX,
+                            final int theY,
+                            final boolean[] theDoors,
+                            final double theMonsterChance,
+                            final double theTrapChance,
+                            final double theItemChance,
+                            final Difficulty theDifficulty) {
             final Room room = theMaze[theFloor][theX][theY];
 
             theMaze[theFloor][theX][theY] = room == null ?
@@ -465,11 +465,11 @@ public class ArrayDungeon extends Dungeon {
                     );
         }
 
-        private static Room randomRoom(final boolean[] theDoors,
-                                       final double theMonsterChance,
-                                       final double theTrapChance,
-                                       final double theItemChance,
-                                       final Difficulty theDifficulty) {
+        static Room randomRoom(final boolean[] theDoors,
+                               final double theMonsterChance,
+                               final double theTrapChance,
+                               final double theItemChance,
+                               final Difficulty theDifficulty) {
             Monster monster = null;
             Trap trap = null;
             if (Util.probabilityTest(theMonsterChance)) {
@@ -494,7 +494,7 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
-        private static void addTerminalPointsAndPillars(
+        static void addTerminalPointsAndPillars(
                 final RoomCoordinates theDimensions,
                 final Room[][][] theMaze,
                 final RoomCoordinates[] theTerminalPoints) {
@@ -516,11 +516,11 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
-        private static void addEmptyRoom(final Room[][][] theMaze,
-                                         final RoomCoordinates theCoords,
-                                         final boolean theIsEntrance,
-                                         final boolean theIsExit,
-                                         final Item ... theItems) {
+        static void addEmptyRoom(final Room[][][] theMaze,
+                                 final RoomCoordinates theCoords,
+                                 final boolean theIsEntrance,
+                                 final boolean theIsExit,
+                                 final Item ... theItems) {
             theMaze[theCoords.getFloor()]
                    [theCoords.getX()]
                    [theCoords.getY()] = new Room(
@@ -531,7 +531,7 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
-        private static RoomCoordinates[] randomTerminalPointsAndPillars(
+        static RoomCoordinates[] randomTerminalPointsAndPillars(
                 final RoomCoordinates theDimensions,
                 final int thePillarCount) {
             // Entrance, exit, then pillars
@@ -551,7 +551,7 @@ public class ArrayDungeon extends Dungeon {
             return rooms;
         }
 
-        private static RoomCoordinates randomDifferentCoords(
+        static RoomCoordinates randomDifferentCoords(
                 final RoomCoordinates theDimensions,
                 final RoomCoordinates ... theOtherCoords) {
             RoomCoordinates newCoords;
@@ -562,7 +562,7 @@ public class ArrayDungeon extends Dungeon {
             return newCoords;
         }
 
-        private static RoomCoordinates randomDifferentCoordsOnWall(
+        static RoomCoordinates randomDifferentCoordsOnWall(
                 final RoomCoordinates theDimensions,
                 final int theFloor,
                 final boolean theNorthAndSouthOnly,
@@ -577,8 +577,8 @@ public class ArrayDungeon extends Dungeon {
             return newCoords;
         }
 
-        private static boolean isSameAsAny(final RoomCoordinates theCoords,
-                                           final RoomCoordinates ... theOtherCoords) {
+        static boolean isSameAsAny(final RoomCoordinates theCoords,
+                                   final RoomCoordinates ... theOtherCoords) {
             for (RoomCoordinates other : theOtherCoords) {
                 if (other != null && theCoords.isSameRoom(other)) {
                     return true;
@@ -587,7 +587,7 @@ public class ArrayDungeon extends Dungeon {
             return false;
         }
 
-        private static RoomCoordinates randomCoords(final RoomCoordinates theDimensions) {
+        static RoomCoordinates randomCoords(final RoomCoordinates theDimensions) {
             return new RoomCoordinates(
                     Util.randomIntExc(theDimensions.getFloor()),
                     Util.randomIntExc(theDimensions.getX()),
@@ -595,14 +595,14 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
-        private static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
-                                                          final int theFloor) {
+        static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
+                                                  final int theFloor) {
             return randomCoordsOnWall(theDimensions, theFloor, false);
         }
 
-        private static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
-                                                          final int theFloor,
-                                                          final boolean theNorthAndSouthOnly) {
+        static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
+                                                  final int theFloor,
+                                                  final boolean theNorthAndSouthOnly) {
             final int directionCount = Direction.values().length;
             return switch (Util.randomIntExc(
                     theNorthAndSouthOnly ? directionCount / 2 : directionCount

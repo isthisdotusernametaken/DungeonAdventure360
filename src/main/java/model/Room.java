@@ -16,18 +16,18 @@ public class Room implements Serializable {
     @Serial
     private static final long serialVersionUID = 4590698579987805557L;
 
-    private static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
+    static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
-    private static final char ADVENTURER = '@';
-    private static final char MONSTER = 'M';
-    private static final char EMPTY = ' ';
-    private static final char MORE = '.';
-    private static final char ENTRANCE = 'i';
-    private static final char EXIT = 'o';
-    private static final char BROKEN_TRAP = 'X';
-    private static final char WALL = '*';
-    private static final char HORIZONTAL_DOOR = '-';
-    private static final char VERTICAL_DOOR = '|';
+    static final char ADVENTURER = '@';
+    static final char MONSTER = 'M';
+    static final char EMPTY = ' ';
+    static final char MORE = '.';
+    static final char ENTRANCE = 'i';
+    static final char EXIT = 'o';
+    static final char BROKEN_TRAP = 'X';
+    static final char WALL = '*';
+    static final char HORIZONTAL_DOOR = '-';
+    static final char VERTICAL_DOOR = '|';
 
     private final boolean[] myDoors;
     private final Container myContainer;

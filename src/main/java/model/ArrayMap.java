@@ -7,7 +7,7 @@ public class ArrayMap extends Map {
     @Serial
     private static final long serialVersionUID = -2679508810748662333L;
 
-    private final boolean[][][] myExplored;
+    final boolean[][][] myExplored;
 
     ArrayMap(final RoomCoordinates theDimensions) {
         myExplored = new boolean[theDimensions.getFloor()]

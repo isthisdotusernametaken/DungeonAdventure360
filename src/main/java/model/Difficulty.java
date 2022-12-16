@@ -42,7 +42,7 @@ public enum Difficulty {
         }
     }
 
-    private static int calculateMinFloorSize() {
+    static int calculateMinFloorSize() {
         // Need enough distinct rooms for pillars, entrance, and exit.
         // To use in Enum constructor, can't be static final field
         return (int) Math.ceil(Math.sqrt(Pillar.createPillars().length + 2));
