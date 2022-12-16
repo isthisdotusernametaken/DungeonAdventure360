@@ -29,13 +29,13 @@ public class Room implements Serializable {
     static final char HORIZONTAL_DOOR = '-';
     static final char VERTICAL_DOOR = '|';
 
-    private final boolean[] myDoors;
-    private final Container myContainer;
-    private final Trap myTrap;
-    private Monster myMonster;
-    private final String myMonsterName;
-    private final boolean myIsEntrance;
-    private final boolean myIsExit;
+    final boolean[] myDoors;
+    final Container myContainer;
+    final Trap myTrap;
+    Monster myMonster;
+    final String myMonsterName;
+    final boolean myIsEntrance;
+    final boolean myIsExit;
 
     Room(final boolean[] theDoors,
          final Trap theTrap,
