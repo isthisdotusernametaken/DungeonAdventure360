@@ -2,8 +2,14 @@ package model;
 
 import java.util.Arrays;
 
+/**
+ *
+ */
 public class AttackResultAndAmount {
 
+    /**
+     *
+     */
     private static final AttackResultAndAmount[] NO_AMOUNTS =
             Arrays.stream(AttackResult.values())
                   .map(result -> new AttackResultAndAmount(result, 0))

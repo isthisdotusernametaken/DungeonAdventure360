@@ -3,21 +3,48 @@ package model;
 import java.io.Serial;
 import java.util.Arrays;
 
+/**
+ * This class represents Buff potion item that will be applied on and used by the
+ * adventurer both in exploration mode and combat mode.
+ */
 public class BuffPotion extends CharacterApplicableItem {
 
+    /**
+     * Class Serial Identifier.
+     */
     @Serial
     private static final long serialVersionUID = 8841704767797465686L;
 
+    /**
+     * The string array representing all the names of the buff type
+     * that the buff potion may have.
+     */
     private static final String[] NAMES =
             Arrays.stream(BuffType.getAllPositiveBuffTypes())
             .map(buffType -> buffType.toString() + " Potion")
             .toArray(String[]::new);
 
+    /**
+     * The integer value representing the minimum duration of the potion.
+     */
     private static final int MIN_DURATION = 2;
+
+    /**
+     * The integer value representing the maximum duration of the potion.
+     */
     private static final int MAX_DURATION = 5;
 
+    /**
+     * A buff type that the buff potion contains.
+     */
     private final BuffType myBuffType;
 
+    /**
+     * Constructor to construct the buff potion with its effect
+     *
+     * @param theCount The quantitative of the potion.
+     * @param theBuffType The buff type that the buff potion contains.
+     */
     BuffPotion(final int theCount, final BuffType theBuffType) {
         super(
                 theBuffType.charRepresentation(),
@@ -29,10 +56,28 @@ public class BuffPotion extends CharacterApplicableItem {
         myBuffType = theBuffType;
     }
 
+    /**
+     * Gets the buff type that the buff potion contains.
+     *
+     * @return The buff type that the buff potion contains.
+     */
     BuffType getBuffType() {
         return myBuffType;
     }
 
+    /**
+     * Executes and applies the effect of the buff potion depending on
+     * which type of buff it contains.
+     *
+     * @param theTarget The dungeon character that the potion will be
+     *                  applied on
+     * @return The string result representing the effect process when the
+     *          potion is applied
+     *
+     * @throws IllegalArgumentException Thrown to indicate that a method has
+     *                                  been passed an illegal or inappropriate
+     *                                  argument.
+     */
     @Override
     String applyEffect(final DungeonCharacter theTarget)
             throws IllegalArgumentException {
@@ -42,11 +87,21 @@ public class BuffPotion extends CharacterApplicableItem {
         return myBuffType + " +" + duration + " turns";
     }
 
+    /**
+     * Creates a copy of the buff potion.
+     *
+     * @return The buff potion item.
+     */
     @Override
     Item copy() {
         return new BuffPotion(getCount(), myBuffType);
     }
 
+    /**
+     * Gets the name of the buff type potion.
+     *
+     * @return The name of the buff type potion.
+     */
     @Override
     String getName() {
         return NAMES[myBuffType.ordinal() - 1];
