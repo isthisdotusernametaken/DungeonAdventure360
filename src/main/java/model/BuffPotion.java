@@ -70,9 +70,9 @@ public class BuffPotion extends CharacterApplicableItem {
      * which type of buff it contains.
      *
      * @param theTarget The dungeon character that the potion will be
-     *                  applied on
+     *                  applied on.
      * @return          The string result representing the effect process
-     *                  when the potion is applied
+     *                  when the potion is applied.
      *
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate

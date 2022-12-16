@@ -79,9 +79,9 @@ public class Adventurer extends DungeonCharacter {
     }
 
     /**
-     * Displays all the essential information of the dungeon's character.
+     * Displays all the essential information of the adventurer's character.
      *
-     * @return The string descriptions of the dungeon's character.
+     * @return The string descriptions of the adventurer's character.
      */
     @Override
     public final String toString() {
@@ -91,16 +91,16 @@ public class Adventurer extends DungeonCharacter {
     }
 
     /**
-     * Gets the unique special of the dungeon's character.
+     * Gets the unique special of the adventurer's character.
      *
-     * @return The special skill type of the dungeon's character.
+     * @return The special skill type of the adventurer's character.
      */
     final SpecialSkill getSpecialSkill() {
         return mySpecialSkill;
     }
 
     /**
-     * Displays the special skill of the dungeon's character.
+     * Displays the special skill of the adventurer's character.
      *
      * @return The string description of the special skill of
      *         the dungeon's character.
@@ -110,7 +110,7 @@ public class Adventurer extends DungeonCharacter {
     }
 
     /**
-     * Executes and applies the dungeon's character's special skill
+     * Executes and applies the adventurer's character's special skill
      * on the enemy.
      *
      * @param theEnemy The monster in the dungeon game.
