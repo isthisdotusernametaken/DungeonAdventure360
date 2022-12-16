@@ -1,9 +1,7 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DamageDealerTest {
 
@@ -39,7 +37,7 @@ public class DamageDealerTest {
 
     @Test
     void testGetClassName() {
-        String expected = "warrior";
+        String expected = "Warrior";
 
         assertEquals(expected, myDamageDealer.getClassName());
     }
@@ -127,6 +125,7 @@ public class DamageDealerTest {
 
         assertTrue(
                 actual.equals(new AttackResultAndAmount(AttackResult.BLOCK, 2).getResult()) ||
-                        actual.equals(new AttackResultAndAmount(AttackResult.HIT_NO_DEBUFF, 2).getResult()));
+                        actual.equals(new AttackResultAndAmount(AttackResult.HIT_NO_DEBUFF, 2).getResult()) ||
+                        actual.equals(new AttackResultAndAmount(AttackResult.MISS, 2).getResult()));
     }
 }

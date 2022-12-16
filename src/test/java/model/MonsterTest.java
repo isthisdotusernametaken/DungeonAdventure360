@@ -1,8 +1,7 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MonsterTest {
 
@@ -47,8 +46,10 @@ public class MonsterTest {
 
     @Test
     void testAttemptHeal() {
-        AttackResultAndAmount expected = new AttackResultAndAmount(AttackResult.NO_ACTION, 1);
+        AttackResult actual = myMonster.attemptHeal().getResult();
 
-        assertEquals(expected.getResult(), myMonster.attemptHeal().getResult()); //No action. Monster is full hp
+        assertTrue(
+                actual.equals(AttackResult.HEAL) ||
+                        actual.equals(AttackResult.NO_ACTION));
     }
 }

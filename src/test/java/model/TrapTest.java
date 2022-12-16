@@ -1,9 +1,7 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrapTest {
 
@@ -66,12 +64,11 @@ public class TrapTest {
 
     @Test
     void testActivate() {
-        AttackResultAndAmount expected =
-                new AttackResultAndAmount(AttackResult.HIT_NO_DEBUFF, 2);
         AttackResult actual = myTrap.activate(myCharacter).getResult();
 
         assertTrue(
                 actual.equals(AttackResult.MISS) ||
-                actual.equals(AttackResult.DODGE));
+                actual.equals(AttackResult.DODGE) ||
+                actual.equals(AttackResult.HIT_NO_DEBUFF));
     }
 }

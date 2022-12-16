@@ -1,11 +1,10 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class DungeonCharacterTest {
-    private static final DungeonCharacter myCharacter = new Adventurer(
+    private final DungeonCharacter myCharacter = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -59,7 +58,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testGetBlockChance() {
-        double expected = 0.2;
+        double expected = 0.3;
 
         assertEquals(expected, myCharacter.getBlockChance());
     }
@@ -68,7 +67,11 @@ public class DungeonCharacterTest {
     void testGetResistanceData() {
         ResistanceData expected = new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2});
 
-        assertEquals(expected, myCharacter.getResistances());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(
+                    expected.getResistance(i),
+                    myCharacter.getResistances().getResistance(i));
+        }
     }
 
     @Test
@@ -103,7 +106,11 @@ public class DungeonCharacterTest {
     void testGetAdjustedResistance() {
         ResistanceData expected = new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2});
 
-        assertEquals(expected, myCharacter.getResistances());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(
+                    expected.getResistance(i),
+                    myCharacter.getResistances().getResistance(i));
+        }
     }
 
     @Test

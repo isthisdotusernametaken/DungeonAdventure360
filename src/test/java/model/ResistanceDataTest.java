@@ -1,9 +1,9 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import static model.TestingUtil.assertResistanceDataEqualsArray;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResistanceDataTest {
 

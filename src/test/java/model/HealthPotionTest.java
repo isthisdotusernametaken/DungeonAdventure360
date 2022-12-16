@@ -1,10 +1,7 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 public class HealthPotionTest {
     private static final HealthPotion myHealthPotion = new HealthPotion(99);
     private static final DungeonCharacter myCharacter =  new Adventurer(

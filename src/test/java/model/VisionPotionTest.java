@@ -1,8 +1,7 @@
 package model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class VisionPotionTest {
     private static final VisionPotion myVisionPotion = new VisionPotion(99);
