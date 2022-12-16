@@ -22,27 +22,27 @@ public class AdjustedCharacterStatsTest {
                     new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2})));
 
     @Test
-    void getMinDamageTest () {
+    void testGetMinDamage () {
         assertEquals(15, stats.getMinDamage());
     }
 
     @Test
-    void getMaxDamageTest () {
+    void testMaxDamage () {
         assertEquals(25, stats.getMaxDamage());
     }
 
     @Test
-    void getHitChanceTest () {
+    void testGetHitChance () {
         assertEquals(0.5, stats.getHitChance());
     }
 
     @Test
-    void getSpeedTest () {
+    void testGetSpeed () {
         assertEquals(4, stats.getSpeed());
     }
 
     @Test
-    void getResistanceTest () {
+    void testGetResistance () {
         assertEquals(0.1, stats.getResistance(DamageType.NORMAL));
         assertEquals(0.1, stats.getResistance(DamageType.SHARP));
         assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
@@ -51,7 +51,7 @@ public class AdjustedCharacterStatsTest {
     }
 
     @Test
-    void multiplyDamageTest () {
+    void testMultiplyDamage () {
         stats.multiplyDamage(2);
 
         assertEquals(30, stats.getMinDamage());
@@ -59,21 +59,21 @@ public class AdjustedCharacterStatsTest {
     }
 
     @Test
-    void multiplyHitChanceTest () {
+    void testMultiplyHitChance () {
         stats.multiplyHitChance(200000);
 
         assertEquals(1.0, stats.getHitChance());
     }
 
     @Test
-    void multiplySpeedTest () {
+    void testMultiplySpeed () {
         stats.multiplySpeed(9999);
 
         assertEquals(1000, stats.getSpeed());
     }
 
     @Test
-    void multiplyResistancesTest () {
+    void testMultiplyResistances () {
         stats.multiplyResistances(99999999);
 
         assertEquals(1.0, stats.getResistance(DamageType.NORMAL));
@@ -84,7 +84,7 @@ public class AdjustedCharacterStatsTest {
     }
 
     @Test
-    void resetStatsTest () {
+    void testResetStat () {
         stats.multiplyDamage(2);
         stats.multiplyHitChance(200000);
         stats.multiplySpeed(9999);
@@ -97,7 +97,7 @@ public class AdjustedCharacterStatsTest {
     }
 
     @Test
-    void resetResistancesTest () {
+    void testResetResistance () {
         stats.multiplyResistances(2);
         stats.resetResistances();
 
