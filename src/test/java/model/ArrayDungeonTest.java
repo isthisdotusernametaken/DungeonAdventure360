@@ -74,7 +74,7 @@ public class ArrayDungeonTest {
         final String[] dungeon = myDungeon.toString().split("\n");
         assertEquals(
                 TOTAL_ROOM_SIZE * myDungeon.getDimensions().getX(),
-                dungeon[1].length() // Guarantee not on stairs line
+                dungeon[2].length() // Guarantee not on stairs line
         );
     }
 

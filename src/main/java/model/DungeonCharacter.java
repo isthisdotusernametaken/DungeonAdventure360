@@ -11,13 +11,13 @@ public abstract class DungeonCharacter extends DamageDealer {
     @Serial
     private static final long serialVersionUID = -6220105292148511769L;
 
-    private String myName;
-    private final int myMaxHP;
+    String myName;
+    final int myMaxHP;
     int myHP;
-    private final double myBlockChance;
-    private final ResistanceData myResistances;
-    private final AdjustedCharacterStats myAdjustedStats;
-    private final List<Buff> myBuffs;
+    final double myBlockChance;
+    final ResistanceData myResistances;
+    final AdjustedCharacterStats myAdjustedStats;
+    final List<Buff> myBuffs;
 
     DungeonCharacter(final String theName,
                      final String theClass,

@@ -1,28 +1,38 @@
 package model;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DungeonCharacterTest {
     
-    private final DungeonCharacter myCharacter = new Adventurer(
-            "Dark LORD",
-            "Warrior",
-            200,
-            25,
-            40,
-            0.7,
-            0.2,
-            2,
-            DamageType.BLUNT,
-            4,
-            0.3,
-            new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
-            new CrushingBlow());
+    private DungeonCharacter myCharacter;
+    
+    @BeforeEach
+    void buildCharacter() {
+        myCharacter = new Adventurer(
+                "Dark LORD",
+                "Warrior",
+                200,
+                25,
+                40,
+                0.7,
+                0.2,
+                2,
+                DamageType.BLUNT,
+                4,
+                0.3,
+                new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
+                new CrushingBlow()
+        );
+    }
 
     @Test
     void testToString() {
-        String expected = """
+        final String expected = """
                 Dark LORD
                  Warrior, 200/200 HP
                  Base Damage: 25-40, Blunt, 70% Accuracy
@@ -38,7 +48,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testGetName() {
-        String expected = "Dark LORD";
+        final String expected = "Dark LORD";
 
         assertEquals(expected, myCharacter.getName());
     }
@@ -66,13 +76,10 @@ public class DungeonCharacterTest {
 
     @Test
     void testGetResistanceData() {
-        ResistanceData expected = new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2});
-
-        for (int i = 0; i < 5; i++) {
-            assertEquals(
-                    expected.getResistance(i),
-                    myCharacter.getResistances().getResistance(i));
-        }
+        TestingUtil.assertResistanceDataEqualsArray(
+                new double[]{0.1, 0.1, 0.0, 0.2, 0.2},
+                myCharacter.getResistances()
+        );
     }
 
     @Test
@@ -106,7 +113,7 @@ public class DungeonCharacterTest {
     @Test
     void testGetAdjustedResistance() {
         ResistanceData expected = new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2});
-
+        
         for (int i = 0; i < 5; i++) {
             assertEquals(
                     expected.getResistance(i),
@@ -116,7 +123,7 @@ public class DungeonCharacterTest {
 
     @Test
     void testSetName() {
-        String expected = "SwishD";
+        final String expected = "SwishD";
         myCharacter.setName(expected);
 
         assertEquals(expected, myCharacter.getName());
@@ -142,7 +149,7 @@ public class DungeonCharacterTest {
 
         assertEquals(expected, myCharacter.applyDamageAndBuff(
                 DamageType.BLUNT,
-                220,
+                1000,
                 0.0,
                 0,
                 false)
@@ -152,7 +159,7 @@ public class DungeonCharacterTest {
     @Test
     void testApplyNewBuffMessage() {
         myCharacter.applyBuff(BuffType.STRENGTH, 10);
-        String expected = """
+        final String expected = """
                  Buffs:
                   Strength: Min Damage, Max Damage x 1.5 (10 turns)
                 """;
@@ -174,7 +181,7 @@ public class DungeonCharacterTest {
         myCharacter.applyBuff(BuffType.STRENGTH, 2);
         myCharacter.applyBuff(BuffType.SPEED, 1);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
-        String expected = """
+        final String expected = """
                  Buffs:
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
                   Speed: Speed x 2.0 (1 turns)
@@ -187,7 +194,7 @@ public class DungeonCharacterTest {
     void testAdvanceBuffsAndDebuffs_1() {
         myCharacter.advanceBuffsAndDebuffs();
 
-        String expected = """
+        final String expected = """
                  No buffs
                 """;
 
@@ -201,7 +208,7 @@ public class DungeonCharacterTest {
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
         myCharacter.advanceBuffsAndDebuffs();
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
                 """;
@@ -219,7 +226,7 @@ public class DungeonCharacterTest {
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
         myCharacter.advanceBuffsAndDebuffs();
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
@@ -233,10 +240,10 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testAdvanceDebuffs_1() {
+    void testAdvanceDebuffsNone() {
         myCharacter.advanceBuffsAndDebuffs();
 
-        String expected = """
+        final String expected = """
                  No buffs
                 """;
 
@@ -245,12 +252,12 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testAdvanceDebuffs_2() {
+    void testAdvanceDebuffsExpire() {
         myCharacter.applyBuff(BuffType.BLEEDING,1);
         myCharacter.applyBuff(BuffType.BROKEN_BONE,1);
         myCharacter.advanceDebuffs();
 
-        String stringExpected = """
+        final String stringExpected = """
                  No buffs
                 """;
         final AttackResult expected = AttackResult.NO_ACTION;
@@ -262,12 +269,13 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testAdvanceDebuffs_3() {
+    void testAdvanceDebuffsNoExpire() {
+        Arrays.fill(myCharacter.myAdjustedStats.myResistances, 0.0);
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
         myCharacter.advanceDebuffs();
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
@@ -281,12 +289,12 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testAdvanceBuffs_1() {
+    void testAdvanceBuffsNoExpire() {
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
         myCharacter.advanceBuffs(true);
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (998 turns)
@@ -299,12 +307,12 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testAdvanceBuffs_2() {
+    void testAdvanceBuffsDebuffsNoExpire() {
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
         myCharacter.advanceBuffs(false);
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (13 turns)
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
@@ -317,11 +325,12 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    void testReApplyBuffs() {
+    void testReapplyBuffs() {
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
+        myCharacter.reapplyBuffs();
 
-        String stringExpected = """
+        final String stringExpected = """
                  Buffs:
                   Bleeding: All Resistances x 0.7 (14 turns)
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
@@ -333,11 +342,8 @@ public class DungeonCharacterTest {
     void testGetBuffs() {
         myCharacter.applyBuff(BuffType.BLEEDING,14);
         myCharacter.applyBuff(BuffType.STRENGTH, 999);
-        Buff expected = new StrengthBuff(999);
 
-        assertEquals(
-                expected.getType(),
-                myCharacter.getBuff(BuffType.STRENGTH).getType());
+        assertNotNull(myCharacter.getBuff(BuffType.STRENGTH));
     }
 
     @Test
@@ -349,7 +355,7 @@ public class DungeonCharacterTest {
 
         myCharacter.clearDebuffs();
 
-        String expected = """
+        final String expected = """
                  Buffs:
                   Strength: Min Damage, Max Damage x 1.5 (999 turns)
                 """;

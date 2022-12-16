@@ -56,7 +56,7 @@ public class DamageDealerTest {
     }
 
     @Test
-    void testGeDebuffChance() {
+    void testGetDebuffChance() {
         assertEquals(0.2, DAMAGE_DEALER_1.getDebuffChance());
     }
 
@@ -77,33 +77,58 @@ public class DamageDealerTest {
 
     @Test
     void testGetAdjustedMinDamage() {
-        assertEquals(25, DAMAGE_DEALER_1.getMinDamage());
+        final DungeonCharacter monster =
+                MonsterFactory.getInstance().createRandom(Difficulty.EASY);
+        monster.applyBuff(BuffType.STRENGTH, 1);
+
+        assertEquals(
+                monster.myAdjustedStats.getMinDamage(),
+                monster.getAdjustedMinDamage()
+        );
     }
 
     @Test
     void testGetAdjustedMaxDamage() {
-        assertEquals(40, DAMAGE_DEALER_1.getMaxDamage());
+        final DungeonCharacter monster =
+                MonsterFactory.getInstance().createRandom(Difficulty.EASY);
+        monster.applyBuff(BuffType.STRENGTH, 1);
+
+        assertEquals(
+                monster.myAdjustedStats.getMaxDamage(),
+                monster.getAdjustedMaxDamage()
+        );
     }
 
     @Test
     void testGetAdjustedHitChance() {
-        assertEquals(0.7, DAMAGE_DEALER_1.getHitChance());
+        final DungeonCharacter monster =
+                MonsterFactory.getInstance().createRandom(Difficulty.EASY);
+        monster.applyBuff(BuffType.ACCURACY, 1);
+
+        assertEquals(
+                monster.myAdjustedStats.getHitChance(),
+                monster.getAdjustedHitChance()
+        );
     }
 
     @Test
     void testGetAdjustedSpeed() {
-        assertEquals(4, DAMAGE_DEALER_1.getSpeed());
+        final DungeonCharacter monster =
+            MonsterFactory.getInstance().createRandom(Difficulty.EASY);
+        monster.applyBuff(BuffType.SPEED, 1);
+
+        assertEquals(
+                monster.myAdjustedStats.getSpeed(),
+                monster.getAdjustedSpeed()
+        );
     }
 
     @Test
     void testAttemptDamage() {
-        final AttackResult actual = DAMAGE_DEALER_1.attemptDamage(
-                DAMAGE_DEALER_2, true
-        ).getResult();
-
-        assertTrue(
-                actual.equals(new AttackResultAndAmount(AttackResult.BLOCK, 2).getResult()) ||
-                        actual.equals(new AttackResultAndAmount(AttackResult.HIT_NO_DEBUFF, 2).getResult()) ||
-                        actual.equals(new AttackResultAndAmount(AttackResult.MISS, 2).getResult()));
+        TestingUtil.assertIsAttemptDamageResultType(
+                DAMAGE_DEALER_1.attemptDamage(
+                        DAMAGE_DEALER_2, true
+                ).getResult()
+        );
     }
 }

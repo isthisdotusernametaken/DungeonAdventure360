@@ -64,10 +64,8 @@ public class AdventurerTest {
 
     @Test
     void testUseSpecialSkill() {
-        AttackResult actual = ADVENTURER.useSpecialSkill(MONSTER).getResult();
-
-        assertTrue(
-                actual.equals(AttackResult.KILL) ||
-                actual.equals(AttackResult.MISS));
+        TestingUtil.assertIsAttemptDamageResultType(
+                ADVENTURER.useSpecialSkill(MONSTER).getResult()
+        );
     }
 }
