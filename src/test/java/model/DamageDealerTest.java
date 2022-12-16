@@ -1,6 +1,8 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class DamageDealerTest {
@@ -34,6 +36,11 @@ public class DamageDealerTest {
             0.3,
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
             new CrushingBlow());
+
+    @BeforeAll
+    static void ensureFactoriesBuilt() {
+        DungeonAdventure.buildFactories();
+    }
 
     @Test
     void testGetClassName() {

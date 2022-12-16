@@ -13,9 +13,6 @@ public class Room implements Serializable {
      */
     static final int ROOM_SIZE = 3;
 
-    @Serial
-    private static final long serialVersionUID = 4590698579987805557L;
-
     static final int HALF_ROOM_SIZE = ROOM_SIZE / 2;
 
     static final char ADVENTURER = '@';
@@ -28,6 +25,9 @@ public class Room implements Serializable {
     static final char WALL = '*';
     static final char HORIZONTAL_DOOR = '-';
     static final char VERTICAL_DOOR = '|';
+
+    @Serial
+    private static final long serialVersionUID = 4590698579987805557L;
 
     final boolean[] myDoors;
     final Container myContainer;
@@ -155,8 +155,8 @@ public class Room implements Serializable {
 
 
     // **-**
-    private void appendHorizontalWall(final StringBuilder theBuilder,
-                                      final Direction theDirection) {
+    void appendHorizontalWall(final StringBuilder theBuilder,
+                              final Direction theDirection) {
         theBuilder.append(WALL).append(WALL)
                   .append(hasDoor(theDirection) ? HORIZONTAL_DOOR : WALL)
                   .append(WALL).append(WALL)
@@ -166,8 +166,8 @@ public class Room implements Serializable {
     // * co*
     // |nte|
     // *nts*
-    private void appendVerticalWallsAndContents(final StringBuilder theBuilder,
-                                                final boolean theHasAdventurer) {
+    void appendVerticalWallsAndContents(final StringBuilder theBuilder,
+                                        final boolean theHasAdventurer) {
         final char[][] contents = roomContents(theHasAdventurer);
 
         appendWallAndContentsLine(
@@ -184,17 +184,17 @@ public class Room implements Serializable {
         );
     }
 
-    private void appendWallAndContentsLine(final StringBuilder theBuilder,
-                                           final char[][] theContents,
-                                           final int theStart,
-                                           final int theEnd) {
+    void appendWallAndContentsLine(final StringBuilder theBuilder,
+                                   final char[][] theContents,
+                                   final int theStart,
+                                   final int theEnd) {
         for (int i = theStart; i < theEnd; i++) {
             theBuilder.append(WALL).append(theContents[i]).append(WALL)
                       .append('\n');
         }
     }
 
-    private char[][] roomContents(final boolean theHasAdventurer) {
+    char[][] roomContents(final boolean theHasAdventurer) {
         final char[][] contents = new char[ROOM_SIZE][ROOM_SIZE];
         final int[] position = new int[2]; // row, col
         position[0] = position[1] = ROOM_SIZE - 1;
@@ -232,22 +232,22 @@ public class Room implements Serializable {
         return contents;
     }
 
-    private void addToContents(final char theChar,
-                               final char[][] theContents,
-                               final int[] thePosition) {
+    void addToContents(final char theChar,
+                       final char[][] theContents,
+                       final int[] thePosition) {
         theContents[thePosition[0]][thePosition[1]] = theChar;
         stepBack(thePosition);
     }
 
-    private void stepBack(final int[] thePosition) {
+    void stepBack(final int[] thePosition) {
         if (--thePosition[1] < 0) {
             thePosition[0]--;
             thePosition[1] = ROOM_SIZE - 1;
         }
     }
 
-    private boolean testContentsFull(final char[][] theContents,
-                                     final int[] thePosition) {
+    boolean testContentsFull(final char[][] theContents,
+                             final int[] thePosition) {
         if (thePosition[0] == -1) {
             theContents[0][0] = MORE;
             return true;
@@ -255,8 +255,8 @@ public class Room implements Serializable {
         return false;
     }
 
-    private void setRemainingToEmpty(final char[][] theContents,
-                                     final int[] thePosition) {
+    void setRemainingToEmpty(final char[][] theContents,
+                             final int[] thePosition) {
         while (thePosition[0] != -1) {
             addToContents(EMPTY, theContents, thePosition);
         }
