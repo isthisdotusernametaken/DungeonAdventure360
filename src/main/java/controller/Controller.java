@@ -210,7 +210,6 @@ public final class Controller {
         return Util.NONE;
     }
 
-
     public boolean canExit() {
         return myGame.canExit();
     }
@@ -218,6 +217,7 @@ public final class Controller {
     public boolean isInCombat() {
         return myGame.isInCombat();
     }
+
 
     public boolean isMonsterTurn() {
         return myGame.isMonsterTurn();
