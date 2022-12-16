@@ -16,26 +16,69 @@ import java.util.List;
 
 import model.DungeonAdventure;
 
+/**
+ * This class displays the player's options from a certain menu (possibly
+ * excluding options the player cannot use) and returns the index of the
+ * player's choice once a valid option has been entered.
+ */
 public final class ProgramFileManager {
 
+    /**
+     * The instance of the file.
+     */
     private static ProgramFileManager INSTANCE;
 
+    /**
+     * an extension on the file being made.
+     */
     private static final String SAVES_EXTENSION =
             ".dungeon";
+
+    /**
+     * saves name of file.
+     */
     private static final String SAVES_NAME =
             "\\saves";
+
+    /**
+     * saving the adventures name player choose.
+     */
     private static final String LOG_NAME =
             "\\log.txt";
+
+    /**
+     * A backup saved file.
+     */
     private static final String BACKUP_PROGRAM_DIR =
             "Dungeon Adventure";
+
+    /**
+     * the backup saved file also saved the file name.
+     */
     private static final String BACKUP_SAVES_DIR =
             BACKUP_PROGRAM_DIR + SAVES_NAME;
+
+    /**
+     * the backup file also saves the players name.
+     */
     private static final String BACKUP_LOG_PATH =
             BACKUP_PROGRAM_DIR + LOG_NAME;
+
+    /**
+     * the backup file saved in a file name "APPDATA".
+     */
     private static final String PROGRAM_DIR =
             System.getenv("APPDATA") + "\\" + BACKUP_PROGRAM_DIR;
+
+    /**
+     * .
+     */
     private static final String SAVES_DIR =
             PROGRAM_DIR + SAVES_NAME;
+
+    /**
+     *
+     */
     private static final String LOG_PATH =
             PROGRAM_DIR + LOG_NAME;
 

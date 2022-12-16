@@ -8,23 +8,55 @@ import model.DungeonAdventure;
 import model.Util;
 import view.ConsoleUI;
 
+/**
+ * This class connects all packages and class together so that the
+ * program runs the code.
+ */
 public final class Controller {
 
+    /**
+     * String representing file of the auto save.
+     */
     private static final String AUTOSAVE_FILE = "autosave";
 
+    /**
+     * String representing  error of could not start.
+     */
     private static final String COULD_NOT_START =
             "The application could not start.";
+
+    /**
+     * String representing details of failure.
+     */
     private static final String FAILURE_DETAILS =
             "For more information, view ";
 
+    /**
+     * String representing error of adventurer not moving.
+     */
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
+    /**
+     * letting the console use UI.
+     */
     private final ConsoleUI myUI;
+    /**
+     * letting player choose a new game.
+     */
     private DungeonAdventure myGame;
+    /**
+     * letting player choose a previous game.
+     */
     private String myPreviousSaveName;
+    /**
+     *  game is saved.
+     */
     private boolean myIsSaved;
 
+    /**
+     * saving game if terminal is closed.
+     */
     private Controller() {
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> saveGame(AUTOSAVE_FILE))
@@ -33,6 +65,9 @@ public final class Controller {
         myUI = new ConsoleUI(this);
     }
 
+    /**
+     * main draws from all files allowing the UI to run and play the game.
+     */
     public static void main(final String[] theArgs) {
         try {
             if (ProgramFileManager.tryCreateInstance()) {
@@ -59,16 +94,29 @@ public final class Controller {
         }
     }
 
+    /**
+     * a pop up of all saved file names to choose from.
+     *
+     *  @return result all saved games previous saved.
+     */
     public String[] getSaveFiles() {
         return ProgramFileManager.getInstance().getSaveFiles();
     }
 
+    /**
+     * a way to restart from the beginning.
+     */
     public void reset() {
         myGame = null;
         myPreviousSaveName = null;
         noteUnsaved();
     }
 
+    /**
+     * creating a new game so the player starts at the beginning.
+     *
+     *  @return result all setting will reset at normal level.
+     */
     public boolean createGame(final String theAdventurerName,
                               final int theAdventurerClass,
                               final int theDifficulty) {
@@ -87,6 +135,11 @@ public final class Controller {
         return false;
     }
 
+    /**
+     * load a game that is already has been saved you want to restart to.
+     *
+     *  @return result is that the file does not exist yet.
+     */
     public boolean loadGame(final String theFile) {
         final DungeonAdventure loaded =
                 ProgramFileManager.getInstance().loadGame(theFile);
@@ -100,22 +153,47 @@ public final class Controller {
         return false;
     }
 
+    /**
+     * a way to see old saved files and there names.
+     *
+     *  @return result is a files with names of previous games pops up.
+     */
     public String getPreviousSaveName() {
         return myPreviousSaveName;
     }
 
+    /**
+     * if files has names of previous saved games they would pop up.
+     *
+     *  @return result is false so nothing exist yet.
+     */
     public boolean hasPreviousSaveName() {
         return myPreviousSaveName != null;
     }
 
+    /**
+     * a file that is already saved..
+     *
+     *  @return result is false so nothing exist yet or comes up with the files already saved.
+     */
     public boolean isSaved() {
         return myIsSaved || myGame == null;
     }
 
+    /**
+     * save the cuurent game for future use.
+     *
+     *  @return result overwrite old file same name and the file name.
+     */
     public boolean saveGame() {
         return hasPreviousSaveName() && saveGame(myPreviousSaveName);
     }
 
+    /**
+     * a file that is already saved..
+     *
+     *  @return result is false so nothing exist yet or comes up with the files already saved.
+     */
     public boolean saveGame(final String theFile) {
         if (myGame != null &&
                 ProgramFileManager.getInstance().saveGame(theFile, myGame)) {
@@ -210,18 +288,38 @@ public final class Controller {
         return Util.NONE;
     }
 
+    /**
+     *
+     */
     public boolean canExit() {
         return myGame.canExit();
     }
 
+    /**
+     * player is in battle with monster.
+     *
+     * @return result in combat with mosnter.
+     */
     public boolean isInCombat() {
         return myGame.isInCombat();
     }
 
+    /**
+     * it is monsters turn.
+     *
+     * @return result of the monsters attack.
+     */
     public boolean isMonsterTurn() {
         return myGame.isMonsterTurn();
     }
 
+    /**
+     *  monsters turn to attack.
+     *
+     * @return result in message  about th monsters turn.
+     * @return result in calculating the damage done by the monster.
+     * @return result in monster having no turn.
+     */
     public String tryMonsterTurn() {
         noteUnsaved();
 
@@ -252,6 +350,12 @@ public final class Controller {
         return myGame.getMonster();
     }
 
+    /**
+     * the monster is dead aftr attacking it and it has no more health left.
+     *
+     * @return result in the monsters showing health and killing it.
+     * @return result in a message.
+     */
     public String killMonster() {
         noteUnsaved();
 
@@ -267,10 +371,21 @@ public final class Controller {
         }
     }
 
+    /**
+     * shows that the player is still alive after taking damage.
+     *
+     * @return result in that the player is still alive after taking damage.
+     */
     public boolean isAlive() {
         return myGame.isAlive();
     }
 
+    /**
+     * the attack of when encounter with a monster.
+     *
+     * @return result in a message about the attack on player turn.
+     * @return result in the damaged by the attack to change with the debuff.
+     */
     public String attack() {
         noteUnsaved();
 
@@ -295,6 +410,13 @@ public final class Controller {
         return myGame.getSpecialSkill();
     }
 
+    /**
+     * attacking with a special skill.
+     *
+     * @return result in a message of skilled used.
+     * @return result in the damaged amount caused by the special skill.
+     * @return result in how long you have to wait until you can use again.
+     */
     public String useSpecialSkill() {
         noteUnsaved();
 
@@ -325,6 +447,12 @@ public final class Controller {
         return "Skill in cooldown.\n";
     }
 
+    /**
+     * running from battle with monster.
+     *
+     * @return result in message of fleeing.
+     * @return result in message direction.
+     */
     public String flee(final Direction theDirection) {
         noteUnsaved();
 
@@ -345,6 +473,12 @@ public final class Controller {
                );
     }
 
+    /**
+     * moving the player around the dungeon.
+     *
+     * @return result in movement of  direction.
+     * @return result in message direction.
+     */
     public String moveAdventurer(final Direction theDirection) {
         noteUnsaved();
 
@@ -355,10 +489,21 @@ public final class Controller {
         }
     }
 
+    /**
+     *  the room has stairs inside.
+     *
+     * @return results in showing the stairs.
+     */
     public boolean hasStairs(final boolean theIsUp) {
         return myGame.hasStairs(theIsUp);
     }
 
+    /**
+     * string moving the player using stairs.
+     *
+     * @return The result of moving player to a new floor.
+     * @return The result is a message of the direction.
+     */
     public String useStairs(final boolean theIsUp) {
         noteUnsaved();
 
@@ -369,14 +514,27 @@ public final class Controller {
         }
     }
 
+    /**
+     * player choosing an available path, and not a wall.
+     *
+     * @return result in message invalid direction.
+     */
     public boolean isValidDirection(final Direction theDirection) {
         return myGame.isValidDirection(theDirection);
     }
 
+    /**
+     * setting unsaved games as not saved.
+     */
     private void noteUnsaved() {
         myIsSaved = false;
     }
 
+    /**
+     * caclulates the the moves of the player.
+     *
+     * @return the result of moving.
+     */
     private String parseMove(final AttackResultAndAmount[] theResults) {
         return theResults == null ?
                COULD_NOT_MOVE :
@@ -384,6 +542,11 @@ public final class Controller {
                        parseTrapDamage(theResults[1]);
     }
 
+    /**
+     * calculate the amount of damage a player receives with buff damages.
+     *
+     * @return The result of how much damage the player receives.
+     */
     private String parseBuffDamage(final AttackResultAndAmount theBuffDamage,
                                    final boolean theIsOnAdventurer) {
         return theBuffDamage.getResult() == AttackResult.NO_ACTION ?
@@ -398,6 +561,11 @@ public final class Controller {
                        ) + ".\n";
     }
 
+    /**
+     * traps and calculating the damage.
+     *
+     * @return The result of how much damage the player receives from traps.
+     */
     private String parseTrapDamage(final AttackResultAndAmount theTrapActivation) {
         final String trap = "a " + myGame.getTrap();
 
@@ -409,6 +577,11 @@ public final class Controller {
                );
     }
 
+    /**
+     * calculate the amount of damage a player should receive including misses, blocks.
+     *
+     * @return The result of how much damage is done to the player.
+     */
     private String parseDamage(final AttackResultAndAmount theDamage,
                                final String theDebuffType,
                                final String theAttacker,
@@ -434,6 +607,11 @@ public final class Controller {
                     ) + ".\n";
     }
 
+    /**
+     * calculate the action of player to receive health boost .
+     *
+     * @return The result of how much healing the player receives.
+     */
     private String parseHeal(final AttackResultAndAmount theHealResult,
                              final boolean theHealedIsAdventurer) {
         return theHealResult.getResult() == AttackResult.NO_ACTION ?
