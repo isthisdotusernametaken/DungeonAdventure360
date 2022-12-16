@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class represents Accuracy Buff that will be applied on and used by the
+ * This class represents accuracy Buff that will be applied on and used by the
  * adventurer both in exploration mode and combat mode.
  */
 public class AccuracyBuff extends Buff {

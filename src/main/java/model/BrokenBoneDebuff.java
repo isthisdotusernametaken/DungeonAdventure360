@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class represents BrokenBone debuff that will be applied on the
+ * This class represents brokenBone debuff that will be applied on the
  * adventurer both in exploration mode and combat mode.
  */
 public class BrokenBoneDebuff extends Buff {

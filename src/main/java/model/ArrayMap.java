@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serial;
 
+/**
+ * This class constructs a 3D array
+ */
 public class ArrayMap extends Map {
 
     @Serial

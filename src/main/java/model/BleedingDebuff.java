@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class represents Bleeding debuff that will be applied on the
+ * This class represents bleeding debuff that will be applied on the
  * adventurer both in exploration mode and combat mode.
  */
 public class BleedingDebuff extends Buff {

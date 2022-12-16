@@ -25,19 +25,27 @@ public class Adventurer extends DungeonCharacter {
      * the data information of that character including the stats
      * and type of special skill.
      *
-     * @param theName The name of the adventurer.
-     * @param theClass The class of the adventurer's character.
-     * @param theMaxHP The maximum hit point of the adventurer's character.
-     * @param theMinDamage The minimum adventurer's character damage.
-     * @param theMaxDamage The maximum adventurer's character damage.
-     * @param theHitChance The hit chance of the adventurer's character.
-     * @param theDebuffChance The debuff chance of the adventurer's character.
-     * @param theDebuffDuration The debuff duration of the adventurer's character.
-     * @param theDamageType The damage type of the adventurer's character.
-     * @param theSpeed The speed of the adventurer's character.
-     * @param theBlockChance The block chance of the adventurer's character.
-     * @param theResistances The list of resistances of the adventurer's character.
-     * @param theSpecialSkill The special skill of the adventurer's character.
+     * @param theName           The name of the adventurer.
+     * @param theClass          The class of the adventurer's character.
+     * @param theMaxHP          The maximum hit point of the
+     *                          adventurer's character.
+     * @param theMinDamage      The minimum adventurer's character damage.
+     * @param theMaxDamage      The maximum adventurer's character damage.
+     * @param theHitChance      The hit chance of the
+     *                          adventurer's character.
+     * @param theDebuffChance   The debuff chance of the
+     *                          adventurer's character.
+     * @param theDebuffDuration The debuff duration of the
+     *                          adventurer's character.
+     * @param theDamageType     The damage type of the
+     *                          adventurer's character.
+     * @param theSpeed          The speed of the adventurer's character.
+     * @param theBlockChance    The block chance of the
+     *                          adventurer's character.
+     * @param theResistances    The list of resistances of the
+     *                          adventurer's character.
+     * @param theSpecialSkill   The special skill of the
+     *                          adventurer's character.
      */
     Adventurer(final String theName,
                final String theClass,
@@ -95,7 +103,7 @@ public class Adventurer extends DungeonCharacter {
      * Displays the special skill of the dungeon's character.
      *
      * @return The string description of the special skill of
-     *          the dungeon's character.
+     *         the dungeon's character.
      */
     final String viewSpecialSkill() {
         return mySpecialSkill.toString();
@@ -106,8 +114,8 @@ public class Adventurer extends DungeonCharacter {
      * on the enemy.
      *
      * @param theEnemy The monster in the dungeon game.
-     * @return The type of attack result and amount after the special skill
-     *          is executed.
+     * @return         The type of attack result and amount after
+     *                 the special skill is executed.
      */
     final AttackResultAndAmount useSpecialSkill(final DungeonCharacter theEnemy) {
         return mySpecialSkill.use(this, theEnemy);

@@ -48,15 +48,15 @@ public abstract class Buff implements Serializable {
     /**
      * Constructors to construct the buff/debuff with its effects.
      *
-     * @param theType The type of the buff/debuff.
-     * @param theChangedStats The string representing the stat that the
-     *                        buff/debuff will affect on.
+     * @param theType           The type of the buff/debuff.
+     * @param theChangedStats   The string representing the stat that the
+     *                          buff/debuff will affect on.
      * @param theStatMultiplier The double value representing
      *                          the stat multiplier of the buff/debuff.
-     * @param theDamagePercent The double value representing
-     *                        the damage percentage of the buff/debuff.
-     * @param theDuration The integer value representing
-     *                    the durations of the buff.
+     * @param theDamagePercent  The double value representing
+     *                          the damage percentage of the buff/debuff.
+     * @param theDuration       The integer value representing
+     *                          the durations of the buff.
      */
     Buff(final BuffType theType,
          final String theChangedStats,

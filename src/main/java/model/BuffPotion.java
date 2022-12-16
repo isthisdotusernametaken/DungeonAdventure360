@@ -42,7 +42,7 @@ public class BuffPotion extends CharacterApplicableItem {
     /**
      * Constructor to construct the buff potion with its effect
      *
-     * @param theCount The quantitative of the potion.
+     * @param theCount    The quantitative of the potion.
      * @param theBuffType The buff type that the buff potion contains.
      */
     BuffPotion(final int theCount, final BuffType theBuffType) {
@@ -71,8 +71,8 @@ public class BuffPotion extends CharacterApplicableItem {
      *
      * @param theTarget The dungeon character that the potion will be
      *                  applied on
-     * @return The string result representing the effect process when the
-     *          potion is applied
+     * @return          The string result representing the effect process
+     *                  when the potion is applied
      *
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate

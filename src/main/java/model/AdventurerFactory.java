@@ -106,10 +106,12 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
     /**
      * Modifies table template for the adventurer database table.
      *
-     * @param theTemplate The adventurer to obtain and update adventurer's character
-     *                    stats and information into the database table.
-     * @param theDifficulty The difficulty to adjust the difficulty level of the dungeon
-     *                      and adjust the stats of dungeon characters (exclude adventurer).
+     * @param theTemplate   The adventurer to obtain and update
+     *                      adventurer's character stats and information
+     *                      into the database table.
+     * @param theDifficulty The difficulty to adjust the difficulty level
+     *                      of the dungeon and adjust the stats of dungeon
+     *                      characters (exclude adventurer).
      *
      * @throws SQLException Thrown if there is exception that provides information
      *                      on a database access error or other errors.
