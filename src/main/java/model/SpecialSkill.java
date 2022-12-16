@@ -10,7 +10,7 @@ public abstract class SpecialSkill implements Serializable {
 
     private final String myName;
     private final int myCooldown;
-    private int myRemainingCooldown;
+    public int myRemainingCooldown;
 
     SpecialSkill(final int theCooldown) {
         myName = Util.createNameFromClassName(this);
