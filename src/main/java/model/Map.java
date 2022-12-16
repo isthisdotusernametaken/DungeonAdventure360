@@ -15,4 +15,6 @@ public abstract class Map implements Serializable {
     abstract void explore(int theFloor, int theX, int theY);
 
     abstract void explore(RoomCoordinates theCoords);
+
+    abstract boolean isInBounds(int theFloor, int theX, int theY);
 }
