@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BuffTest {
+
     private StrengthBuff myBuff;
 
     @BeforeEach
@@ -50,9 +51,9 @@ public class BuffTest {
 //    }
 
     @Test
-    void testCheckIsCompleted() {
+    void testIsCompleted() {
+        assertFalse(myBuff.isCompleted());
         myBuff.advance();
-        assertNotEquals(false, myBuff.isCompleted());
-        assertEquals(true, myBuff.isCompleted());
+        assertTrue(myBuff.isCompleted());
     }
 }

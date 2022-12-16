@@ -14,7 +14,7 @@ public class SpecialSkillFactory {
         };
     }
 
-    private static IllegalArgumentException invalidSkillException(final String theSkillName) {
+    static IllegalArgumentException invalidSkillException(final String theSkillName) {
         return new IllegalArgumentException(
                 INVALID_SKILL + theSkillName
         );

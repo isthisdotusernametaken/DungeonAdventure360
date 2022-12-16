@@ -37,7 +37,7 @@ public class ItemFactory {
         return items.toArray(new Item[0]);
     }
 
-    private static Item[] createAllItemsWeighted() {
+    static Item[] createAllItemsWeighted() {
         final List<Item> items = new ArrayList<>(List.of(
                 new HealthPotion(1),
                 new HealthPotion(1),

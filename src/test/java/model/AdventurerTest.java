@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class AdventurerTest {
 
-    private static final Adventurer myCharacter = new Adventurer(
+    private static final Adventurer ADVENTURER = new Adventurer(
             "Dark LORD",
             "Warrior",
             200,
@@ -20,7 +20,7 @@ public class AdventurerTest {
             new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2}),
             new CrushingBlow());
 
-    private final DungeonCharacter myMonster = new Monster(
+    private static final DungeonCharacter MONSTER = new Monster(
             "Skeleton",
             "Skeleton",
             110,
@@ -49,26 +49,22 @@ public class AdventurerTest {
                  Special Skill: Crushing Blow
                 """;
 
-        assertEquals(expected, myCharacter.toString());
+        assertEquals(expected, ADVENTURER.toString());
     }
 
     @Test
     void testGetSpecialSkill() {
-        SpecialSkill expected = new CrushingBlow();
-
-        assertEquals(expected.getClass(), myCharacter.getSpecialSkill().getClass());
+        assertEquals(CrushingBlow.class, ADVENTURER.getSpecialSkill().getClass());
     }
 
     @Test
     void testViewSpecialSkill() {
-        String expected = "Crushing Blow";
-
-        assertEquals(expected, myCharacter.viewSpecialSkill());
+        assertEquals("Crushing Blow", ADVENTURER.viewSpecialSkill());
     }
 
     @Test
     void testUseSpecialSkill() {
-        AttackResult actual = myCharacter.useSpecialSkill(myMonster).getResult();
+        AttackResult actual = ADVENTURER.useSpecialSkill(MONSTER).getResult();
 
         assertTrue(
                 actual.equals(AttackResult.KILL) ||

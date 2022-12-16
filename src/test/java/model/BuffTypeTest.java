@@ -7,11 +7,14 @@ public class BuffTypeTest {
 
     @Test
     void getAllPositiveBuffTypes() {
-        assertArrayEquals(new BuffType[] {
-                BuffType.STRENGTH,
-                BuffType.SPEED,
-                BuffType.ACCURACY,
-                BuffType.RESISTANCE}, BuffType.getAllPositiveBuffTypes());
+        assertArrayEquals(
+                new BuffType[]{
+                        BuffType.STRENGTH,
+                        BuffType.SPEED,
+                        BuffType.ACCURACY,
+                        BuffType.RESISTANCE
+                }, BuffType.getAllPositiveBuffTypes()
+        );
     }
 
     @Test

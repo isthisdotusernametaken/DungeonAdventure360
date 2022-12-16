@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class SpecialSkillTest {
-    private final static SpecialSkill mySpeciallSkill = new CrushingBlow();
+
+    private final static SpecialSkill SPECIAL_SKILL = new CrushingBlow();
 
     private static final DungeonCharacter myCharacter = new Adventurer(
             "Dark LORD",
@@ -41,27 +42,25 @@ public class SpecialSkillTest {
     void testToString() {
         String expected = "Crushing Blow";
 
-        assertEquals(expected, mySpeciallSkill.toString());
+        assertEquals(expected, SPECIAL_SKILL.toString());
     }
 
     @Test
     void testAdvance() {
         int expected = 0; //0 because it has not been used yet
-        mySpeciallSkill.advance();
+        SPECIAL_SKILL.advance();
 
-        assertEquals(expected, mySpeciallSkill.myRemainingCooldown);
+        assertEquals(expected, SPECIAL_SKILL.myRemainingCooldown);
     }
 
     @Test
     void testCanUse() {
-        boolean expected = true;
-
-        assertEquals(expected, mySpeciallSkill.canUse());
+        assertTrue(SPECIAL_SKILL.canUse());
     }
 
     @Test
     void testUse() {
-        AttackResult actual = mySpeciallSkill.use(myCharacter, myMonster).getResult();
+        AttackResult actual = SPECIAL_SKILL.use(myCharacter, myMonster).getResult();
 
         assertTrue(
                 actual.equals(AttackResult.KILL) ||

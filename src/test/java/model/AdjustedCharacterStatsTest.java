@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class AdjustedCharacterStatsTest {
 
-    private final AdjustedCharacterStats stats = new AdjustedCharacterStats(
+    private static final AdjustedCharacterStats STATS = new AdjustedCharacterStats(
             new Monster(
                     "Skeleton",
                     "Skeleton",
@@ -22,89 +22,89 @@ public class AdjustedCharacterStatsTest {
                     new ResistanceData(new double[]{0.1, 0.1, 0.0, 0.2, 0.2})));
 
     @Test
-    void testGetMinDamage () {
-        assertEquals(15, stats.getMinDamage());
+    void testGetMinDamage() {
+        assertEquals(15, STATS.getMinDamage());
     }
 
     @Test
-    void testMaxDamage () {
-        assertEquals(25, stats.getMaxDamage());
+    void testMaxDamage() {
+        assertEquals(25, STATS.getMaxDamage());
     }
 
     @Test
-    void testGetHitChance () {
-        assertEquals(0.5, stats.getHitChance());
+    void testGetHitChance() {
+        assertEquals(0.5, STATS.getHitChance());
     }
 
     @Test
-    void testGetSpeed () {
-        assertEquals(4, stats.getSpeed());
+    void testGetSpeed() {
+        assertEquals(4, STATS.getSpeed());
     }
 
     @Test
-    void testGetResistance () {
-        assertEquals(0.1, stats.getResistance(DamageType.NORMAL));
-        assertEquals(0.1, stats.getResistance(DamageType.SHARP));
-        assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
-        assertEquals(0.2, stats.getResistance(DamageType.FIRE));
-        assertEquals(0.2, stats.getResistance(DamageType.POISON));
+    void testGetResistance() {
+        assertEquals(0.1, STATS.getResistance(DamageType.NORMAL));
+        assertEquals(0.1, STATS.getResistance(DamageType.SHARP));
+        assertEquals(0.0, STATS.getResistance(DamageType.BLUNT));
+        assertEquals(0.2, STATS.getResistance(DamageType.FIRE));
+        assertEquals(0.2, STATS.getResistance(DamageType.POISON));
     }
 
     @Test
-    void testMultiplyDamage () {
-        stats.multiplyDamage(2);
+    void testMultiplyDamage() {
+        STATS.multiplyDamage(2);
 
-        assertEquals(30, stats.getMinDamage());
-        assertEquals(50, stats.getMaxDamage());
+        assertEquals(30, STATS.getMinDamage());
+        assertEquals(50, STATS.getMaxDamage());
     }
 
     @Test
-    void testMultiplyHitChance () {
-        stats.multiplyHitChance(200000);
+    void testMultiplyHitChance() {
+        STATS.multiplyHitChance(200000);
 
-        assertEquals(1.0, stats.getHitChance());
+        assertEquals(1.0, STATS.getHitChance());
     }
 
     @Test
-    void testMultiplySpeed () {
-        stats.multiplySpeed(9999);
+    void testMultiplySpeed() {
+        STATS.multiplySpeed(9999);
 
-        assertEquals(1000, stats.getSpeed());
+        assertEquals(1000, STATS.getSpeed());
     }
 
     @Test
-    void testMultiplyResistances () {
-        stats.multiplyResistances(99999999);
+    void testMultiplyResistances() {
+        STATS.multiplyResistances(99999999);
 
-        assertEquals(1.0, stats.getResistance(DamageType.NORMAL));
-        assertEquals(1.0, stats.getResistance(DamageType.SHARP));
-        assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
-        assertEquals(1.0, stats.getResistance(DamageType.FIRE));
-        assertEquals(1.0, stats.getResistance(DamageType.POISON));
+        assertEquals(1.0, STATS.getResistance(DamageType.NORMAL));
+        assertEquals(1.0, STATS.getResistance(DamageType.SHARP));
+        assertEquals(0.0, STATS.getResistance(DamageType.BLUNT));
+        assertEquals(1.0, STATS.getResistance(DamageType.FIRE));
+        assertEquals(1.0, STATS.getResistance(DamageType.POISON));
     }
 
     @Test
-    void testResetStat () {
-        stats.multiplyDamage(2);
-        stats.multiplyHitChance(200000);
-        stats.multiplySpeed(9999);
-        stats.resetStats();
+    void testResetStat() {
+        STATS.multiplyDamage(2);
+        STATS.multiplyHitChance(200000);
+        STATS.multiplySpeed(9999);
+        STATS.resetStats();
 
-        assertEquals(15, stats.getMinDamage());
-        assertEquals(25, stats.getMaxDamage());
-        assertEquals(0.5, stats.getHitChance());
-        assertEquals(4, stats.getSpeed());
+        assertEquals(15, STATS.getMinDamage());
+        assertEquals(25, STATS.getMaxDamage());
+        assertEquals(0.5, STATS.getHitChance());
+        assertEquals(4, STATS.getSpeed());
     }
 
     @Test
-    void testResetResistance () {
-        stats.multiplyResistances(2);
-        stats.resetResistances();
+    void testResetResistances() {
+        STATS.multiplyResistances(2);
+        STATS.resetResistances();
 
-        assertEquals(0.1, stats.getResistance(DamageType.NORMAL));
-        assertEquals(0.1, stats.getResistance(DamageType.SHARP));
-        assertEquals(0.0, stats.getResistance(DamageType.BLUNT));
-        assertEquals(0.2, stats.getResistance(DamageType.FIRE));
-        assertEquals(0.2, stats.getResistance(DamageType.POISON));
+        assertEquals(0.1, STATS.getResistance(DamageType.NORMAL));
+        assertEquals(0.1, STATS.getResistance(DamageType.SHARP));
+        assertEquals(0.0, STATS.getResistance(DamageType.BLUNT));
+        assertEquals(0.2, STATS.getResistance(DamageType.FIRE));
+        assertEquals(0.2, STATS.getResistance(DamageType.POISON));
     }
 }

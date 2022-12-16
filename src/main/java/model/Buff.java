@@ -5,17 +5,17 @@ import java.io.Serializable;
 
 public abstract class Buff implements Serializable {
 
+    static final int MAX_TURNS = 999;
+
     @Serial
     private static final long serialVersionUID = -2519735318269057642L;
 
-    private static final int MAX_TURNS = 999;
+    int myDuration;
 
     private final BuffType myType;
     private final String myChangedStats;
     private final double myStatMultiplier;
     private final double myDamagePercent;
-
-    private int myDuration;
 
     Buff(final BuffType theType,
          final String theChangedStats,
