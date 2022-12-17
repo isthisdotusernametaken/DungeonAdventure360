@@ -9,55 +9,60 @@ import model.Util;
 import view.ConsoleUI;
 
 /**
- * This class connects all packages and class together so that the
- * program runs the code.
+ * This class serves as the entry point for the program and facilitates the
+ * interactions between the UI and (through the DungeonAdventure class) the
+ * model.
  */
 public final class Controller {
 
     /**
-     * Saving the Game automatically. 
+     * The filename of the autosave file
      */
     private static final String AUTOSAVE_FILE = "autosave";
 
     /**
-     * Alert message of error the system could not start.
+     * Error message printed when the game cannot find all the resources it
+     * needs
      */
     private static final String COULD_NOT_START =
             "The application could not start.";
 
     /**
-     * application of information for the failure of starting.
+     * Prompt for reading the log file for more information
      */
     private static final String FAILURE_DETAILS =
             "For more information, view ";
 
     /**
-     * Alert the player can not move character due to obstacles or walls.
+     * Prompt that the UI has sent a signal to move the Adventurer at a time
+     * when the model's state would not allow this
      */
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
     /**
-     * The UI enables user interface.
+     * The UI for displaying information about the game to the player and
+     * accepting the player's input to the game
      */
     private final ConsoleUI myUI;
     
     /**
-     * Player acces to play game.
+     * The logic and data of the game
      */
     private DungeonAdventure myGame;
     
     /**
-     * Player choose a previous game.
+     * The name of the most recently saved/loaded file
      */
     private String myPreviousSaveName;
     /**
-     *  player's game is saved.
+     * Whether all changes to the game's state have been saved
      */
     private boolean myIsSaved;
 
     /**
-     * saving game if terminal is closed.
+     * Creates a Controller with a UI and a shutdown hook to attempt to
+     * automatically save the game if the application suddenly closes
      */
     private Controller() {
         Runtime.getRuntime().addShutdownHook(
@@ -68,7 +73,16 @@ public final class Controller {
     }
 
     /**
-     * Main draws from all files allowing the UI to run and play the game.
+     * Tries to establish the program's directory for saves and the log and
+     * tries to read the DB into the game's factories for later object
+     * creation.
+     * If the game cannot successfully do both of these, the game will print a
+     * message indicating that it could not start, attempt to log the error in
+     * more detail, and exit without opening the UI.
+     * <p>
+     * Any completely unexpected exceptions thrown by the view or model at any
+     * point will also be caught and logged before forcibly closing the
+     * application.
      */
     public static void main(final String[] theArgs) {
         try {
@@ -97,15 +111,18 @@ public final class Controller {
     }
 
     /**
-     * Access to saved data from files 
-     *  @return  All saved games previous saved are shown by UI.
+     * Retrieves an array of all save files (identified by their extension) in
+     * the program's save folder.
+     *
+     * @return An array of the existing saves.
      */
     public String[] getSaveFiles() {
         return ProgramFileManager.getInstance().getSaveFiles();
     }
 
     /**
-     * Resets all data about an Adventurer and the save file.
+     * Disconnects the current game instance and returns to the state before a
+     * game instance was created or loaded.
      */
     public void reset() {
         myGame = null;
@@ -114,9 +131,18 @@ public final class Controller {
     }
 
     /**
-     * Creating a new game so the player starts at the beginning.
+     * Attempts to create a new game with the provided information.
      *
-     *  @return Result will be false setting all stats to normal level.
+     * @param theAdventurerName The name of the Adventurer in the new game. May
+     *                          be empty to indicate a name should be selected
+     *                          automatically
+     * @param theAdventurerClass The index (in the factory) of the class for
+     *                           the new Adventurer
+     * @param theDifficulty The difficulty level for the new game. Determines
+     *                      dungeon size, spawn rates, and Monster and Trap
+     *                      stats
+     * @return Whether a new game was successfully created and opened (closing
+     *         the previous game)
      */
     public boolean createGame(final String theAdventurerName,
                               final int theAdventurerClass,
@@ -137,9 +163,11 @@ public final class Controller {
     }
 
     /**
-     * load a game that is already has been saved you want to restart to.
+     * Attempts to load a game from the specified file.
      *
-     *  @return result is that the file does not exist yet.
+     * @param theFile The name of the file to attempt to load
+     * @return Whether the file was successfully loaded and the corresponding
+     *         game instance was opened
      */
     public boolean loadGame(final String theFile) {
         final DungeonAdventure loaded =
@@ -155,45 +183,49 @@ public final class Controller {
     }
 
     /**
-     * a way to see old saved files and there names.
+     * Retrieves the name of the most recently saved or loaded file.
      *
-     *  @return result is a files with names of previous games pops up.
+     * @return The most recent save file's name.
      */
     public String getPreviousSaveName() {
         return myPreviousSaveName;
     }
 
     /**
-     * if files has names of previous saved games they would pop up.
+     * Indicates whether the current game instance has been saved or loaded by
+     * checking whether a most recent save file is known.
      *
-     *  @return result is false so nothing exist yet.
+     * @return Whether the current game instance has been saved since it was
+     *         created.
      */
     public boolean hasPreviousSaveName() {
         return myPreviousSaveName != null;
     }
 
     /**
-     * a file that is already saved..
+     * Indicates whether all the changes to the game's state have been saved.
      *
-     *  @return result is false so nothing exist yet or comes up with the files already saved.
+     * @return Whether all the changes to the game's state have been saved (or
+     * no game has been started)
      */
     public boolean isSaved() {
         return myIsSaved || myGame == null;
     }
 
     /**
-     * save the cuurent game for future use.
+     * Attempts to save the current game to the most recent save file.
      *
-     *  @return result overwrite old file same name and the file name.
+     * @return Whether the game could be saved.
      */
     public boolean saveGame() {
         return hasPreviousSaveName() && saveGame(myPreviousSaveName);
     }
 
     /**
-     * a file that is already saved..
+     * Attempts to save the current game to the specified save file.
      *
-     *  @return result is false so nothing exist yet or comes up with the files already saved.
+     * @param theFile The file to save the game to
+     * @return Whether the game was successfully saved
      */
     public boolean saveGame(final String theFile) {
         if (myGame != null &&
@@ -207,32 +239,70 @@ public final class Controller {
         return false;
     }
 
+    /**
+     * Retrieves a formatted String with information about the player's
+     * character.
+     *
+     * @return the Adventurer's name and other details
+     */
     public String getAdventurer() {
         return myGame.getAdventurer();
     }
 
+    /**
+     * Retrieves a map displaying the rooms in the dungeon, obscuring rooms
+     * the player has not explored yet.
+     *
+     * @return A formatted String showing the contents of the dungeon
+     */
     public String getMap() {
         return myGame.getMap();
     }
 
+    /**
+     * Indicates whether unexplored rooms will be hidden on the map.
+     *
+     * @return Whether unexplored rooms are hidden on the map
+     */
     public boolean isUnexploredHidden() {
         return myGame.isUnexploredHidden();
     }
 
+    /**
+     * Switches from not displaying unknown rooms on the map to displaying all
+     * rooms regardless of whether they have been explored, or vice versa.
+     */
     public void toggleIsUnexploredHidden() {
         noteUnsaved();
 
         myGame.toggleIsUnexploredHidden();
     }
 
+    /**
+     * Retrieves a String with details about the room the Adventurer is in
+     *
+     * @return A String representing the contents of the current room
+     */
     public String getRoom() {
         return myGame.getRoom();
     }
 
+    /**
+     * Retrieves the items in the player's inventory.
+     *
+     * @return An array of Strings, each of which represents an item in the
+     *         inventory
+     */
     public String[] getInventoryItems() {
         return myGame.getInventoryItems();
     }
 
+    /**
+     * Adds max stacks of all usable items to the player's inventory
+     *
+     * @return Any message produce by the model in response to this operation's
+     *         success or failure
+     */
     public String addMaxItems() {
         noteUnsaved();
 
@@ -248,10 +318,23 @@ public final class Controller {
         }
     }
 
+    /**
+     * Indicates whether the player can currently see/use the specified item
+     *
+     * @param theIndex The index in the inventory to check
+     * @return Whether the specified item can be seen and/or used
+     */
     public boolean canUseInventoryItem(final int theIndex) {
         return myGame.canUseInventoryItem(theIndex);
     }
 
+    /**
+     * Uses the specified inventory item on the map, Adventurer, or current
+     * room
+     *
+     * @param theIndex The index in the inventory of the item to use
+     * @return The results of using or trying to use the item
+     */
     public String useInventoryItem(final int theIndex) {
         noteUnsaved();
 
@@ -262,10 +345,21 @@ public final class Controller {
         }
     }
 
+    /**
+     * Indicates whether the current room has any items in it for the player to
+     * collect.
+     *
+     * @return Whether there are items in the current room
+     */
     public boolean roomHasItems() {
         return myGame.roomHasItems();
     }
 
+    /**
+     * Adds any items in the current room to the player's inventory
+     *
+     * @return What and how many items were collected
+     */
     public String collectItems() {
         noteUnsaved();
 
@@ -290,36 +384,41 @@ public final class Controller {
     }
 
     /**
+     * Indicates whether the player meets all the conditions to win the game,
+     * including being at the exit and having all 4 Pillars of OO
      *
+     * @return Whether the player can exit the dungeon (win)
      */
     public boolean canExit() {
         return myGame.canExit();
     }
 
     /**
-     * player is in battle with monster.
+     * Indicates whether the player is in battle with Monster, which is the
+     * case if there is a living Monster in the current room.
      *
-     * @return result in combat with mosnter.
+     * @return Whether the player is in battle with monster.
      */
     public boolean isInCombat() {
         return myGame.isInCombat();
     }
 
     /**
-     * it is monsters turn.
+     * Indicates whether it is the Monster's turn next in combat.
      *
-     * @return result of the monsters attack.
+     * @return Whether the Monster gets to play the next move
      */
     public boolean isMonsterTurn() {
         return myGame.isMonsterTurn();
     }
 
     /**
-     *  monsters turn to attack.
+     * Plays the Monster's next turn in attacking the Adventurer. This includes
+     * the Monster taking damage from any debuffs, possibly healing, and
+     * attempting to attack the Adventurer
      *
-     * @return result in message  about th monsters turn.
-     * @return result in calculating the damage done by the monster.
-     * @return result in monster having no turn.
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
      */
     public String tryMonsterTurn() {
         noteUnsaved();
@@ -347,15 +446,20 @@ public final class Controller {
         return Util.NONE;
     }
 
+    /**
+     * Retrieves a formatted String with information about the current room's
+     * Monster
+     *
+     * @return The name and other details of the Monster in the current room
+     */
     public String getMonster() {
         return myGame.getMonster();
     }
 
     /**
-     * the monster is dead aftr attacking it and it has no more health left.
+     * Immediately kills the Monster and exits combat. Drops still occur
      *
-     * @return result in the monsters showing health and killing it.
-     * @return result in a message.
+     * @return A message about the Monster's death
      */
     public String killMonster() {
         noteUnsaved();
@@ -373,19 +477,20 @@ public final class Controller {
     }
 
     /**
-     * shows that the player is still alive after taking damage.
+     * Indicates whether the Adventurer is still alive. This is required for
+     * any actions that change the state of the game to occur.
      *
-     * @return result in that the player is still alive after taking damage.
+     * @return Whether the Adventurer is alive
      */
     public boolean isAlive() {
         return myGame.isAlive();
     }
 
     /**
-     * the attack of when encounter with a monster.
+     * Executes the Adventurer's turn by attacking the Monster
      *
-     * @return result in a message about the attack on player turn.
-     * @return result in the damaged by the attack to change with the debuff.
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
      */
     public String attack() {
         noteUnsaved();
@@ -407,16 +512,21 @@ public final class Controller {
 
     }
 
+    /**
+     * Retrieves a String with details about the Adventurer's combat skill.
+     *
+     * @return A String representing the Adventurer's skill
+     */
     public String getSpecialSkill() {
         return myGame.getSpecialSkill();
     }
 
     /**
-     * attacking with a special skill.
+     * Applies the Adventurer's skill to the Adventurer or the Monster,
+     * depending on the skill.
      *
-     * @return result in a message of skilled used.
-     * @return result in the damaged amount caused by the special skill.
-     * @return result in how long you have to wait until you can use again.
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
      */
     public String useSpecialSkill() {
         noteUnsaved();
@@ -449,10 +559,12 @@ public final class Controller {
     }
 
     /**
-     * running from battle with monster.
+     * Attempts to exit combat by fleeing to another room. May or may not
+     * succeed, depending on chance and the Adventurer's and Monster's speeds.
+     * Uses the Adventurer's turn.
      *
-     * @return result in message of fleeing.
-     * @return result in message direction.
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
      */
     public String flee(final Direction theDirection) {
         noteUnsaved();
@@ -475,10 +587,11 @@ public final class Controller {
     }
 
     /**
-     * moving the player around the dungeon.
+     * Moves the Adventurer in the specified direction to an adjacent room.
      *
-     * @return result in movement of  direction.
-     * @return result in message direction.
+     * @return The results of what happened to the Adventurer when entering the
+     *         room, including Trap activation, health changes, and buff
+     *         details.
      */
     public String moveAdventurer(final Direction theDirection) {
         noteUnsaved();
@@ -491,19 +604,25 @@ public final class Controller {
     }
 
     /**
-     *  the room has stairs inside.
+     * Indicates whether the current room has stairs leading up or down to
+     * another floor, depending on the provided boolean.
      *
-     * @return results in showing the stairs.
+     * @param theIsUp Whether to check for stairs leading up (false for down)
+     * @return Whether valid stairs leading in the specified direction exist
      */
     public boolean hasStairs(final boolean theIsUp) {
         return myGame.hasStairs(theIsUp);
     }
 
     /**
-     * string moving the player using stairs.
+     * Moves the Adventurer to the room connected to the current room by the
+     * specified stairs.
      *
-     * @return The result of moving player to a new floor.
-     * @return The result is a message of the direction.
+     * @param theIsUp Whether to attempt to use stairs leading up (false for
+     *                down)
+     * @return The results of what happened to the Adventurer when entering the
+     *         room, including Trap activation, health changes, and buff
+     *         details.
      */
     public String useStairs(final boolean theIsUp) {
         noteUnsaved();
@@ -516,25 +635,28 @@ public final class Controller {
     }
 
     /**
-     * player choosing an available path, and not a wall.
+     * Indicates whether the current room has a door leading in the specified
+     * direction.
      *
-     * @return result in message invalid direction.
+     * @param theDirection The direction to check for a door
+     * @return Whether the current room has the specified door
      */
     public boolean isValidDirection(final Direction theDirection) {
         return myGame.isValidDirection(theDirection);
     }
 
     /**
-     * setting unsaved games as not saved.
+     * Marks the game as having unsaved changes.
      */
     private void noteUnsaved() {
         myIsSaved = false;
     }
 
     /**
-     * caclulates the the moves of the player.
+     * Formats the results of moving the Adventurer into a printable String.
      *
-     * @return the result of moving.
+     * @param theResults The unformatted results of moving the Adventurer
+     * @return The results of moving the Adventurer as a String.
      */
     private String parseMove(final AttackResultAndAmount[] theResults) {
         return theResults == null ?
@@ -544,9 +666,14 @@ public final class Controller {
     }
 
     /**
-     * calculate the amount of damage a player receives with buff damages.
+     * Formats the results of advancing the Adventurer's or Monsters buffs into
+     * a printable String.
      *
-     * @return The result of how much damage the player receives.
+     * @param theBuffDamage The unformatted results of advancing buffs
+     * @param theIsOnAdventurer Whether the provided results applied to the
+     *                          Adventurer (as opposed to the Monster)
+     * @return The results of advancing the Adventurer's or Monster's buffs as
+     *         a String
      */
     private String parseBuffDamage(final AttackResultAndAmount theBuffDamage,
                                    final boolean theIsOnAdventurer) {
@@ -563,9 +690,13 @@ public final class Controller {
     }
 
     /**
-     * traps and calculating the damage.
+     * Formats the results of attempting to activate the room's Trap on the
+     * Adventurer into a printable String.
      *
-     * @return The result of how much damage the player receives from traps.
+     * @param theTrapActivation The unformatted results of activating the
+     *                          room's Trap (if any)
+     * @return The results of activating the room's Trap on the Adventurer as a
+     *         String.
      */
     private String parseTrapDamage(final AttackResultAndAmount theTrapActivation) {
         final String trap = "a " + myGame.getTrap();
@@ -578,10 +709,17 @@ public final class Controller {
                );
     }
 
+
     /**
-     * calculate the amount of damage a player should receive including misses, blocks.
+     * Formats the results of an attack on the Adventurer or Monster into a
+     * printable String.
      *
-     * @return The result of how much damage is done to the player.
+     * @param theDamage The unformatted results of an attack
+     * @param theDebuffType The type of debuff that may have been applied
+     * @param theAttacker The name of the attacker
+     * @param theTargetIsAdventurer Whether the Adventurer was the one attacked
+     *                              (false for Monster)
+     * @return The results of the attack as a String.
      */
     private String parseDamage(final AttackResultAndAmount theDamage,
                                final String theDebuffType,
@@ -609,9 +747,14 @@ public final class Controller {
     }
 
     /**
-     * calculate the action of player to receive health boost .
+     * Formats the results of healing the Adventurer or Monster into a
+     * printable String.
      *
-     * @return The result of how much healing the player receives.
+     * @param theHealResult The unformatted results of healing the Adventurer
+     *                      or Monster
+     * @param theHealedIsAdventurer Whether the provided results applied to the
+     *                              Adventurer (false for Monster)
+     * @return The results of healing the Adventurer or Monster as a String
      */
     private String parseHeal(final AttackResultAndAmount theHealResult,
                              final boolean theHealedIsAdventurer) {
