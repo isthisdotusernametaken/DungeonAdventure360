@@ -6,6 +6,9 @@ import java.io.Serializable;
 /**
  * This class constructs the resistance data for the dungeon character,
  * each resistance value is associated with certain damage type.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class ResistanceData implements Serializable {
 

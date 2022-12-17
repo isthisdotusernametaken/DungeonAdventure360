@@ -4,6 +4,9 @@ import java.util.List;
 
 /**
  * This class helps to generate random name for the dungeon characters.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class NameGenerator {
 

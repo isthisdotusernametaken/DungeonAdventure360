@@ -7,6 +7,9 @@ import controller.Controller;
 /**
  * This class allows the player to save their game as a new file, the most
  * recently saved/loaded existing file, or another existing file.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SaveGameView {
 

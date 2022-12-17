@@ -10,6 +10,9 @@ import java.util.function.Function;
  * defined by the DB provided when building the factory.
  *
  * @param <T> The kind of DamageDealer the factory creates
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class DamageDealerFactory<T extends DamageDealer> {
 

@@ -3,6 +3,9 @@ package view;
 /**
  * This class represents the signals screens can send to indicate which should
  * be opened next.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum MenuSignal {
 

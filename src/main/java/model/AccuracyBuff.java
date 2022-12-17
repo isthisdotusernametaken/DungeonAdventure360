@@ -4,6 +4,9 @@ import java.io.Serial;
 
 /**
  * This Buff increases the Adventurer's hit chance to decrease their miss rate.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class AccuracyBuff extends Buff {
 

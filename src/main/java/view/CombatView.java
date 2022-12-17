@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class represents the game when the Adventurer is in a room with a
  * Monster and accepts and executes the player's choices in this context.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class CombatView {
 

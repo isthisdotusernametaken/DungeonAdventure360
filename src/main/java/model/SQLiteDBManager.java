@@ -8,6 +8,9 @@ import org.sqlite.SQLiteDataSource;
 
 /**
  * This class handles and manages the SQL database.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SQLiteDBManager implements DBManager {
 

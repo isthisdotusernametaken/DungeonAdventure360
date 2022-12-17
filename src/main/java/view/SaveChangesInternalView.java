@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class prompts for the user to save if unsaved changes exist and
  * indicates to the caller whether the action should then be continued.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SaveChangesInternalView {
 

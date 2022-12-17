@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class constructs, handles, and applies the health potion item that
  * will be used by the adventurer's character.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class HealthPotion extends CharacterApplicableItem {
 

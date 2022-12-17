@@ -7,6 +7,9 @@ import java.io.Serializable;
  * This class is a template to construct and create abstract methods
  * and let subclasses implement and use the methods to handle and modified
  * the dungeon map.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class Map implements Serializable {
 

@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class constructs and handles the dungeon map
  * using a 3D array.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class ArrayMap extends Map {
 

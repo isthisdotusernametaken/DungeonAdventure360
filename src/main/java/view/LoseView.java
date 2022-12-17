@@ -3,6 +3,9 @@ package view;
 /**
  * This class alerts the player that they have lost the game and returns them
  * to the title screen.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class LoseView {
 

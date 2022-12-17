@@ -6,6 +6,9 @@ import java.sql.SQLException;
  * This interface class contain method that will be
  * implemented by SQLite database subclasses, the class helps
  * to prevent duplicate method.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public interface Table {
 

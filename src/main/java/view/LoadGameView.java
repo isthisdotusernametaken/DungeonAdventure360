@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class displays and executes the player's choices for loading instances
  * of the game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class LoadGameView {
 

@@ -2,6 +2,9 @@ package model;
 
 /**
  * This factory produces Buffs from BuffTypes.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class BuffFactory {
 

@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * This factory produces Items for Monster drops, initial Room contents, and
  * initial Inventory contents.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class ItemFactory {
 

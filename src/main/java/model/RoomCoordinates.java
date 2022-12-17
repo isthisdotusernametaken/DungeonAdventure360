@@ -4,8 +4,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- *This class accesses and handles the coordinates of the room in the
+ * This class accesses and handles the coordinates of the room in the
  * dungeon.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class RoomCoordinates implements Serializable {
 

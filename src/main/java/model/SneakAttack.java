@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class represents sneak attack special skill of the warrior class
  * that will be used by the adventurer and will be applied on the monster.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SneakAttack extends SpecialSkill {
 

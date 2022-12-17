@@ -6,6 +6,9 @@ import java.io.Serializable;
 /**
  * This class is a template to construct and handle all the buffs
  * and debuffs in the dungeon adventure game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class Buff implements Serializable {
 

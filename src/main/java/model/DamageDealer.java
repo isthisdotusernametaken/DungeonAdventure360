@@ -6,6 +6,9 @@ import java.io.Serializable;
 /**
  * This class is a template to construct and handle all the dungeon characters or objects
  * in the dungeon adventure; including the heroes, monsters, and traps.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class DamageDealer implements Serializable {
 

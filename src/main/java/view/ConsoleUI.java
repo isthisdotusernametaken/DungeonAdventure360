@@ -6,6 +6,9 @@ import controller.Controller;
  * This class starts the UI and repeatedly calls the next menu (as specified by
  * the user's choices in the previous menu) until the user chooses to exit the
  * game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class ConsoleUI {
 

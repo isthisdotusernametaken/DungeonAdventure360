@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * This factory produces Trap objects with classes and stats defined by
  * the DB provided when building the factory.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public final class TrapFactory extends DamageDealerFactory<Trap> {
 

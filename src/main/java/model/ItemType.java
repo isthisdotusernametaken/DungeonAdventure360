@@ -3,6 +3,9 @@ package model;
 /**
  * This class constructs the item type for the item that will be
  * used and/or collected in the dungeon adventure game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum ItemType {
 

@@ -9,6 +9,9 @@ import java.util.stream.IntStream;
  * This class displays the player's options from a certain menu (possibly
  * excluding options the player cannot use) and returns the index of the
  * player's choice once a valid option has been entered.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Menu {
 

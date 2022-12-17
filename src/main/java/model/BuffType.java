@@ -5,6 +5,9 @@ import java.util.Arrays;
 /**
  * This class constructs the buff type for buff and debuff along
  * with its representation.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum BuffType implements CharRepresentable {
 

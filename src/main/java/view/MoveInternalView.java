@@ -9,6 +9,9 @@ import model.Direction;
 /**
  * This class is opened directly by other screens in the view (rather than with
  * a MenuSignal) to move to a nearby room.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class MoveInternalView {
 

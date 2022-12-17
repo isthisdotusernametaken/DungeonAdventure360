@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class provides a common behavior for choosing the next menu within
  * several of the view's screens.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Util {
 

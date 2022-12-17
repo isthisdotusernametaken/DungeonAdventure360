@@ -8,6 +8,9 @@ import model.Util;
 /**
  * This class centralizes the behavior for reading valid input from the
  * console.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class InputReader {
 

@@ -3,6 +3,9 @@ package model;
 /**
  * This class represents the attack result from the actions performed or
  * occurred both during combat mode and exploration mode.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum AttackResult {
 

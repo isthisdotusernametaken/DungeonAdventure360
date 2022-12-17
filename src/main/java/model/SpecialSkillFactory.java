@@ -2,6 +2,9 @@ package model;
 
 /**
  * This factory produces SpecialSkill objects from their Class names.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SpecialSkillFactory {
 

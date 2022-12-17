@@ -19,6 +19,9 @@ import model.DungeonAdventure;
 /**
  * This class manages all interactions with the program's directory for saving
  * game instances and logging errors.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public final class ProgramFileManager {
 

@@ -17,6 +17,9 @@ import controller.ProgramFileManager;
  * If a menu has cheats (such as revealing all rooms on the map) they can be
  * accessed with the hidden menu option "oop" (without quotes; defined in
  * view.InputReader).
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class DungeonAdventure implements Serializable {
 
@@ -68,7 +71,7 @@ public class DungeonAdventure implements Serializable {
     private boolean myIsUnexploredHidden;
 
     /**
-     * Creates a new game instance wiht the specified Adventurer details
+     * Creates a new game instance with the specified Adventurer details
      *
      * @param theAdventurerName The name of the new Adventurer
      * @param theAdventurerClass The class of the new Adventurer

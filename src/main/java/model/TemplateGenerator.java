@@ -6,6 +6,9 @@ import java.util.Scanner;
 /**
  * This class iterates through a DB table and parses and validates input from
  * the DB for the factories to use.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class TemplateGenerator {
 

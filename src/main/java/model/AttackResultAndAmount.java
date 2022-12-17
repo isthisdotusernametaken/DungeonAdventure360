@@ -5,6 +5,9 @@ import java.util.Arrays;
 /**
  * This class represents the attack result and amount from the actions
  * performed or occurred both during combat mode and exploration mode.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class AttackResultAndAmount {
 

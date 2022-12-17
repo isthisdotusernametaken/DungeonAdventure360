@@ -4,6 +4,9 @@ import controller.Controller;
 
 /**
  * This class displays the player's map until the player presses enter.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class MapView {
 

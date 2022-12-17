@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class assigns the character representing of buff type for the item
  * that has buff effect.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class CharacterApplicableItem extends Item {
 

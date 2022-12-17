@@ -6,6 +6,9 @@ import java.io.Serial;
  * This class represents the dungeon monster of the dungeon game and
  * displays the monster stats and executes the monster's unique healing
  * skill when it is used.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Monster extends DungeonCharacter {
 

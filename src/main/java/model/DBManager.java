@@ -6,6 +6,9 @@ import java.sql.SQLException;
  * This interface class contain method that will be
  * implemented by SQLite database subclass, the class helps
  * to prevent duplicate method.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public interface DBManager {
 
@@ -13,7 +16,7 @@ public interface DBManager {
      * Template method to create database table.
      *
      * @param theTable      The string representing the table component.
-     * @return
+     * @return a DB table
      * @throws SQLException An exception that provides information on a
      *                      database access error or other errors.
      */

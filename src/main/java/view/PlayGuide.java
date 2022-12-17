@@ -8,6 +8,9 @@ import model.Util;
 
 /**
  * This class displays information about the game and how to play it.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class PlayGuide {
 

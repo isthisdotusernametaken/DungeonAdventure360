@@ -9,6 +9,9 @@ import controller.ProgramFileManager;
 /**
  * This class constructs and handles the components of the dungeon characters
  * in the dungeon adventure; including the heroes and monsters.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class DungeonCharacter extends DamageDealer {
 

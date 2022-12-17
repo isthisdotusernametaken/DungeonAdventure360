@@ -6,6 +6,9 @@ import java.util.Arrays;
 /**
  * This class construct and handles the four OOP pillar items that the adventurer
  * must collect in order to win the game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public final class Pillar extends Item {
 

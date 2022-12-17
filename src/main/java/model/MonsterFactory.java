@@ -5,6 +5,9 @@ import java.sql.SQLException;
 /**
  * This factory produces Monster objects with classes and stats defined by
  * the DB provided when building the factory.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
 

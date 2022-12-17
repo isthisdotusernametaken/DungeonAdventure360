@@ -3,6 +3,9 @@ package model;
 /**
  * This class constructs the damage type of the dungeon character
  * or the damage type of the dungeon object.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum DamageType {
 

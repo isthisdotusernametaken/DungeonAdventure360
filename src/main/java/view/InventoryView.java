@@ -8,6 +8,9 @@ import controller.Controller;
  * This class displays the contents of the player's inventory and allows the
  * use of the items that are visible in the current context (combat or
  * exploration).
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class InventoryView {
 

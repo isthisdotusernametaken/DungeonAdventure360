@@ -6,6 +6,9 @@ import java.util.Arrays;
 /**
  * This class represents Buff potion item that will be applied on and used by the
  * adventurer both in exploration mode and combat mode.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class BuffPotion extends CharacterApplicableItem {
 

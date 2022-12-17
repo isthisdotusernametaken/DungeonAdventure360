@@ -6,6 +6,9 @@ import java.io.Serializable;
 /**
  * This class handles, gets and adjusts the dungeon character's stats whenever
  * a buff is applied on the character.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class AdjustedCharacterStats implements Serializable {
 

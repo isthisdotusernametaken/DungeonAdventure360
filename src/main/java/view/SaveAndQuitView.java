@@ -6,6 +6,9 @@ import controller.Controller;
  * This class returns to the title screen after (if the game has unsaved
  * changes) prompting the user to save. The return to the title screen may be
  * canceled during the save prompt.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SaveAndQuitView {
 

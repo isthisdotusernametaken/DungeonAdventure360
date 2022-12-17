@@ -8,6 +8,9 @@ import java.io.Serial;
  * This class is a template class to create and construct methods
  * and let the subclasses implement and use the methods to handle
  * and modify the items that are applicable for the dungeon map.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class MapApplicableItem extends Item {
 

@@ -5,6 +5,9 @@ import java.util.SplittableRandom;
 /**
  * This class contains helper methods for the dungeon adventure games
  * and allow classes in the model to use.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Util {
 

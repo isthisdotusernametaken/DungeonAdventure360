@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class represents brokenBone debuff that will be applied on the
  * adventurer both in exploration mode and combat mode.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class BrokenBoneDebuff extends Buff {
 

@@ -7,6 +7,9 @@ import java.sql.SQLException;
  * defined by the DB provided when building the factory.
  *
  * @param <T> The kind of DungeonCharacter the factory creates
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
         extends DamageDealerFactory<T> {

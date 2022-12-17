@@ -9,6 +9,9 @@ import model.DungeonAdventure;
 /**
  * This class displays the options for creating a new game and provides the
  * corresponding input to the controller.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class NewGameView {
 

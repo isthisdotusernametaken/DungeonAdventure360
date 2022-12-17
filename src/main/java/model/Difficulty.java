@@ -7,6 +7,9 @@ import controller.ProgramFileManager;
  * game when chosen by the adventurer. Each difficulty level will have
  * its own adjustment effect on the whole dungeon including the monsters
  * , the traps, and the number of rooms.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public enum Difficulty {
 

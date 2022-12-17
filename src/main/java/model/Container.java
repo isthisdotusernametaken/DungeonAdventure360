@@ -11,6 +11,9 @@ import controller.ProgramFileManager;
 /**
  * This class utilizes, handles, and accesses the collectable items in the
  * dungeon adventure.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Container implements Serializable {
 

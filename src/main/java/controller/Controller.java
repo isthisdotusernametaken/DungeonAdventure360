@@ -12,6 +12,9 @@ import view.ConsoleUI;
  * This class serves as the entry point for the program and facilitates the
  * interactions between the UI and (through the DungeonAdventure class) the
  * model.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public final class Controller {
 

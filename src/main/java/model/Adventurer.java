@@ -6,6 +6,9 @@ import java.io.Serial;
  * This class represents the Adventurer of the dungeon game and
  * displays the character stats and executes the character's unique skill
  * when it is used.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Adventurer extends DungeonCharacter {
 

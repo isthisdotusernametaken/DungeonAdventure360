@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * This class handles and modifies the contents of the dungeon rooms.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Room implements Serializable {
 

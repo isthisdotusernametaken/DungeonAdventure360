@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class represents heal skill of the priest class
  * that will be used by the adventurer.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Heal extends SpecialSkill {
 

@@ -7,6 +7,9 @@ import java.util.Arrays;
 /**
  * This class creates, handles and modifies the turn allocator for the dungeon
  * adventure game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class TurnAllocator implements Serializable {
 

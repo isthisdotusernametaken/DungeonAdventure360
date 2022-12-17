@@ -8,6 +8,9 @@ import java.util.Stack;
 /**
  * This class creates, modifies, and handles the dungeon of rooms for the
  * dungeon adventure game.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class ArrayDungeon extends Dungeon {
 

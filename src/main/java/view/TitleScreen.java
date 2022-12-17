@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class displays the options to start or exit the game. It is displayed
  * when the application first opens.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class TitleScreen {
 

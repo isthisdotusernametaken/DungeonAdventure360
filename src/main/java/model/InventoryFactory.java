@@ -2,6 +2,9 @@ package model;
 
 /**
  * This factory creates a Container for the player's inventory.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class InventoryFactory {
 

@@ -2,6 +2,9 @@ package model;
 
 /**
  * This class handles and tests the speed of the dungeon character.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class SpeedTest {
 

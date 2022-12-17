@@ -5,6 +5,9 @@ import java.io.Serial;
 /**
  * This class represents the trap of the dungeon game and
  * displays the trap stats.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class Trap extends DamageDealer implements CharRepresentable {
 

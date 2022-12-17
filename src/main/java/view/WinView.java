@@ -5,6 +5,9 @@ import controller.Controller;
 /**
  * This class displays the winning message and allows the player to continue
  * their game or quit to the title screen.
+ *
+ * @author Joshua Barbee, Tinh Diep, Alexander Boudreaux
+ * @version 16 December 2022
  */
 public class WinView {
 
