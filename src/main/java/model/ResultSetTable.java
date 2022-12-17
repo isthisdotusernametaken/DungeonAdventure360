@@ -1,3 +1,11 @@
+/*
+ * Group Project (Dungeon Adventure)
+ * Official version
+ * Team 3
+ * TCSS 360
+ * Autumn 2022
+ */
+
 package model;
 
 import java.sql.ResultSet;
