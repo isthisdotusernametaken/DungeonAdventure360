@@ -18,19 +18,19 @@ public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
     /**
      * Constructor to construct the database table for dungeon characters.
      *
-     * @param theDBManager        The SQL database manager to handle, and modify
-     *                            the database for adventurer.
-     * @param theStatsTable       The string representing the stats of the
-     *                            dungeon character in the format of the
-     *                            database table.
-     * @param theFirstNamesTable  The string representing the first name of the
-     *                            dungeon character in the format of the
-     *                            database table.
-     * @param theLastNamesTable   The string representing the last name of the
-     *                            dungeon character in the format of the
-     *                            database table.
+     * @param theDBManager              The SQL database manager to handle,
+     *                                  and modify the database for adventurer.
+     * @param theStatsTable             The string representing the stats of
+     *                                  the dungeon character in the format
+     *                                  of the database table.
+     * @param theFirstNamesTable        The string representing the first name
+     *                                  of the dungeon character in the
+     *                                  format of the database table.
+     * @param theLastNamesTable         The string representing the last name
+     *                                  of the dungeon character in the
+     *                                  format of the database table.
      *
-     * @throws SQLException Thrown if there are any string.
+     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
