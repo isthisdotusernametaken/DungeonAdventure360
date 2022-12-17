@@ -61,6 +61,9 @@ public class TurnAllocator implements Serializable {
         if (myCurrentTurn == myExtraTurnIndex &&
             !Util.probabilityTest(myExtraTurnChance)
         ) {
+            // Note: may be skipped multiple times depending on success of
+            // consecutive probability tests to add more variability to turn
+            // distribution
             incrementTurn();
         }
     }
