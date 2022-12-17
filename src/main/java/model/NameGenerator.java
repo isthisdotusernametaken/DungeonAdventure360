@@ -4,8 +4,8 @@ import java.util.List;
 
 public class NameGenerator {
 
-    private final String[] myFirstNames;
-    private final String[] myLastNames;
+    final String[] myFirstNames;
+    final String[] myLastNames;
 
     NameGenerator(final List<String> theFirstNames,
                   final List<String> theLastNames) {

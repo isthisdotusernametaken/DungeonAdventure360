@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public abstract class DamageDealerFactory<T extends DamageDealer> {
 
-    private final List<List<T>> myTemplates = new ArrayList<>();
+    final List<List<T>> myTemplates = new ArrayList<>();
 
     DamageDealerFactory(final DBManager theDBManager, final String theTable)
             throws SQLException, IllegalArgumentException {

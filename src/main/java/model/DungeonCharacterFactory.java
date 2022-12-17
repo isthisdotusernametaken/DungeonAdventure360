@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
         extends DamageDealerFactory<T> {
 
-    private final NameGenerator myNameGenerator;
+    final NameGenerator myNameGenerator;
 
     DungeonCharacterFactory(final DBManager theDBManager,
                             final String theStatsTable,
