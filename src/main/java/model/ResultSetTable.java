@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This class handles and modifies the SQL database table for the dungeon
+ * This class handles and manage the SQL database table for the dungeon
  * adventure game.
  */
 public class ResultSetTable implements Table {
@@ -58,9 +58,7 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The string from current position.
      *
-     * @throws SQLException      Thrown if there is exception that provides
-     *                           information on a database access error
-     *                           or other errors.
+     * @throws SQLException      Thrown if there is invalid column index.
      */
     @Override
     public String getString(final int theColumn) throws SQLException {
@@ -75,9 +73,7 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The integer value from current position.
      *
-     * @throws SQLException      Thrown if there is exception that provides
-     *                           information on a database access error
-     *                           or other errors.
+     * @throws SQLException      Thrown if there is invalid column index.
      */
     @Override
     public int getInt(final int theColumn) throws SQLException {
@@ -91,9 +87,7 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The double value from current position.
      *
-     * @throws SQLException      Thrown if there is exception that provides
-     *                           information on a database access error
-     *                           or other errors.
+     * @throws SQLException      Thrown if there is invalid column index.
      */
     @Override
     public double getDouble(final int theColumn) throws SQLException {
@@ -107,9 +101,7 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The boolean value from current position.
      *
-     * @throws SQLException      Thrown if there is exception that provides
-     *                           information on a database access error
-     *                           or other errors.
+     * @throws SQLException      Thrown if there is invalid column index.
      */
     @Override
     public boolean getBoolean(final int theColumn) throws SQLException {

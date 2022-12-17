@@ -191,7 +191,7 @@ public class Room implements Serializable {
      *
      * @param theHasAdventurer The boolean representing if the room
      *                         has the adventurer in it.
-     * @return The string representing the dungeon rooms.
+     * @return                 The string representing the dungeon rooms.
      */
     String toString(final boolean theHasAdventurer) {
         final StringBuilder builder = new StringBuilder();
@@ -264,8 +264,8 @@ public class Room implements Serializable {
      * @param theTarget The dungeon character that the trap's damage will be
      *                  dealt on.
      *
-     * @return         The type of attack result and amount after
-     *                 the skill is executed.
+     * @return          The type of attack result and amount after
+     *                  the skill is executed.
      */
     AttackResultAndAmount activateTrap(final DungeonCharacter theTarget) {
         return myTrap == null ?

@@ -27,7 +27,7 @@ public class Heal extends SpecialSkill {
     private static final double HEAL_PERCENT = 0.3;
 
     /**
-     * Constructor to create the heal special skill.
+     * Constructor to create the healing special skill.
      */
     Heal() {
         super(COOLDOWN);

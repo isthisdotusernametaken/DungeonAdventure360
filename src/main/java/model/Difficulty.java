@@ -116,30 +116,30 @@ public enum Difficulty {
     }
 
     /**
-     * Calculates and obtains the positive difficulty modify managing value.
+     * Calculates and obtains the positive difficulty modifier managing value.
      *
      * @param theValue The double value for adjusting purpose.
-     * @return         The difficulty modify managing value.
+     * @return         The difficulty modifier managing value.
      */
     double modifyPositive(final double theValue) {
         return theValue * myPositiveMultiplier;
     }
 
     /**
-     * Calculates and obtains the negative difficulty modify managing value.
+     * Calculates and obtains the negative difficulty modifier managing value.
      *
      * @param theValue The double value for adjusting purpose.
-     * @return         The difficulty modify managing value.
+     * @return         The difficulty modifier managing value.
      */
     double modifyNegative(final double theValue) {
         return theValue * myNegativeMultiplier;
     }
 
     /**
-     * Calculates and obtains the positive difficulty modify managing value.
+     * Calculates and obtains the positive difficulty modifier managing value.
      *
      * @param theValue The integer value for adjusting purpose.
-     * @return         The difficulty modify managing value.
+     * @return         The difficulty modifier managing value.
      */
     int modifyNegative(final int theValue) {
         return (int) (theValue * myNegativeMultiplier);

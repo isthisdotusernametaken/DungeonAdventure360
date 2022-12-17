@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class constructs, modifies and handles the dungeon map
+ * This class constructs and handles the dungeon map
  * using a 3D array.
  */
 public class ArrayMap extends Map {

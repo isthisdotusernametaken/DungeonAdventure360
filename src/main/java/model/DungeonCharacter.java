@@ -290,8 +290,9 @@ public abstract class DungeonCharacter extends DamageDealer {
      *                          character.
      * @param theIsBlockable    The boolean true or false if the dungeon
      *                          character can block.
-     * @return          The string result representing the damage and damage
-     *                  from buff process after attempted to deal damage.
+     * @return                  The string result representing the damage
+     *                          and damage from buff process after attempted
+     *                          to deal damage.
      */
     final AttackResultAndAmount applyDamageAndBuff(final DamageType theDamageType,
                                                    final int theDamage,
@@ -328,12 +329,10 @@ public abstract class DungeonCharacter extends DamageDealer {
      * Executes and applies the effect of the buff onto the dungeon
      * character, the effect may vary depending on the type of buff.
      *
-     * @param theBuffType The buff type or debuff type.
-     * @param theDuration The duration of the buff or debuff.
+     * @param theBuffType               The buff type or debuff type.
+     * @param theDuration               The duration of the buff or debuff.
      *
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws IllegalArgumentException Thrown if the duration is negative.
      */
     final void applyBuff(final BuffType theBuffType,
                          final int theDuration) throws IllegalArgumentException {
@@ -367,8 +366,8 @@ public abstract class DungeonCharacter extends DamageDealer {
      * Advance the duration of the debuff by 1 turns,
      * If the debuff is still not out of turn, applies damage.
      *
-     * @return The attack result and amount from the debuff applied
-     * on the dungeon character.
+     * @return  The attack result and amount from the debuff applied
+     *          on the dungeon character.
      */
     final AttackResultAndAmount advanceDebuffs() {
         return advanceBuffs(false);

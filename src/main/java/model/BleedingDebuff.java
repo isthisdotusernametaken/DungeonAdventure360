@@ -17,7 +17,7 @@ public class BleedingDebuff extends Buff {
     /**
      * Constructs the bleeding debuff withs its effects.
      *
-     * @param theDuration The duration of how long the debuff last.
+     * @param theDuration   The duration of how long the debuff last.
      */
     BleedingDebuff(final int theDuration) {
         super(
