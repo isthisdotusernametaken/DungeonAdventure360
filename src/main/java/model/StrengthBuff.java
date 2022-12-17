@@ -30,9 +30,9 @@ public class StrengthBuff extends Buff {
     }
 
     /**
-     * Applies the debuff and adjusts the dungeon character's stats.
+     * Applies the buff and adjusts the character's damage.
      *
-     * @param theStats  The dungeon character's class.
+     * @param theStats The character's stats object to add the changes to.
      */
     @Override
     void adjustStats(final AdjustedCharacterStats theStats) {

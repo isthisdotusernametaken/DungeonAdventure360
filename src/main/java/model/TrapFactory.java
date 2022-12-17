@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This factory class provides an interface for trap class to create, generate, and
- * access the database for dungeon monster.
+ * This factory produces Trap objects with classes and stats defined by
+ * the DB provided when building the factory.
  */
 public final class TrapFactory extends DamageDealerFactory<Trap> {
 
@@ -21,16 +21,14 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
     private static TrapFactory INSTANCE;
 
     /**
-     * Constructor of trap factory to create the database table for
-     * dungeon monster.
+     * Reads its table from the provided DB and creates templates to build
+     * Traps from.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for the trap.
+     * @param theDBManager The DB to build the factory from.
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     private TrapFactory(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
@@ -38,15 +36,13 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
     }
 
     /**
-     * Constructs instance for trap factory.
+     * Constructs instance for trap factory if it does not already exist.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for the trap.
+     * @param theDBManager The DB to build the factory from.
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     static void buildInstance(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
@@ -55,14 +51,19 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
         }
     }
 
+    /**
+     * Gets instance for the trap factory.
+     *
+     * @return The instance of the trap factory.
+     */
     static TrapFactory getInstance() {
         return INSTANCE;
     }
 
     /**
-     * Gets instance for the trap factory.
+     * Compiles the names and representations of each class of Trap into a List
      *
-     * @return The instance of the trap factory.
+     * @return A list of pairs of representations and class names
      */
     List<String> getClassesAndRepresentations() {
         final String[] classes = getClasses();
@@ -80,15 +81,12 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
     }
 
     /**
-     * Constructs table template for the trap database table.
+     * Constructs a template Trap from a row in a DB table.
      *
-     * @param theTable                  The table template generator for
-     *                                  the trap database table.
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTable The input processor between the DB and the factory.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     @Override
     Trap buildTemplate(final TemplateGenerator theTable)
@@ -109,19 +107,11 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
     }
 
     /**
-     * Modifies table template for the trap database table.
+     * Creates a template with its stats adjusted according to the difficulty
+     * level
      *
-     * @param theTemplate               The adventurer to obtain and update
-     *                                  trap stats and information
-     *                                  into the database table.
-     * @param theDifficulty             The difficulty to adjust the difficulty
-     *                                  level of the dungeon and adjust the
-     *                                  stats of the dungeon traps.
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTemplate The template Monster to use
+     * @param theDifficulty The difficulty level to create a template for
      */
     @Override
     Trap buildModifiedTemplate(final Trap theTemplate,
@@ -142,17 +132,9 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
     }
 
     /**
-     * Modifies table template for the trap database table with
-     * generated random name.
+     * Creates a Trap from the provided template.
      *
-     * @param theTemplate               The adventurer to obtain and update
-     *                                  trap stats and information
-     *                                  into the database table.
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTemplate The template Trap.
      */
     @Override
     Trap createFromTemplate(final Trap theTemplate) {

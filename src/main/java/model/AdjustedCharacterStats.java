@@ -21,34 +21,34 @@ public class AdjustedCharacterStats implements Serializable {
     private final DungeonCharacter myCharacter;
 
     /**
-     * The minimum dungeon character damage.
+     * The adjusted minimum dungeon character damage.
      */
     private int myMinDamage;
 
     /**
-     * The maximum dungeon character damage.
+     * The adjusted maximum dungeon character damage.
      */
     private int myMaxDamage;
 
     /**
-     * The hit chance of the dungeon character.
+     * The adjusted hit chance of the dungeon character.
      */
     private double myHitChance;
 
     /**
-     * The speed of the dungeon character.
+     * The adjusted speed of the dungeon character.
      */
     private int mySpeed;
 
     /**
-     * The list of resistance percentage of the dungeon character to
+     * The list of adjusted resistance percentages of the dungeon character to
      * certain damage types.
      */
     private final double[] myResistances;
 
     /**
-     * Constructor of AdjustedCharacterStats to handles the stats and
-     * resets the dungeon character's stats whenever it is called.
+     * Creates am AdjustedCharacterStats object initialized to the character's
+     * base stats
      *
      * @param theCharacter The dungeon character that will be adjusted in stats.
      */
@@ -60,7 +60,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Generates and displays the dungeon character's list of resistances as string.
+     * Generates the dungeon character's list of resistances as string.
      *
      * @return The string list of resistances.
      */
@@ -78,9 +78,9 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Gets the minimum dungeon character damage.
+     * Gets the adjusted minimum dungeon character damage.
      *
-     * @return The minimum dungeon character damage.
+     * @return The adjusted minimum dungeon character damage.
      */
     int getMinDamage() {
         return myMinDamage;
@@ -89,7 +89,7 @@ public class AdjustedCharacterStats implements Serializable {
     /**
      * Gets the maximum dungeon character damage.
      *
-     * @return The maximum dungeon character damage.
+     * @return The adjusted maximum dungeon character damage.
      */
     int getMaxDamage() {
         return myMaxDamage;
@@ -98,7 +98,7 @@ public class AdjustedCharacterStats implements Serializable {
     /**
      * Gets the hit chance of the dungeon character.
      *
-     * @return The hit chance of the dungeon.
+     * @return The adjusted hit chance of the dungeon character.
      */
     double getHitChance() {
         return myHitChance;
@@ -107,27 +107,25 @@ public class AdjustedCharacterStats implements Serializable {
     /**
      * Gets the speed of the dungeon character.
      *
-     * @return The speed of the dungeon.
+     * @return The adjusted speed of the character.
      */
     int getSpeed() {
         return mySpeed;
     }
 
     /**
-     * Get the value of the dungeon character's resistance of the
-     * certain damage types.
+     * Get the value of the dungeon character's resistance to the specified
+     * damage type.
      *
-     * @param theDamageType The damage type to indicate which resistance value
-     *                      is associated with that damage type.
-     * @return              The double value of the dungeon
-     *                      character's resistance.
+     * @param theDamageType The damage type to get the resistance value for
+     * @return The double value of the dungeon character's resistance.
      */
     double getResistance(final DamageType theDamageType) {
         return myResistances[theDamageType.ordinal()];
     }
 
     /**
-     * Gets and adjusts the dungeon character's damage stats.
+     * Adjusts the dungeon character's damage stats.
      *
      * @param theMultiplier The multiplier value to adjust
      *                      the damage stats.
@@ -138,7 +136,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Gets and adjusts the dungeon character's hit chance stat.
+     * Adjusts the dungeon character's hit chance stat.
      *
      * @param theMultiplier The multiplier value to adjust
      *                      the hit chance stat.
@@ -148,7 +146,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Gets and adjusts the dungeon character's speed stat.
+     * Adjusts the dungeon character's speed stat.
      *
      * @param theMultiplier The multiplier value to adjust
      *                      the speed stat.
@@ -158,7 +156,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Gets and adjusts the dungeon character's resistance stats.
+     * Adjusts the dungeon character's resistance stats.
      *
      * @param theMultiplier The multiplier value to adjust
      *                      the resistance stats.
@@ -172,8 +170,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Adjusts and resets the dungeon character's stats to
-     * its base stats.
+     * Resets the dungeon character's stats to its base stats.
      */
     void resetStats() {
         myMinDamage = myCharacter.getMinDamage();
@@ -185,8 +182,7 @@ public class AdjustedCharacterStats implements Serializable {
     }
 
     /**
-     * Adjusts and resets the dungeon character's resistance stats to
-     * its base stats.
+     * Resets the dungeon character's resistance stats to its base stats.
      */
     private void resetResistances() {
         final ResistanceData baseResistances = myCharacter.getResistances();

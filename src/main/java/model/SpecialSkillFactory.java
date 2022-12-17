@@ -1,29 +1,23 @@
 package model;
 
 /**
- * This factory class helps to handle, access, and modify the special skill
- *  and let subclasses to decided which class object to instantiate to prevent
- *  duplication of code.
+ * This factory produces SpecialSkill objects from their Class names.
  */
 public class SpecialSkillFactory {
 
     /**
-     * Alerts the special skill is invalid.
+     * Error message for nonexistent skill specified.
      */
     private static final String INVALID_SKILL = "Invalid skill: ";
 
     /**
-     * Creates the special skill objects as options for subclass methods to
-     * access and use.
+     * Creates a SpecialSkill with of the specified Class
      *
-     * @param theSkillName              The string representing the name of the
-     *                                  special skill.
-     * @return                          The special skill object that the
-     *                                  subclass called.
+     * @param theSkillName The name of the class
+     * @return A SpecialSkill of the specified class.
      *
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws IllegalArgumentException Indicates an invalid skill name was
+     *                                  provided
      */
     static SpecialSkill createSpecialSkill(final String theSkillName)
             throws IllegalArgumentException {
@@ -36,10 +30,10 @@ public class SpecialSkillFactory {
     }
 
     /**
-     * Validates if the special skill is invalid.
+     * Exception to indicate the specified skill does not exist.
      *
-     * @param theSkillName The name of the special skill.
-     * @return             The illegal argument exception message.
+     * @param theSkillName The name of the nonexistent skill.
+     * @return The exception specifying the failure, to be thrown in the caller
      */
     private static IllegalArgumentException invalidSkillException(final String theSkillName) {
         return new IllegalArgumentException(

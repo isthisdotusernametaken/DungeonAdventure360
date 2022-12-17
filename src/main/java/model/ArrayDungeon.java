@@ -39,12 +39,12 @@ public class ArrayDungeon extends Dungeon {
     // left/top wall + width/height of room contents + right/bottom wall
 
     /**
-     * Integer value representing the total room size.
+     * Integer value representing the total room size in characters.
      */
     private static final int TOTAL_ROOM_SIZE = Room.ROOM_SIZE + 2;
 
     /**
-     * Integer value representing half of the room size.
+     * Integer value representing half of the room size in characters.
      */
     private static final int HALF_TOTAL_ROOM_SIZE = TOTAL_ROOM_SIZE / 2;
 
@@ -59,12 +59,12 @@ public class ArrayDungeon extends Dungeon {
     private final RoomCoordinates[] myStairs;
 
     /**
-     * The terminal points in the dungeon.
+     * The entrance and exit coords.
      */
     private final RoomCoordinates[] myTerminalPoints;
 
     /**
-     * Room-coordinates representing the dimensions of the room.
+     * Room-coordinates representing the dimensions of the dungeon.
      */
     private final RoomCoordinates myDimensions;
 
@@ -105,7 +105,7 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Constructs the unknown rooms in the dungeon.
+     * Constructs the representation of unknown rooms in the dungeon.
      *
      * @return The string representing the unknown rooms.
      */
@@ -119,10 +119,10 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * ToString method to check if adventurer not shown and to compare
-     * to the current room coordinates.
+     * Constructs a String representing the entire dungeon in its current
+     * state, including the stairs and each room and its contents.
      *
-     * @return The string representing the room coordinates
+     * @return The string representing the dungeon
      */
     @Override
     public String toString() {
@@ -132,11 +132,13 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * ToString method to format and display the dungeon's rooms.
+     * Constructs a String representing the entire dungeon in its current
+     * state, including the stairs and each room and its contents.
      *
-     * @param theAdventurerCoords The coordinates of the adventurer.
-     * @param theHideUnknown      The boolean true or false if hide is unknown.
-     * @return                    The string representing the dungeon's rooms.
+     * @param theAdventurerCoords The room the adventurer is in.
+     * @param theHideUnknown Whether unknown rooms should have their contents
+     *                       hidden.
+     * @return The string representing the dungeon
      */
     @Override
     String toString(final RoomCoordinates theAdventurerCoords,
@@ -159,9 +161,9 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Gets the dimension of the dungeon's rooms.
+     * Gets the size of the dungeon.
      *
-     * @return The dimension of the dungeon's rooms.
+     * @return The dungeon's size.
      */
     @Override
     RoomCoordinates getDimensions() {
@@ -169,11 +171,10 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Gets the coordinates of the dungeon's room
+     * Gets the room at the specified coords
      *
-     * @param theCoords The room coordinates to access and obtain
-     *                  its dimension.
-     * @return          The room coordinates.
+     * @param theCoords The coords of the room to retrieve.
+     * @return The specified room.
      */
     @Override
     Room getRoom(final RoomCoordinates theCoords) {
@@ -183,12 +184,10 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Checks if the room has a stair going up.
+     * Checks if the specified room has stairs going up.
      *
-     * @param theCoords The room coordinates to access and obtains
-     *                  its dimension.
-     * @return          The boolean true or false if there is
-     *                  a stair going up in the current room.
+     * @param theCoords The coords of the room to check for stairs in.
+     * @return Whether there are stairs going up in the current room.
      */
     @Override
     boolean hasStairsUp(final RoomCoordinates theCoords) {
@@ -197,12 +196,10 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Checks if the room has a stair going down.
+     * Checks if the specified room has stairs going down.
      *
-     * @param theCoords The room coordinates to access and obtains
-     *                  its dimension.
-     * @return          The boolean true or false if there is a
-     *                  stair going down in the current room.
+     * @param theCoords The coords of the room to check for stairs in.
+     * @return Whether there are stairs going down in the current room.
      */
     @Override
     boolean hasStairsDown(final RoomCoordinates theCoords) {
@@ -211,7 +208,7 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Gets the terminal point of the dungeon.
+     * Gets the entry point of the dungeon.
      *
      * @return The coordinates of the entrance.
      */
@@ -221,14 +218,15 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Appends or adds stairs to the dungeon's rooms.
+     * Appends any existing stairs to the dungeon's string representation.
      *
      * @param theBuilder     The string builder to construct and append
      *                       stairs in the dungeon's rooms.
-     * @param theFloor       The integer to get the floor location.
-     * @param theNorth       The boolean true or false if the stair is
-     *                       at northside.
-     * @param theHideUnknown The boolean true or false if hide is unknown.
+     * @param theFloor       The floor to check for stairs in.
+     * @param theNorth       Whether the stairs to possibly be appended are on
+     *                       the north side of the floor.
+     * @param theHideUnknown Whether unknown rooms should have their contents
+     *                       hidden.
      */
     private void appendStairs(final StringBuilder theBuilder,
                               final int theFloor,
@@ -274,7 +272,8 @@ public class ArrayDungeon extends Dungeon {
      *                        y-value for checking purpose.
      * @param theStairsIndex  The integer value representing the index of the
      *                        stair.
-     * @param theHideUnknown  The boolean true or false if hide is unknown.
+     * @param theHideUnknown Whether unknown rooms should have their contents
+     *                       hidden.
      * @return                The boolean true or false if the stair is known.
      */
     private boolean hasKnownStairs(final int theInvalidFloor,

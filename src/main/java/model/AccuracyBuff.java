@@ -3,8 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class represents accuracy Buff that will be applied on and used by the
- * adventurer both in exploration mode and combat mode.
+ * This Buff increases the Adventurer's hit chance to decrease their miss rate.
  */
 public class AccuracyBuff extends Buff {
 
@@ -30,9 +29,9 @@ public class AccuracyBuff extends Buff {
     }
 
     /**
-     * Applies the buff and adjusts the dungeon character's stats.
+     * Applies the buff and adjusts the character's hit chance.
      *
-     * @param theStats  The dungeon character's class.
+     * @param theStats The character's stats object to add the changes to.
      */
     @Override
     void adjustStats(final AdjustedCharacterStats theStats) {

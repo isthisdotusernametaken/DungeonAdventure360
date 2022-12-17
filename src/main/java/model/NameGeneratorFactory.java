@@ -6,29 +6,27 @@ import java.util.List;
 
 
 /**
- * This factory class helps to generate and create names for the dungeon
- * character from methods let subclasses use the methods to prevent
- * duplication of code.
+ * This factory creates NameGenerator objects for DungeonCharacterFactory
+ * objects to get random names from.
  */
 public class NameGeneratorFactory {
 
     /**
-     * Creates random name for the dungeon characters.
+     * Reads two tables from the provided DB and creates a NameGenerator with
+     * those tables' single-column rows as possible first and last names.
      *
-     * @param theDBManager       The SQL database manager to handle, and
-     *                           modify the database for adventurer.
-     * @param theFirstNamesTable The string representing the first names.
-     * @param theLastNamesTable  The string representing the last names.
-     * @return                   The name generator using the list of first
-     *                           names and the list of last names.
+     * @param theDBManager The DB to build the factory from
+     * @param theFirstNamesTable The name of the table to read for first names
+     * @param theLastNamesTable The name of the table to read for last names
      *
-     * @throws SQLException      Thrown if there is exception that provides information
-     *                           on a database access error or other errors.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     static NameGenerator create(final DBManager theDBManager,
                                 final String theFirstNamesTable,
                                 final String theLastNamesTable)
-            throws SQLException {
+            throws SQLException, IllegalArgumentException {
         return new NameGenerator(
                 readNames(theDBManager, theFirstNamesTable),
                 readNames(theDBManager, theLastNamesTable)
@@ -36,19 +34,18 @@ public class NameGeneratorFactory {
     }
 
     /**
-     * Accesses and reads the names in the SQL database table.
+     * Reads a single-column table from the provided DB into a List of Strings.
      *
-     * @param theDBManager  The SQL database manager to handle, and
-     *                      modify the database for adventurer.
-     * @param theTable      The string table to create table.
-     * @return              The string list of names.
+     * @param theDBManager The DB to read the table from
+     * @param theTable The name of the table to read for names
      *
-     * @throws SQLException Thrown if there is exception that provides information
-     *                      on a database access error or other errors.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     private static List<String> readNames(final DBManager theDBManager,
                                           final String theTable)
-            throws SQLException {
+            throws SQLException, IllegalArgumentException {
         final TemplateGenerator table = new TemplateGenerator(
                 theDBManager, theTable
         );

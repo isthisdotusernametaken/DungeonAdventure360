@@ -3,8 +3,7 @@ package model;
 import java.util.List;
 
 /**
- * This class helps to generate random name for the dungeon characters and
- * for the dungeon characters in the database table.
+ * This class helps to generate random name for the dungeon characters.
  */
 public class NameGenerator {
 
@@ -19,8 +18,8 @@ public class NameGenerator {
     private final String[] myLastNames;
 
     /**
-     * Constructor to construct the name generator using the list
-     * of first name and the list of last name.
+     * Creates a new NameGenerator with the provided Lists of Strings as the
+     * possible first and last names.
      *
      * @param theFirstNames The string list containing first names.
      * @param theLastNames  The string list containing last names.
@@ -32,7 +31,7 @@ public class NameGenerator {
     }
 
     /**
-     * Generates and obtains random first name and last name.
+     * Generates a name with a random first name and last name.
      *
      * @return The string representing random full name.
      */

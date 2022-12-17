@@ -3,7 +3,7 @@ package model;
 import java.io.Serial;
 
 /**
- * This class represents the adventurer's character of the dungeon game and
+ * This class represents the Adventurer of the dungeon game and
  * displays the character stats and executes the character's unique skill
  * when it is used.
  */
@@ -16,36 +16,29 @@ public class Adventurer extends DungeonCharacter {
     private static final long serialVersionUID = 6769784030706244929L;
 
     /**
-     * The unique special skill of the adventurer's character.
+     * The unique special skill of the Adventurer.
      */
     private final SpecialSkill mySpecialSkill;
 
     /**
-     * Constructor of the adventurer's character to creates and accesses
+     * Constructor of the Adventurer to creates and accesses
      * the data information of that character including the stats
      * and type of special skill.
      *
-     * @param theName           The name of the adventurer.
-     * @param theClass          The class of the adventurer's character.
+     * @param theName           The name of the Adventurer.
+     * @param theClass          The class of the Adventurer.
      * @param theMaxHP          The maximum hit point of the
-     *                          adventurer's character.
-     * @param theMinDamage      The minimum adventurer's character damage.
-     * @param theMaxDamage      The maximum adventurer's character damage.
-     * @param theHitChance      The hit chance of the
-     *                          adventurer's character.
-     * @param theDebuffChance   The debuff chance of the
-     *                          adventurer's character.
-     * @param theDebuffDuration The debuff duration of the
-     *                          adventurer's character.
-     * @param theDamageType     The damage type of the
-     *                          adventurer's character.
-     * @param theSpeed          The speed of the adventurer's character.
-     * @param theBlockChance    The block chance of the
-     *                          adventurer's character.
-     * @param theResistances    The list of resistances of the
-     *                          adventurer's character.
-     * @param theSpecialSkill   The special skill of the
-     *                          adventurer's character.
+     *                          Adventurer.
+     * @param theMinDamage      The adventurer's minimum damage.
+     * @param theMaxDamage      The adventurer's maximum damage.
+     * @param theHitChance      The hit chance of the Adventurer.
+     * @param theDebuffChance   The debuff chance of the Adventurer.
+     * @param theDebuffDuration The debuff duration of the Adventurer.
+     * @param theDamageType     The damage type of the Adventurer.
+     * @param theSpeed          The speed of the Adventurer.
+     * @param theBlockChance    The block chance of the Adventurer.
+     * @param theResistances    The list of resistances of the Adventurer.
+     * @param theSpecialSkill   The special skill of the Adventurer.
      */
     Adventurer(final String theName,
                final String theClass,
@@ -79,9 +72,9 @@ public class Adventurer extends DungeonCharacter {
     }
 
     /**
-     * Displays all the essential information of the adventurer's character.
+     * Displays all the essential information of the Adventurer.
      *
-     * @return The string descriptions of the adventurer's character.
+     * @return The string description of the Adventurer.
      */
     @Override
     public final String toString() {
@@ -91,27 +84,27 @@ public class Adventurer extends DungeonCharacter {
     }
 
     /**
-     * Gets the unique special of the adventurer's character.
+     * Gets the unique special of the Adventurer.
      *
-     * @return The special skill type of the adventurer's character.
+     * @return The special skill of the Adventurer.
      */
     final SpecialSkill getSpecialSkill() {
         return mySpecialSkill;
     }
 
     /**
-     * Displays the special skill of the adventurer's character.
+     * Gets the special skill of the Adventurer as a String.
      *
      * @return The string description of the special skill of
-     *         the dungeon's character.
+     *         the dungeon character.
      */
     final String viewSpecialSkill() {
         return mySpecialSkill.toString();
     }
 
     /**
-     * Executes and applies the adventurer's character's special skill
-     * on the enemy.
+     * Executes and applies the Adventurer's special skill
+     * on the enemy or the Adventurer.
      *
      * @param theEnemy The monster in the dungeon game.
      * @return         The type of attack result and amount after

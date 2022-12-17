@@ -3,36 +3,31 @@ package model;
 import java.sql.SQLException;
 
 /**
- * This factory class helps to create dungeon character database table and
- * let subclasses use it to prevent duplication of code.
- * @param <T> Generic class that is parameterized over types.
+ * This factory produces DungeonCharacter objects with classes and stats
+ * defined by the DB provided when building the factory.
+ *
+ * @param <T> The kind of DungeonCharacter the factory creates
  */
 public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
         extends DamageDealerFactory<T> {
 
     /**
-     * The generated name for adventurer's character.
+     * The generator for the created DungeonCharacters' names.
      */
     private final NameGenerator myNameGenerator;
 
     /**
-     * Constructor to construct the database table for dungeon characters.
+     * Reads its table from the provided DB and creates templates to build
+     * Monsters from.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
-     * @param theStatsTable             The string representing the stats of
-     *                                  the dungeon character in the format
-     *                                  of the database table.
-     * @param theFirstNamesTable        The string representing the first name
-     *                                  of the dungeon character in the
-     *                                  format of the database table.
-     * @param theLastNamesTable         The string representing the last name
-     *                                  of the dungeon character in the
-     *                                  format of the database table.
+     * @param theDBManager The DB to build the factory from
+     * @param theStatsTable The name of the table to read for stats
+     * @param theFirstNamesTable The name of the table to read for first names
+     * @param theLastNamesTable The name of the table to read for last names
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has been
-     *                                  passed an illegal or inappropriate argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     DungeonCharacterFactory(final DBManager theDBManager,
                             final String theStatsTable,
@@ -48,7 +43,7 @@ public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
     }
 
     /**
-     * Generates the name for the adventurer's character.
+     * Generates a random name for this kind of DungeonCharacter.
      *
      * @return The generated name.
      */

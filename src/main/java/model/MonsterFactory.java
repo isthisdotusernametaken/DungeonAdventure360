@@ -3,8 +3,8 @@ package model;
 import java.sql.SQLException;
 
 /**
- * This factory class provides an interface for monster class to create, generate, and
- * access the database for dungeon monster.
+ * This factory produces Monster objects with classes and stats defined by
+ * the DB provided when building the factory.
  */
 public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
 
@@ -29,17 +29,14 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
     private static MonsterFactory INSTANCE;
 
     /**
-     * Constructor of monster factory to create the database table for
-     * dungeon monster.
+     * Reads its table from the provided DB and creates templates to build
+     * Monsters from.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for the
-     *                                  monster.
+     * @param theDBManager The DB to build the factory from.
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     private MonsterFactory(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
@@ -47,16 +44,13 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
     }
 
     /**
-     * Constructs instance for monster factory.
+     * Constructs instance for monster factory if it does not already exist.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for the
-     *                                  monster.
+     * @param theDBManager The DB to build the factory from.
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     static void buildInstance(final DBManager theDBManager)
             throws SQLException, IllegalArgumentException {
@@ -75,15 +69,12 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
     }
 
     /**
-     * Constructs table template for the monster database table.
+     * Constructs a template Monster from a row in a DB table.
      *
-     * @param theTable                  The table template generator for
-     *                                  the monster database table.
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTable The input processor between the DB and the factory.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     @Override
     Monster buildTemplate(final TemplateGenerator theTable)
@@ -106,20 +97,11 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
     }
 
     /**
-     * Modifies table template for the monster database table.
+     * Creates a template with its stats adjusted according to the difficulty
+     * level
      *
-     * @param theTemplate               The adventurer to obtain and update
-     *                                  monster stats and information
-     *                                  into the database table.
-     * @param theDifficulty             The difficulty to adjust the difficulty
-     *                                  level of the dungeon and adjust the
-     *                                  stats of the dungeon characters
-     *                                  (exclude adventurer).
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTemplate The template Monster to use
+     * @param theDifficulty The difficulty level to create a template for
      */
     @Override
     Monster buildModifiedTemplate(final Monster theTemplate,
@@ -142,17 +124,9 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
     }
 
     /**
-     * Modifies table template for the monster database table with
-     * generated random name.
+     * Creates a Monster from the provided template.
      *
-     * @param theTemplate               The adventurer to obtain and update
-     *                                  monster stats and information
-     *                                  into the database table.
-     *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @param theTemplate The template Monster.
      */
     @Override
     Monster createFromTemplate(final Monster theTemplate) {

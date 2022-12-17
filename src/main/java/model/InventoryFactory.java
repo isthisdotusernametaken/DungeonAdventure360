@@ -1,22 +1,22 @@
 package model;
 
 /**
- * This factory class helps to create the initial game inventory
- * and let subclasses use it to prevent duplication of code.
+ * This factory creates a Container for the player's inventory.
  */
 public class InventoryFactory {
 
     /**
-     * The integer value representing the given initial healing potions
-     * to adventurer's inventory.
+     * The number of health potions on the easiest difficulty, decreasing by
+     * one for each higher difficulty level
      */
     private static final int BASE_HEALTH_POTION_COUNT = 3;
 
     /**
-     * Creates inventory with initial items.
+     * Creates a Container with health potions and another random item
+     * (possibly also a health potion) as the initial inventory.
      *
-     * @param theDifficulty The difficulty of the dungeon adventure game.
-     * @return              The inventory.
+     * @param theDifficulty Determines number of health potions.
+     * @return The filled inventory.
      */
     static Container createWithInitialItems(final Difficulty theDifficulty) {
         final Container inventory = new Container(new HealthPotion(

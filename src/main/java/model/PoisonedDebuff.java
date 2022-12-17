@@ -30,9 +30,9 @@ public class PoisonedDebuff extends Buff {
     }
 
     /**
-     * Applies the debuff and adjusts the dungeon character's stats.
+     * Applies the buff and adjusts the character's resistances and damage.
      *
-     * @param theStats  The dungeon character's class.
+     * @param theStats The character's stats object to add the changes to.
      */
     @Override
     void adjustStats(final AdjustedCharacterStats theStats) {

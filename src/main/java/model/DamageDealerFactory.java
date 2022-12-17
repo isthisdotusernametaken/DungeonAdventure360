@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * This abstract factory class helps to create database table templates
- * and let subclasses use it to prevent duplication of code.
- * @param <T> Generic class that is parameterized over types.
+ * This factory produces DamageDealer objects with classes and stats
+ * defined by the DB provided when building the factory.
+ *
+ * @param <T> The kind of DamageDealer the factory creates
  */
 public abstract class DamageDealerFactory<T extends DamageDealer> {
 
@@ -18,17 +19,15 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
     private final List<List<T>> myTemplates = new ArrayList<>();
 
     /**
-     * Constructor to construct the damage dealer factory.
+     * Reads its table from the provided DB and creates templates to build
+     * Monsters from.
      *
-     * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
-     * @param theTable                  The string representing the stats of
-     *                                  the dungeon character in the format
-     *                                  of the database table.
+     * @param theDBManager The DB to build the factory from
+     * @param theTable The name of the table to read for stats
      *
-     * @throws SQLException             Thrown if there are any string.
-     * @throws IllegalArgumentException Thrown to indicate that a method has been
-     *                                  passed an illegal or inappropriate argument.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     DamageDealerFactory(final DBManager theDBManager, final String theTable)
             throws SQLException, IllegalArgumentException {
@@ -38,12 +37,10 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
     }
 
     /**
-     * Gets the class type name of the dungeon character or the class type
-     * name of the dungeon object, as in string array.
+     * Gets the name of each class of this kind of DamageDealer that the
+     * factory can create.
      *
-     * @return  The string array representing the class type name of the
-     *          dungeon character or the class type name of the dungeon
-     *          object, as in string array.
+     * @return A String array containing the names of allowed classes.
      */
     String[] getClasses() {
         return mapToStrings(DamageDealer::getClassName);
@@ -53,9 +50,8 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
      * High-order function helps to format the results of a class method
      * to string array.
      *
-     * @param theMappingFunc A class method to get its results.
-     * @return               The string array containing all the mapped
-     *                       results of that function.
+     * @param theMappingFunc Maps each class to a String.
+     * @return An array of Strings, corresponding to the allowed classes.
      */
     String[] mapToStrings(final Function<T, String> theMappingFunc) {
         return myTemplates.get(0).stream()
@@ -63,15 +59,21 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
     }
 
     /**
-     * Checks if the index is valid.
+     * Checks if the index refers to a valid template
      *
-     * @param theIndex  The integer value representing the index value.
-     * @return          The boolean true or false if the index is valid.
+     * @param theIndex  The index of a template
+     * @return Whether a template with that index exists
      */
     boolean isValidIndex(final int theIndex) {
         return Util.isValidIndex(theIndex, myTemplates.get(0).size());
     }
 
+    /**
+     * Creates a DamageDealer based on a randomly selected template
+     *
+     * @param theDifficulty The difficulty to choose a template for
+     * @return A new DamageDealer built for the provided Difficulty
+     */
     T createRandom(final Difficulty theDifficulty) {
         return create(
                 Util.randomIntExc(
@@ -81,6 +83,12 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
         );
     }
 
+    /**
+     * Creates a DamageDealer based on the specified template.
+     *
+     * @param theDifficulty The difficulty to choose a template for
+     * @return A new DamageDealer built for the provided Difficulty
+     */
     T create(final int theClassIndex, final Difficulty theDifficulty) {
         return createFromTemplate(
                 myTemplates.get(theDifficulty.ordinal())
@@ -89,30 +97,38 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
     }
 
     /**
-     * Template method for buildTemplate method.
+     * Constructs a template DamageDealer from a row in a DB table.
      *
-     * @param theTable The template generator table.
-     * @return         The type.
+     * @param theTable The input processor between the DB and the factory.
+     * @throws SQLException Indicates a failure while reading from the DB.
+     * @throws IllegalArgumentException Indicates an invalid format or value
+     *                                  for a field in the DB.
      */
     abstract T buildTemplate(TemplateGenerator theTable)
             throws SQLException, IllegalArgumentException;
 
     /**
-     * Template method for buildModifiedTemplate method.
+     * Creates a template with its stats adjusted according to the difficulty
+     * level
      *
-     * @param theTemplate The type template.
-     * @return            The type.
+     * @param theTemplate The template DamageDealer to use
+     * @param theDifficulty The difficulty level to create a template for
      */
     abstract T buildModifiedTemplate(T theTemplate, Difficulty theDifficulty);
 
     /**
-     * Template method for createFromTemplate method.
+     * Creates a DamageDealer from the provided template.
      *
-     * @param theTemplate The type template.
-     * @return            The type.
+     * @param theTemplate The template DamageDealer.
      */
     abstract T createFromTemplate(T theTemplate);
 
+    /**
+     * Creates a template for each row of the provided DB table
+     *
+     * @param theTable The input processor between the DB and the factory.
+     * @return A List of DamageDealer templates built from the DB table
+     */
     private List<T> getUnmodifiedTemplates(final TemplateGenerator theTable)
             throws SQLException, IllegalArgumentException {
         final List<T> unmodifiedTemplates = new ArrayList<>();
@@ -123,6 +139,13 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
         return unmodifiedTemplates;
     }
 
+    /**
+     * Builds the list of templates for each Difficulty level, adjusting the
+     * base templates according to the subclass' implementation of
+     * buildModifiedTemplate
+     *
+     * @param theUnmodifiedTemplates The templates generated from the DB
+     */
     private void buildModifiedTemplates(final List<T> theUnmodifiedTemplates) {
         List<T> modifiedTemplates;
         for (Difficulty difficulty : Difficulty.values()) {
