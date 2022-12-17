@@ -563,6 +563,7 @@ public final class Controller {
      * succeed, depending on chance and the Adventurer's and Monster's speeds.
      * Uses the Adventurer's turn.
      *
+     * @param theDirection The direction to move in
      * @return The results of what happened to the Monster and Adventurer in
      *         this turn, including health changes and buff details.
      */
@@ -589,6 +590,7 @@ public final class Controller {
     /**
      * Moves the Adventurer in the specified direction to an adjacent room.
      *
+     * @param theDirection The direction to move in
      * @return The results of what happened to the Adventurer when entering the
      *         room, including Trap activation, health changes, and buff
      *         details.
