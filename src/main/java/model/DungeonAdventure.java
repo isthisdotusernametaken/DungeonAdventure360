@@ -277,6 +277,9 @@ public class DungeonAdventure implements Serializable {
 
     /**
      * Adds max stacks of all usable items to the player's inventory
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public void addMaxItems() throws IllegalStateException {
         requireAlive();
@@ -300,6 +303,9 @@ public class DungeonAdventure implements Serializable {
      *
      * @param theIndex The index in the inventory of the item to use
      * @return The results of using or trying to use the item
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public String useInventoryItem(final int theIndex)
             throws IllegalStateException {
@@ -374,6 +380,9 @@ public class DungeonAdventure implements Serializable {
      *
      * @return The results of what happened to the Monster and Adventurer in
      *         this turn, including health changes and buff details.
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public AttackResultAndAmount[] tryMonsterTurn()
             throws IllegalStateException {
@@ -428,6 +437,9 @@ public class DungeonAdventure implements Serializable {
      * Immediately kills the Monster and exits combat. Drops still occur
      *
      * @return A message about the Monster's death
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public AttackResultAndAmount killMonster() throws IllegalStateException {
         requireAlive();
@@ -504,6 +516,9 @@ public class DungeonAdventure implements Serializable {
      *
      * @return The results of what happened to the Monster and Adventurer in
      *         this turn, including health changes and buff details.
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public AttackResultAndAmount[] flee(final Direction theDirection)
             throws IllegalStateException {
@@ -572,6 +587,9 @@ public class DungeonAdventure implements Serializable {
      * @return The results of what happened to the Adventurer when entering the
      *         room, including Trap activation, health changes, and buff
      *         details.
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public AttackResultAndAmount[] moveAdventurer(final Direction theDirection)
             throws IllegalStateException {
@@ -604,6 +622,9 @@ public class DungeonAdventure implements Serializable {
      * @return The results of what happened to the Adventurer when entering the
      *         room, including Trap activation, health changes, and buff
      *         details.
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
      */
     public AttackResultAndAmount[] useStairs(final boolean theIsUp)
             throws IllegalStateException {
@@ -627,16 +648,37 @@ public class DungeonAdventure implements Serializable {
         return myDungeon.getRoom(myAdventurerCoordinates);
     }
 
+    /**
+     * Gets the size of the dungeon
+     *
+     * @return The dungeon's dimensions
+     */
     private RoomCoordinates getDimensions() {
         return myDungeon.getDimensions();
     }
 
+    /**
+     * Moves the Adventurer in the specified direction to an adjacent room.
+     *
+     * @param theDirection The direction to move in
+     * @return The results of what happened to the Adventurer when entering the
+     *         room, including Trap activation, health changes, and buff
+     *         details.
+     */
     private AttackResultAndAmount[] moveAdventurerUnchecked(final Direction theDirection) {
         return moveToCoordsUnchecked(myAdventurerCoordinates.add(
                 theDirection, myDungeon.getDimensions()
         ));
     }
 
+    /**
+     * Relocates the Adventurer to the specified room.
+     *
+     * @param theCoords The location to move to
+     * @return The results of what happened to the Adventurer when entering the
+     *         room, including Trap activation, health changes, and buff
+     *         details.
+     */
     private AttackResultAndAmount[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
         if (!theCoords.isSameRoom(myAdventurerCoordinates)) {
             myAdventurerCoordinates = theCoords;
@@ -657,12 +699,26 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
+    /**
+     * Updates whether the Adventurer is dead based on the result of damaging
+     * them
+     *
+     * @param theResult The result of damaging the Adventurer
+     */
     private void testDead(final AttackResultAndAmount theResult) {
         if (theResult.getResult() == AttackResult.KILL) {
             myIsAlive = false;
         }
     }
 
+    /**
+     * Plays the Monster's next turn in attacking the Adventurer. This includes
+     * the Monster taking damage from any debuffs, possibly healing, and
+     * attempting to attack the Adventurer
+     *
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
+     */
     private AttackResultAndAmount[] runMonsterTurn() {
         final AttackResultAndAmount monsterBuffResult =
                 getCurrentRoom().killMonsterOnKillResult(
@@ -687,6 +743,16 @@ public class DungeonAdventure implements Serializable {
         return new AttackResultAndAmount[]{monsterBuffResult};
     }
 
+    /**
+     * Executes the Adventurer's turn by attacking the Monster with a basic
+     * attack or skill
+     *
+     * @return The results of what happened to the Monster and Adventurer in
+     *         this turn, including health changes and buff details.
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
+     */
     private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack)
             throws IllegalStateException {
         requireAlive();
@@ -714,6 +780,12 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
+    /**
+     * Advances the game by one turn for skills and debuffs and tests whether
+     * the new room has a Monster and whether the Adventurer has died
+     *
+     * @return The result of any buff damage on the Adventurer
+     */
     private AttackResultAndAmount advanceOutOfCombat() {
         testEnterCombat();
         myAdventurer.getSpecialSkill().advance();
@@ -724,6 +796,12 @@ public class DungeonAdventure implements Serializable {
         return result;
     }
 
+    /**
+     * Advances the game by one turn for skills and all buffs and tests whether
+     * the Adventurer has died
+     *
+     * @return The result of any buff damage on the Adventurer
+     */
     private AttackResultAndAmount advanceInCombat() {
         myAdventurer.getSpecialSkill().advance();
 
@@ -734,16 +812,27 @@ public class DungeonAdventure implements Serializable {
         return result;
     }
 
+    /**
+     * Tests whether the room has a Monster and allocates turns if so
+     */
     private void testEnterCombat() {
         if (testCombat()) {
             recalculateTurnAllocation();
         }
     }
 
+    /**
+     * Tests and returns whether the room has a Monster
+     *
+     * @return Whether the room has a Monster
+     */
     private boolean testCombat() {
         return myIsInCombat = getCurrentRoom().getMonster() != null;
     }
 
+    /**
+     * Allocates combat turns
+     */
     private void recalculateTurnAllocation() {
         myTurnAllocator = new TurnAllocator(
                 myAdventurer.getAdjustedSpeed(),
@@ -751,6 +840,10 @@ public class DungeonAdventure implements Serializable {
         );
     }
 
+    /**
+     * Advances the TurnAllocator to the next combat turn and checks whether
+     * combat should continue
+     */
     private void nextTurn() {
         if (testCombat() && myTurnAllocator.isCompleted()) {
             recalculateTurnAllocation();
@@ -759,6 +852,13 @@ public class DungeonAdventure implements Serializable {
         myTurnAllocator.nextTurn();
     }
 
+    /**
+     * Throws an exception if a game-changing operation is performed when the
+     * Adventurer is dead
+     *
+     * @throws IllegalStateException Indicates that an operation was attempted
+     *                               while the Adventurer was dead
+     */
     private void requireAlive() throws IllegalStateException {
         if (!myIsAlive) {
             final IllegalStateException e = new IllegalStateException(
