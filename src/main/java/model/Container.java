@@ -15,7 +15,7 @@ public class Container implements Serializable {
 
     private static final String UNUSABLE = "That item cannot be used.";
 
-    private final List<Item> myItems;
+    final List<Item> myItems;
 
     Container(final Item ... theItems) {
         myItems = new ArrayList<>(Arrays.asList(theItems));

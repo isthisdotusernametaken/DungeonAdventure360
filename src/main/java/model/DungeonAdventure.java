@@ -27,15 +27,15 @@ public class DungeonAdventure implements Serializable {
             "An error occurred while accessing the database, and the " +
             "application could not recover.\n";
 
-    private final Dungeon myDungeon;
-    private final Adventurer myAdventurer;
-    private final Container myInventory;
-    private RoomCoordinates myAdventurerCoordinates;
-    private boolean myIsAlive;
-    private boolean myIsInCombat;
-    private TurnAllocator myTurnAllocator;
+    final Dungeon myDungeon;
+    final Adventurer myAdventurer;
+    final Container myInventory;
+    RoomCoordinates myAdventurerCoordinates;
+    boolean myIsAlive;
+    boolean myIsInCombat;
+    TurnAllocator myTurnAllocator;
 
-    private boolean myIsUnexploredHidden;
+    boolean myIsUnexploredHidden;
 
     public DungeonAdventure(final String theAdventurerName,
                             final int theAdventurerClass,
@@ -353,21 +353,21 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
-    private Room getCurrentRoom() {
+    Room getCurrentRoom() {
         return myDungeon.getRoom(myAdventurerCoordinates);
     }
 
-    private RoomCoordinates getDimensions() {
+    RoomCoordinates getDimensions() {
         return myDungeon.getDimensions();
     }
 
-    private AttackResultAndAmount[] moveAdventurerUnchecked(final Direction theDirection) {
+    AttackResultAndAmount[] moveAdventurerUnchecked(final Direction theDirection) {
         return moveToCoordsUnchecked(myAdventurerCoordinates.add(
                 theDirection, myDungeon.getDimensions()
         ));
     }
 
-    private AttackResultAndAmount[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
+    AttackResultAndAmount[] moveToCoordsUnchecked(final RoomCoordinates theCoords) {
         if (!theCoords.isSameRoom(myAdventurerCoordinates)) {
             myAdventurerCoordinates = theCoords;
             myDungeon.getMap().explore(myAdventurerCoordinates);
@@ -387,13 +387,13 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
-    private void testDead(final AttackResultAndAmount theResult) {
+    void testDead(final AttackResultAndAmount theResult) {
         if (theResult.getResult() == AttackResult.KILL) {
             myIsAlive = false;
         }
     }
 
-    private AttackResultAndAmount[] runMonsterTurn() {
+    AttackResultAndAmount[] runMonsterTurn() {
         final AttackResultAndAmount monsterBuffResult =
                 getCurrentRoom().killMonsterOnKillResult(
                         getCurrentRoom().getMonster().advanceBuffsAndDebuffs()
@@ -417,7 +417,7 @@ public class DungeonAdventure implements Serializable {
         return new AttackResultAndAmount[]{monsterBuffResult};
     }
 
-    private AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack)
+    AttackResultAndAmount[] runAdventurerTurn(final boolean theIsBasicAttack)
             throws IllegalStateException {
         requireAlive();
 
@@ -444,7 +444,7 @@ public class DungeonAdventure implements Serializable {
         return null;
     }
 
-    private AttackResultAndAmount advanceOutOfCombat() {
+    AttackResultAndAmount advanceOutOfCombat() {
         testEnterCombat();
         myAdventurer.getSpecialSkill().advance();
 
@@ -454,7 +454,7 @@ public class DungeonAdventure implements Serializable {
         return result;
     }
 
-    private AttackResultAndAmount advanceInCombat() {
+    AttackResultAndAmount advanceInCombat() {
         myAdventurer.getSpecialSkill().advance();
 
         final AttackResultAndAmount result =
@@ -464,24 +464,24 @@ public class DungeonAdventure implements Serializable {
         return result;
     }
 
-    private void testEnterCombat() {
+    void testEnterCombat() {
         if (testCombat()) {
             recalculateTurnAllocation();
         }
     }
 
-    private boolean testCombat() {
+    boolean testCombat() {
         return myIsInCombat = getCurrentRoom().getMonster() != null;
     }
 
-    private void recalculateTurnAllocation() {
+    void recalculateTurnAllocation() {
         myTurnAllocator = new TurnAllocator(
                 myAdventurer.getAdjustedSpeed(),
                 getCurrentRoom().getMonster().getAdjustedSpeed()
         );
     }
 
-    private void nextTurn() {
+    void nextTurn() {
         if (testCombat() && myTurnAllocator.isCompleted()) {
             recalculateTurnAllocation();
         }
@@ -489,7 +489,7 @@ public class DungeonAdventure implements Serializable {
         myTurnAllocator.nextTurn();
     }
 
-    private void requireAlive() throws IllegalStateException {
+    void requireAlive() throws IllegalStateException {
         if (!myIsAlive) {
             final IllegalStateException e = new IllegalStateException(
                     "The adventurer is dead, and no actions other than " +
