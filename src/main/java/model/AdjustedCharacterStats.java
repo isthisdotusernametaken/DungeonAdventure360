@@ -1,3 +1,11 @@
+/*
+ * Group Project (Dungeon Adventure)
+ * Official version
+ * Team 3
+ * TCSS 360
+ * Autumn 2022
+ */
+
 package model;
 
 import java.io.Serial;
@@ -119,8 +127,7 @@ public class AdjustedCharacterStats implements Serializable {
      *
      * @param theDamageType The damage type to indicate which resistance value
      *                      is associated with that damage type.
-     * @return              The double value of the dungeon
-     *                      character's resistance.
+     * @return              The double value of the dungeon character's resistance.
      */
     double getResistance(final DamageType theDamageType) {
         return myResistances[theDamageType.ordinal()];
