@@ -2,14 +2,34 @@ package model;
 
 import java.io.Serial;
 
+/**
+ * This class constructs, handles, and applies the vision potion item that
+ * will be used by the adventurer's character.
+ */
 public class VisionPotion extends MapApplicableItem {
 
+    /**
+     * Class Serial Identifier.
+     */
     @Serial
     private static final long serialVersionUID = 5502632545052449037L;
 
+    /**
+     * The string representing the name of the vision potion.
+     */
     private static final String NAME = createNameFromType(new VisionPotion(0));
+
+    /**
+     * The character representing the character symbol of
+     * a vision potion.
+     */
     private static final char REPRESENTATION = 'V';
 
+    /**
+     * Constructor to construct the vision potion.
+     *
+     * @param theCount The counts of the vision potion.
+     */
     VisionPotion(final int theCount) {
         super(
                 REPRESENTATION,
@@ -19,6 +39,19 @@ public class VisionPotion extends MapApplicableItem {
         );
     }
 
+    /**
+     * Executes and applies the effect of the vision potion.
+     *
+     * @param theTarget                 The dungeon character that the potion
+     *                                  will be applied on.
+     * @return                          The string result representing the
+     *                                  effect process when the potion is
+     *                                  applied.
+     *
+     * @throws IllegalArgumentException Thrown to indicate that a method has
+     *                                  been passed an illegal or inappropriate
+     *                                  argument.
+     */
     @Override
     boolean applyEffect(final Map theTarget, final RoomCoordinates theCoords) {
         boolean anyUnexplored = false;
@@ -35,11 +68,21 @@ public class VisionPotion extends MapApplicableItem {
         return anyUnexplored;
     }
 
+    /**
+     * Creates a copy of the vision potion.
+     *
+     * @return The vision potion.
+     */
     @Override
     Item copy() {
         return new VisionPotion(getCount());
     }
 
+    /**
+     * Gets the name of the vision potion.
+     *
+     * @return The name of the vision potion.
+     */
     @Override
     String getName() {
         return NAME;

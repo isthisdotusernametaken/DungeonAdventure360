@@ -3,21 +3,56 @@ package model;
 import java.io.Serial;
 import java.util.Arrays;
 
+/**
+ * This class construct and handles the four OOP pillar items that the adventurer
+ * must collect in order to win the game.
+ */
 public final class Pillar extends Item {
 
+    /**
+     * Class Serial Identifier.
+     */
     @Serial
     private static final long serialVersionUID = -1853421696253825055L;
 
+    /**
+     * The string arry representing the name of the pillar.
+     */
     private static final String[] NAMES =
             Arrays.stream(createPillars())
             .map(Item::createNameFromType)
             .toArray(String[]::new);
 
+    /**
+     * The character representing the character symbol of
+     * an abstraction pillar.
+     */
     private static final char ABSTRACTION_REPRESENTATION = 'A';
+
+    /**
+     * The character representing the character symbol of
+     * an encapsulation pillar.
+     */
     private static final char ENCAPSULATION_REPRESENTATION = 'E';
+
+    /**
+     * The character representing the character symbol of
+     * an inheritance pillar.
+     */
     private static final char INHERITANCE_REPRESENTATION = 'I';
+
+    /**
+     * The character representing the character symbol of
+     * a polymorphism pillar.
+     */
     private static final char POLYMORPHISM_REPRESENTATION = 'P';
 
+    /**
+     * Constructor to construct the pillar.
+     *
+     * @param theType               The type of the pillar.
+     * @param theCharRepresentation The character representation of the pillar.
+     */
     private Pillar(final ItemType theType,
                    final char theCharRepresentation) {
         super(
@@ -28,6 +63,11 @@ public final class Pillar extends Item {
         );
     }
 
+    /**
+     * Constructs the four OOP pillars.
+     *
+     * @return  The pillar array containing all four of the OOP pillars.
+     */
     static Pillar[] createPillars() {
         return new Pillar[]{
                 new Pillar(ItemType.ABSTRACTION, ABSTRACTION_REPRESENTATION),
@@ -37,11 +77,21 @@ public final class Pillar extends Item {
         };
     }
 
+    /**
+     * Creates a copy of the pillar.
+     *
+     * @return The pillar item.
+     */
     @Override
     Item copy() {
         return this;
     }
 
+    /**
+     * Gets the name of the pillar.
+     *
+     * @return The name of the pillar.
+     */
     @Override
     String getName() {
         return NAMES[getType().ordinal()];
