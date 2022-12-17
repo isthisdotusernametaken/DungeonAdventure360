@@ -15,42 +15,44 @@ import view.ConsoleUI;
 public final class Controller {
 
     /**
-     * String representing file of the auto save.
+     * Saving the Game automatically. 
      */
     private static final String AUTOSAVE_FILE = "autosave";
 
     /**
-     * String representing  error of could not start.
+     * Alert message of error the system could not start.
      */
     private static final String COULD_NOT_START =
             "The application could not start.";
 
     /**
-     * String representing details of failure.
+     * application of information for the failure of starting.
      */
     private static final String FAILURE_DETAILS =
             "For more information, view ";
 
     /**
-     * String representing error of adventurer not moving.
+     * Alert the player can not move character due to obstacles or walls.
      */
     private static final String COULD_NOT_MOVE =
             "Could not move the Adventurer.";
 
     /**
-     * letting the console use UI.
+     * The UI enables user interface.
      */
     private final ConsoleUI myUI;
+    
     /**
-     * letting player choose a new game.
+     * Player acces to play game.
      */
     private DungeonAdventure myGame;
+    
     /**
-     * letting player choose a previous game.
+     * Player choose a previous game.
      */
     private String myPreviousSaveName;
     /**
-     *  game is saved.
+     *  player's game is saved.
      */
     private boolean myIsSaved;
 
@@ -66,7 +68,7 @@ public final class Controller {
     }
 
     /**
-     * main draws from all files allowing the UI to run and play the game.
+     * Main draws from all files allowing the UI to run and play the game.
      */
     public static void main(final String[] theArgs) {
         try {
@@ -95,16 +97,15 @@ public final class Controller {
     }
 
     /**
-     * a pop up of all saved file names to choose from.
-     *
-     *  @return result all saved games previous saved.
+     * Access to saved data from files 
+     *  @return  All saved games previous saved are shown by UI.
      */
     public String[] getSaveFiles() {
         return ProgramFileManager.getInstance().getSaveFiles();
     }
 
     /**
-     * a way to restart from the beginning.
+     * Resets all data about an Adventurer and the save file.
      */
     public void reset() {
         myGame = null;
@@ -113,9 +114,9 @@ public final class Controller {
     }
 
     /**
-     * creating a new game so the player starts at the beginning.
+     * Creating a new game so the player starts at the beginning.
      *
-     *  @return result all setting will reset at normal level.
+     *  @return Result will be false setting all stats to normal level.
      */
     public boolean createGame(final String theAdventurerName,
                               final int theAdventurerClass,
