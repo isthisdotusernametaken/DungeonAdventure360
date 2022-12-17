@@ -16,7 +16,7 @@ public final class Pillar extends Item {
     private static final long serialVersionUID = -1853421696253825055L;
 
     /**
-     * The string arry representing the name of the pillar.
+     * The string array representing the name of the pillar.
      */
     private static final String[] NAMES =
             Arrays.stream(createPillars())

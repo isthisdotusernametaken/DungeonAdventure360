@@ -75,9 +75,7 @@ public class BuffPotion extends CharacterApplicableItem {
      *                                  effect process when the potion is
      *                                  applied.
      *
-     * @throws IllegalArgumentException Thrown to indicate that a method has
-     *                                  been passed an illegal or inappropriate
-     *                                  argument.
+     * @throws IllegalArgumentException Thrown if theTarget is null.
      */
     @Override
     String applyEffect(final DungeonCharacter theTarget)

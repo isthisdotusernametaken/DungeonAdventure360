@@ -45,9 +45,7 @@ public abstract class CharacterApplicableItem extends Item {
      * @return                          The result of the effect process
      *                                  after the item has been applied.
      *
-     * @throws IllegalArgumentException Thrown to indicate that a method
-     *                                  has been passed an illegal or
-     *                                  inappropriate argument.
+     * @throws IllegalArgumentException Thrown if theTarget is null.
      */
     final String use(final DungeonCharacter theTarget)
             throws IllegalArgumentException {

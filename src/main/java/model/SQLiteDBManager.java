@@ -7,7 +7,7 @@ import java.sql.Statement;
 import org.sqlite.SQLiteDataSource;
 
 /**
- * This class handles, manages and modifies the SQL database.
+ * This class handles and manages the SQL database.
  */
 public class SQLiteDBManager implements DBManager {
 

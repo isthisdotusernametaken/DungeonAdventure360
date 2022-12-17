@@ -33,7 +33,7 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
      * dungeon monster.
      *
      * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for the
+     *                                  and manage the database for the
      *                                  monster.
      *
      * @throws SQLException             Thrown if there are any string.

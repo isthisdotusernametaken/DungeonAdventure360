@@ -33,7 +33,7 @@ public class Container implements Serializable {
     /**
      * Constructor to constructs the array list for the collectable items;
      *
-     * @param theItems
+     * @param theItems The collectable items.
      */
     Container(final Item ... theItems) {
         myItems = new ArrayList<>(Arrays.asList(theItems));

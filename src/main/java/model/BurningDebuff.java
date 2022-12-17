@@ -15,7 +15,7 @@ public class BurningDebuff extends Buff {
     private static final long serialVersionUID = -7370213542881606792L;
 
     /**
-     * Constructs the burning bone debuff withs its effects.
+     * Constructs the burning debuff withs its effects.
      *
      * @param theDuration The duration of how long the debuff last.
      */

@@ -33,7 +33,7 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
      * dungeon adventurer's characters.
      *
      * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
+     *                                  and manage the database for adventurer.
      *
      * @throws SQLException             Thrown if there is exception that
      *                                  provides information on a database
@@ -51,7 +51,7 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
      * Constructs instance for adventurer factory.
      *
      * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
+     *                                  and manage the database for adventurer.
      *
      * @throws SQLException             Thrown if there is exception that
      *                                  provides information on a database

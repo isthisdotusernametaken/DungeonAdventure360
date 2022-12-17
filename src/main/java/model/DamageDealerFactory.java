@@ -21,7 +21,7 @@ public abstract class DamageDealerFactory<T extends DamageDealer> {
      * Constructor to construct the damage dealer factory.
      *
      * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
+     *                                  and manage the database for adventurer.
      * @param theTable                  The string representing the stats of
      *                                  the dungeon character in the format
      *                                  of the database table.

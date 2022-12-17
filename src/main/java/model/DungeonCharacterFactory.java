@@ -19,7 +19,7 @@ public abstract class DungeonCharacterFactory<T extends DungeonCharacter>
      * Constructor to construct the database table for dungeon characters.
      *
      * @param theDBManager              The SQL database manager to handle,
-     *                                  and modify the database for adventurer.
+     *                                  and manage the database for adventurer.
      * @param theStatsTable             The string representing the stats of
      *                                  the dungeon character in the format
      *                                  of the database table.

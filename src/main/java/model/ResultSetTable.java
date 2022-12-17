@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This class handles and modifies the SQL database table for the dungeon
+ * This class handles and manage the SQL database table for the dungeon
  * adventure game.
  */
 public class ResultSetTable implements Table {
