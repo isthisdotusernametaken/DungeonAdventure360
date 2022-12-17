@@ -262,12 +262,13 @@ public class ArrayDungeon extends Dungeon {
     }
 
     /**
-     * Checks if the stair is known.
-     *s
+     * Checks if stairs should be appended based on whether the stairs exist
+     * and whether the room with the stairs is known.
+     *
      * @param theInvalidFloor The integer value representing the invalid floor
      *                        location.
      * @param theFloor        The integer value representing the floor
-     *      *                 location.
+     *                        location.
      * @param theTargetY      The integer value representing the target
      *                        y-value for checking purpose.
      * @param theStairsIndex  The integer value representing the index of the
@@ -425,6 +426,9 @@ public class ArrayDungeon extends Dungeon {
      */
     private static class MazeGenerator {
 
+        /**
+         * Indicates that the current cell has no unvisited neighbors for DFS
+         */
         private static final int[] NO_UNVISITED_NEIGHBORS = new int[0];
 
         /**
@@ -453,6 +457,20 @@ public class ArrayDungeon extends Dungeon {
             return stairs;
         }
 
+        /**
+         * Builds and populates an ArrayDungeon with Monsters, Traps, and Items
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theMonsterChance The chance of a room having a Monster
+         * @param theTrapChance The chance of a room without a Monster having a
+         *                      Trap
+         * @param theItemChance The chance of a room to have an Item
+         * @param theDifficulty The difficulty to use for making Monsters and
+         *                      Traps
+         * @param theTerminalPoints The array to place the entrance and exit
+         *                          coords in
+         * @return The contents of a new dungeon
+         */
         private static Room[][][] generateMaze(final RoomCoordinates theDimensions,
                                                final double theMonsterChance,
                                                final double theTrapChance,
@@ -475,6 +493,20 @@ public class ArrayDungeon extends Dungeon {
             return maze;
         }
 
+        /**
+         * Generates and populates one floor of the dungeon and adds it to the
+         * array.
+         *
+         * @param theMaze The array to place the floor in
+         * @param theDimensions The size of the floor
+         * @param theFloor The place in the array to place the floor in
+         * @param theMonsterChance The chance of a room to have a Monster
+         * @param theTrapChance The chance of a room without a Monster having a
+         *                      Trap
+         * @param theItemChance The chance of a room to have an Item
+         * @param theDifficulty The difficulty to use for making Monsters and
+         *                      Traps
+         */
         private static void addFloor(final Room[][][] theMaze,
                                      final RoomCoordinates theDimensions,
                                      final int theFloor,
@@ -499,6 +531,15 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
+        /**
+         * Uses a random DFS to generate the doors between the rooms in a
+         * single-floor traversable maze.
+         *
+         * @param theDimensions The size of the floor
+         * @param theFloor The floor to generate the layout for
+         * @return A 2D array of boolean arrays representing the doors each
+         *         room in a 2D grid has
+         */
         private static boolean[][][] generateFloorLayout(final RoomCoordinates theDimensions,
                                                          final int theFloor) {
             // Direction.values().length should always be 4 (used in place of a
@@ -529,6 +570,15 @@ public class ArrayDungeon extends Dungeon {
             return doors;
         }
 
+        /**
+         * Marks the starting cell as visited and pushes it onto the stack to
+         * start the DFS.
+         *
+         * @param theVisited The array to mark the cell as visited in
+         * @param theDfsCells The stack to push the cell onto
+         * @param theDimensions The size of the dungeon
+         * @param theFloor The floor being generated
+         */
         private static void visitStartingCell(final boolean[][] theVisited,
                                               final Stack<int[]> theDfsCells,
                                               final RoomCoordinates theDimensions,
@@ -540,6 +590,14 @@ public class ArrayDungeon extends Dungeon {
             theDfsCells.push(new int[]{start.getX(), start.getY()});
         }
 
+        /**
+         * Randomly selects a neighboring cell that has not been visited, or
+         * indicates no such cell exists by returning NO_UNVISITED_NEIGHBORS.
+         *
+         * @param theVisited Which cells have been visited
+         * @param theCell The current cell the search is in
+         * @return An unvisited neighbor, or NO_UNVISITED_NEIGHBORS
+         */
         private static int[] randomUnvisitedNeighbor(final boolean[][] theVisited,
                                                      final int[] theCell) {
             final ArrayList<int[]> unvisited = new ArrayList<>(
@@ -564,6 +622,15 @@ public class ArrayDungeon extends Dungeon {
                    unvisited.get(Util.randomIntExc(unvisited.size()));
         }
 
+        /**
+         * Indicates whether the specified cell is in bounds and has not been
+         * visited.
+         *
+         * @param theVisited Which cells have been visited
+         * @param theX The current cell's x-position
+         * @param theY The current cell's y-position
+         * @return Whether the specified cell can be visited by the search
+         */
         private static boolean isValidAndUnvisited(final boolean[][] theVisited,
                                                    final int theX, final int theY) {
             return theX >= 0 && theX < theVisited.length &&
@@ -571,6 +638,14 @@ public class ArrayDungeon extends Dungeon {
                    !theVisited[theX][theY];
         }
 
+        /**
+         * Sets the booleans marking which doors exist to true for the doors
+         * between the two specified cells.
+         *
+         * @param theDoors All the doors in the floor
+         * @param theFirstCell The first cell to add a door to
+         * @param theSecondCell The second cell to add a door to
+         */
         private static void addDoorsBetween(final boolean[][][] theDoors,
                                             final int[] theFirstCell,
                                             final int[] theSecondCell) {
@@ -589,6 +664,16 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
+        /**
+         * Sets the booleans marking which doors exist to true for the doors
+         * between the two specified cells if the cells are horizontally
+         * adjacent.
+         *
+         * @param theFirstDoors The doors of the first cell
+         * @param theSecondDoors The doors of the second cell
+         * @param theFirstCell The first cell to add a door to
+         * @param theSecondCell The second cell to add a door to
+         */
         private static void addHorizontalDoors(final boolean[] theFirstDoors,
                                                final boolean[] theSecondDoors,
                                                final int[] theFirstCell,
@@ -603,6 +688,16 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
+        /**
+         * Sets the booleans marking which doors exist to true for the doors
+         * between the two specified cells if the cells are vertically
+         * adjacent.
+         *
+         * @param theFirstDoors The doors of the first cell
+         * @param theSecondDoors The doors of the second cell
+         * @param theFirstCell The first cell to add a door to
+         * @param theSecondCell The second cell to add a door to
+         */
         private static void addVerticalDoors(final boolean[] theFirstDoors,
                                              final boolean[] theSecondDoors,
                                              final int[] theFirstCell,
@@ -617,6 +712,24 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
+        /**
+         * Creates and adds a new Room to the floor with the provided chances
+         * of spawns and the provided doors, or with only the provided doors
+         * and maybe pillar if the room is marked for an entrance, exit, or
+         * pillar.
+         *
+         * @param theMaze The dungeon to add a room to
+         * @param theFloor The floor to add a room to
+         * @param theX The x-position to place the new room at
+         * @param theY The y-position to place the new room at
+         * @param theDoors The doors the new room should have
+         * @param theMonsterChance The chance of a room to have a Monster
+         * @param theTrapChance The chance of a room without a Monster having a
+         *                      Trap
+         * @param theItemChance The chance of a room to have an Item
+         * @param theDifficulty The difficulty to use for making Monsters and
+         *                      Traps
+         */
         private static void addRoom(final Room[][][] theMaze,
                                     final int theFloor,
                                     final int theX,
@@ -646,6 +759,19 @@ public class ArrayDungeon extends Dungeon {
                     );
         }
 
+        /**
+         * Creates a random room that may have a Monster, Trap, or neither and
+         * may have an Item.
+         *
+         * @param theDoors The doors the new room should have
+         * @param theMonsterChance The chance of a room to have a Monster
+         * @param theTrapChance The chance of a room without a Monster having a
+         *                      Trap
+         * @param theItemChance The chance of a room to have an Item
+         * @param theDifficulty The difficulty to use for making Monsters and
+         *                      Traps
+         * @return The created room
+         */
         private static Room randomRoom(final boolean[] theDoors,
                                        final double theMonsterChance,
                                        final double theTrapChance,
@@ -675,6 +801,13 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
+        /**
+         * Adds empty rooms for the entrance, exit, and pillars
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theMaze The array of rooms in the dungeon
+         * @param theTerminalPoints The array to place the entrance and exit in
+         */
         private static void addTerminalPointsAndPillars(
                 final RoomCoordinates theDimensions,
                 final Room[][][] theMaze,
@@ -697,6 +830,15 @@ public class ArrayDungeon extends Dungeon {
             }
         }
 
+        /**
+         * Creates an empty room for the entrance, exit, or a pillar
+         *
+         * @param theMaze The array of rooms in the dungeon
+         * @param theCoords The coordinates to place the room at
+         * @param theIsEntrance Whether the room is an entrance
+         * @param theIsExit Whether the room is an exit
+         * @param theItems The Pillar or no item
+         */
         private static void addEmptyRoom(final Room[][][] theMaze,
                                          final RoomCoordinates theCoords,
                                          final boolean theIsEntrance,
@@ -712,6 +854,14 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
+        /**
+         * Randomly chooses points on the walls for the entrance and exit and
+         * then randomly chooses points for pillars.
+         *
+         * @param theDimensions The size of the dungeon
+         * @param thePillarCount The number of pillars to generate spots for
+         * @return The coords of the entrance, exit, and pillars
+         */
         private static RoomCoordinates[] randomTerminalPointsAndPillars(
                 final RoomCoordinates theDimensions,
                 final int thePillarCount) {
@@ -732,6 +882,13 @@ public class ArrayDungeon extends Dungeon {
             return rooms;
         }
 
+        /**
+         * Randomly selects a position, excluding the provided positions
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theOtherCoords The coords to exclude
+         * @return A random position that is not one of the excluded spots
+         */
         private static RoomCoordinates randomDifferentCoords(
                 final RoomCoordinates theDimensions,
                 final RoomCoordinates ... theOtherCoords) {
@@ -743,6 +900,18 @@ public class ArrayDungeon extends Dungeon {
             return newCoords;
         }
 
+        /**
+         * Randomly selects a position on a wall, excluding the provided
+         * position
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theFloor The floor to pick a location in
+         * @param theNorthAndSouthOnly Whether only the north and south walls
+         *                             should be considered
+         * @param theOtherCoords The coords to exclude
+         * @return A random position on a wall that is not one of the excluded
+         *         spots
+         */
         private static RoomCoordinates randomDifferentCoordsOnWall(
                 final RoomCoordinates theDimensions,
                 final int theFloor,
@@ -758,6 +927,15 @@ public class ArrayDungeon extends Dungeon {
             return newCoords;
         }
 
+        /**
+         * Indicates whether the first provided coords match any of the other
+         * provided coords
+         *
+         * @param theCoords The coords to check against the others
+         * @param theOtherCoords The coords to check the first coords against
+         * @return Whether the first coords are the same as any of the
+         *         subsequent coords
+         */
         private static boolean isSameAsAny(final RoomCoordinates theCoords,
                                            final RoomCoordinates ... theOtherCoords) {
             for (RoomCoordinates other : theOtherCoords) {
@@ -768,6 +946,12 @@ public class ArrayDungeon extends Dungeon {
             return false;
         }
 
+        /**
+         * Randomly selects a position
+         *
+         * @param theDimensions The size of the dungeon
+         * @return A random position in the dungeon
+         */
         private static RoomCoordinates randomCoords(final RoomCoordinates theDimensions) {
             return new RoomCoordinates(
                     Util.randomIntExc(theDimensions.getFloor()),
@@ -776,11 +960,27 @@ public class ArrayDungeon extends Dungeon {
             );
         }
 
+        /**
+         * Randomly selects a position on a wall
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theFloor The floor to pick a location in
+         * @return A random position on a wall
+         */
         private static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
                                                           final int theFloor) {
             return randomCoordsOnWall(theDimensions, theFloor, false);
         }
 
+        /**
+         * Randomly selects a position on a wall
+         *
+         * @param theDimensions The size of the dungeon
+         * @param theFloor The floor to pick a location in
+         * @param theNorthAndSouthOnly Whether only the north and south walls
+         *                             should be considered
+         * @return A random position on a valid wall
+         */
         private static RoomCoordinates randomCoordsOnWall(final RoomCoordinates theDimensions,
                                                           final int theFloor,
                                                           final boolean theNorthAndSouthOnly) {
