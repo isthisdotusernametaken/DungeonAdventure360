@@ -110,7 +110,8 @@ public class ArrayMap extends Map {
      *                 of the room.
      * @param theY     The integer value representing the y-value
      *                 of the room.
-     * @return
+     * @return         The boolean true or false if the room is
+     *                 in bound.
      */
     @Override
     boolean isInBounds(final int theFloor,

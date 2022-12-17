@@ -158,7 +158,8 @@ public class RoomCoordinates implements Serializable {
      * @param theFloor The integer value representing the floor location.
      * @param theX     The integer value representing the x-value of the room.
      * @param theY     The integer value representing the y-value of the room.
-     * @return
+     * @return         The boolean true or false if is the same room
+     *                 coordinate.
      */
     boolean isSameRoom(final int theFloor, final int theX, final int theY) {
         return myFloor == theFloor &&
