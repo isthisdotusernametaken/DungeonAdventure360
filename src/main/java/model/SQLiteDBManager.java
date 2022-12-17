@@ -6,19 +6,50 @@ import java.sql.Statement;
 
 import org.sqlite.SQLiteDataSource;
 
+/**
+ * This class handles, manages and modifies the SQL database.
+ */
 public class SQLiteDBManager implements DBManager {
 
+    /**
+     * The file name of database.
+     */
     private static final String DB_FILE = "dungeon_adventure.db";
+
+    /**
+     * The query for the database table.
+     */
     private static final String TABLE_QUERY = "SELECT * FROM ";
+
+    /**
+     * Alerts fail connection.
+     */
     private static final String CONNECT_ERROR = "Database connection to " +
                                                 DB_FILE +
                                                 " could not be established.";
+
+    /**
+     * Alerts reading failure.
+     */
     private static final String READ_ERROR = "Database query could not be " +
                                              "completed for the table: ";
 
+    /**
+     * The connection object to open SQL database connection.
+     */
     private final Connection myConnection;
+
+    /**
+     * The statement object to execute the SQL database statements.
+     */
     private final Statement myStatement;
 
+    /**
+     * Constructor to construct the SQL database.
+     *
+     * @throws SQLException Thrown if there is exception that provides information
+     *                      on a database access error or other errors.
+     */
     SQLiteDBManager() throws SQLException {
         final SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:" + DB_FILE);
@@ -33,6 +64,15 @@ public class SQLiteDBManager implements DBManager {
         }
     }
 
+    /**
+     * Accesses and reads the SQL database table.
+     *
+     * @param theTable      The string representing the table component.
+     * @return              The result set table.
+     * @throws SQLException Thrown if there is exception that provides
+     *                      information on a database access error or
+     *                      other errors.
+     */
     public ResultSetTable readTable(final String theTable)
             throws SQLException {
         try {
@@ -44,6 +84,14 @@ public class SQLiteDBManager implements DBManager {
         }
     }
 
+    /**
+     * Closes the process of opening connection and reading statement
+     * in SQL database.
+     *
+     * @throws SQLException Thrown if there is exception that provides
+     *                      information on a database access error or
+     *                      other errors.
+     */
     public void close() throws SQLException {
         myConnection.close();
         myStatement.close();

@@ -40,10 +40,10 @@ public abstract class CharacterApplicableItem extends Item {
     /**
      * Executes and applies the item with its effect.
      *
-     * @param theTarget The dungeon character that the
-     *                  item will be applied on.
-     * @return          The result of the effect process
-     *                  after the item has been applied.
+     * @param theTarget                 The dungeon character that the
+     *                                  item will be applied on.
+     * @return                          The result of the effect process
+     *                                  after the item has been applied.
      *
      * @throws IllegalArgumentException Thrown to indicate that a method
      *                                  has been passed an illegal or

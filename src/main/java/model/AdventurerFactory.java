@@ -9,17 +9,17 @@ import java.sql.SQLException;
 public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer> {
 
     /**
-     * String representing the title of the stats table for the adventure.
+     * String representing the title of the stats table for the adventurer.
      */
     private static final String STATS_TABLE = "Adventurers";
 
     /**
-     * String representing the title of the first name table for the adventure.
+     * String representing the title of the first name table for the adventurer.
      */
     private static final String FIRST_NAME_TABLE = "AdventurerFirstNames";
 
     /**
-     * String representing the title of the last name table for the adventure.
+     * String representing the title of the last name table for the adventurer.
      */
     private static final String LAST_NAME_TABLE = "AdventurerLastNames";
 
@@ -29,13 +29,15 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
     private static AdventurerFactory INSTANCE;
 
     /**
-     * Constructor of Adventurer Factory to create the database table for
-     * dungeon adventure's characters.
+     * Constructor of adventurer factory to create the database table for
+     * dungeon adventurer's characters.
      *
-     * @param theDBManager The SQL database manager to handle, and modify
-     *                     the database for adventurer.
+     * @param theDBManager              The SQL database manager to handle,
+     *                                  and modify the database for adventurer.
      *
-     * @throws SQLException Thrown if there are any string.
+     * @throws SQLException             Thrown if there is exception that
+     *                                  provides information on a database
+     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
@@ -46,13 +48,14 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
 
 
     /**
-     * Constructs instance for Adventurer Factory.
+     * Constructs instance for adventurer factory.
      *
-     * @param theDBManager The SQL database manager to handle, and modify
-     *                     the database for adventurer.
+     * @param theDBManager              The SQL database manager to handle,
+     *                                  and modify the database for adventurer.
      *
-     * @throws SQLException Thrown if there is exception that provides information
-     *                      on a database access error or other errors.
+     * @throws SQLException             Thrown if there is exception that
+     *                                  provides information on a database
+     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
@@ -75,11 +78,12 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
     /**
      * Constructs table template for the adventurer database table.
      *
-     * @param theTable The table template generator for adventurer
-     *                 database table.
+     * @param theTable                  The table template generator for
+     *                                  adventurer database table.
      *
-     * @throws SQLException Thrown if there is exception that provides information
-     *                      on a database access error or other errors.
+     * @throws SQLException             Thrown if there is exception that
+     *                                  provides information on a database
+     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
@@ -106,15 +110,17 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
     /**
      * Modifies table template for the adventurer database table.
      *
-     * @param theTemplate   The adventurer to obtain and update
-     *                      adventurer's character stats and information
-     *                      into the database table.
-     * @param theDifficulty The difficulty to adjust the difficulty level
-     *                      of the dungeon and adjust the stats of dungeon
-     *                      characters (exclude adventurer).
+     * @param theTemplate               The adventurer to obtain and update
+     *                                  adventurer's character stats and
+     *                                  information into the database table.
+     * @param theDifficulty             The difficulty to adjust the difficulty
+     *                                  level of the dungeon and adjust the
+     *                                  stats of dungeon characters
+     *                                  (exclude adventurer).
      *
-     * @throws SQLException Thrown if there is exception that provides information
-     *                      on a database access error or other errors.
+     * @throws SQLException             Thrown if there is exception that
+     *                                  provides information on a database
+     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
@@ -144,11 +150,13 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
      * Modifies table template for the adventurer database table with
      * generate name if player choose random name.
      *
-     * @param theTemplate The adventurer to obtain and update adventurer's character
-     *                    stats and information into the database table.
+     * @param theTemplate               The adventurer to obtain and update
+     *                                  adventurer's character stats and
+     *                                  information into the database table.
      *
-     * @throws SQLException Thrown if there is exception that provides information
-     *                      on a database access error or other errors.
+     * @throws SQLException             Thrown if there is exception that
+     *                                  provides information on a database
+     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */

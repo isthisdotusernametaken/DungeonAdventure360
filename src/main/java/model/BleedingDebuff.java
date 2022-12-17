@@ -30,7 +30,7 @@ public class BleedingDebuff extends Buff {
     }
 
     /**
-     * Applies the buff and adjusts the dungeon character's stats.
+     * Applies the debuff and adjusts the dungeon character's stats.
      *
      * @param theStats  The dungeon character's class.
      */

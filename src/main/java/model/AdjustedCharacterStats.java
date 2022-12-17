@@ -119,7 +119,8 @@ public class AdjustedCharacterStats implements Serializable {
      *
      * @param theDamageType The damage type to indicate which resistance value
      *                      is associated with that damage type.
-     * @return The double value of the dungeon character's resistance.
+     * @return              The double value of the dungeon
+     *                      character's resistance.
      */
     double getResistance(final DamageType theDamageType) {
         return myResistances[theDamageType.ordinal()];

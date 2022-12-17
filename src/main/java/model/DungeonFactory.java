@@ -7,7 +7,7 @@ package model;
 public class DungeonFactory {
 
     /**
-     * Template method to create the dungeon
+     * Template method to create the dungeon.
      *
      * @param theDifficulty The difficulty level of the dungeon adventure game.
      * @return The dungeon in array.

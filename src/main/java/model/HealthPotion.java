@@ -2,6 +2,10 @@ package model;
 
 import java.io.Serial;
 
+/**
+ * This class constructs, handles, and applies the health potion item that
+ * will be used by the adventurer's character.
+ */
 public class HealthPotion extends CharacterApplicableItem {
 
     /**
@@ -11,7 +15,7 @@ public class HealthPotion extends CharacterApplicableItem {
     private static final long serialVersionUID = 3436290390297215184L;
 
     /**
-     * The string representing the name of the potion item
+     * The string representing the name of the potion.
      */
     private static final String NAME = createNameFromType(
             new HealthPotion(0)
@@ -38,7 +42,7 @@ public class HealthPotion extends CharacterApplicableItem {
     /**
      * Constructor to construct the healing potion.
      *
-     * @param theCount The quantitative of healing potion.
+     * @param theCount The counts of the healing potion.
      */
     HealthPotion(final int theCount) {
         super(
@@ -52,10 +56,11 @@ public class HealthPotion extends CharacterApplicableItem {
     /**
      * Executes and applies the effect of the healing potion.
      *
-     * @param theTarget The dungeon character that the potion will be
-     *                  applied on.
-     * @return          The string result representing the effect process
-     *                  when the potion is applied.
+     * @param theTarget                 The dungeon character that the potion
+     *                                  will be applied on.
+     * @return                          The string result representing the
+     *                                  effect process when the potion is
+     *                                  applied.
      *
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
@@ -75,7 +80,7 @@ public class HealthPotion extends CharacterApplicableItem {
     /**
      * Creates a copy of the buff potion.
      *
-     * @return The buff potion item.
+     * @return The buff potion.
      */
     @Override
     Item copy() {
