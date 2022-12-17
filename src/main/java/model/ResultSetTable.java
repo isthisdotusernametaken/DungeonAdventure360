@@ -58,7 +58,9 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The string from current position.
      *
-     * @throws SQLException      Thrown if there is invalid column index.
+     * @throws SQLException      Thrown if there is exception that provides
+     *                           information on a database access error
+     *                           or other errors.
      */
     @Override
     public String getString(final int theColumn) throws SQLException {
@@ -73,7 +75,9 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The integer value from current position.
      *
-     * @throws SQLException      Thrown if there is invalid column index.
+     * @throws SQLException      Thrown if there is exception that provides
+     *                           information on a database access error
+     *                           or other errors.
      */
     @Override
     public int getInt(final int theColumn) throws SQLException {
@@ -87,7 +91,9 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The double value from current position.
      *
-     * @throws SQLException      Thrown if there is invalid column index.
+     * @throws SQLException      Thrown if there is exception that provides
+     *                           information on a database access error
+     *                           or other errors.
      */
     @Override
     public double getDouble(final int theColumn) throws SQLException {
@@ -101,7 +107,9 @@ public class ResultSetTable implements Table {
      *                           location.
      * @return                   The boolean value from current position.
      *
-     * @throws SQLException      Thrown if there is invalid column index.
+     * @throws SQLException      Thrown if there is exception that provides
+     *                           information on a database access error
+     *                           or other errors.
      */
     @Override
     public boolean getBoolean(final int theColumn) throws SQLException {
