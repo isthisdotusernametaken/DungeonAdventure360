@@ -9,11 +9,11 @@ public class TurnAllocator implements Serializable {
     @Serial
     private static final long serialVersionUID = -5248983433683950395L;
 
-    private final boolean[] myTurns;
-    private final double myExtraTurnChance;
-    private final int myExtraTurnIndex;
-    private int myCurrentTurn;
-    private boolean myIsCompleted;
+    final boolean[] myTurns;
+    final double myExtraTurnChance;
+    final int myExtraTurnIndex;
+    int myCurrentTurn;
+    boolean myIsCompleted;
 
     TurnAllocator(final int theAdventurerSpeed, final int theMonsterSpeed) {
         final boolean adventurerAsFastOrFaster =
@@ -29,9 +29,9 @@ public class TurnAllocator implements Serializable {
         // myIsCompleted is false;
     }
 
-    private static double calculateSpeedRatio(final boolean theAdventurerAsFastOrFaster,
-                                              final int theAdventurerSpeed,
-                                              final int theMonsterSpeed) {
+    static double calculateSpeedRatio(final boolean theAdventurerAsFastOrFaster,
+                                      final int theAdventurerSpeed,
+                                      final int theMonsterSpeed) {
         return theAdventurerAsFastOrFaster ?
                 ((double) theAdventurerSpeed) / theMonsterSpeed :
                 ((double) theMonsterSpeed) / theAdventurerSpeed;
@@ -50,14 +50,14 @@ public class TurnAllocator implements Serializable {
         incrementTurnIfSkippingExtra();
     }
 
-    private void incrementTurn() {
+    void incrementTurn() {
         if (++myCurrentTurn >= myTurns.length) {
             myIsCompleted = true;
             myCurrentTurn = 0;
         }
     }
 
-    private void incrementTurnIfSkippingExtra() {
+    void incrementTurnIfSkippingExtra() {
         if (myCurrentTurn == myExtraTurnIndex &&
             !Util.probabilityTest(myExtraTurnChance)
         ) {
@@ -65,7 +65,7 @@ public class TurnAllocator implements Serializable {
         }
     }
 
-    private boolean[] assignTurns(final boolean theAdventurerAsFastOrFaster) {
+    boolean[] assignTurns(final boolean theAdventurerAsFastOrFaster) {
         // for ratio n.x, n turns for faster, 1 possible extra turn for faster
         // (probability x each time), and 1 turn for slower
         final boolean[] turns = new boolean[myExtraTurnIndex + 2];
