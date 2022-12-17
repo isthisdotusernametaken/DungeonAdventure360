@@ -118,9 +118,6 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
      *                                  stats of dungeon characters
      *                                  (exclude adventurer).
      *
-     * @throws SQLException             Thrown if there is exception that
-     *                                  provides information on a database
-     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */
@@ -154,9 +151,6 @@ public final class AdventurerFactory extends DungeonCharacterFactory<Adventurer>
      *                                  adventurer's character stats and
      *                                  information into the database table.
      *
-     * @throws SQLException             Thrown if there is exception that
-     *                                  provides information on a database
-     *                                  access error or other errors.
      * @throws IllegalArgumentException Thrown to indicate that a method has been
      *                                  passed an illegal or inappropriate argument.
      */

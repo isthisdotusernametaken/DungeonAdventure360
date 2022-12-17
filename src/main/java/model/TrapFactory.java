@@ -118,7 +118,6 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
      *                                  level of the dungeon and adjust the
      *                                  stats of the dungeon traps.
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.
@@ -149,7 +148,6 @@ public final class TrapFactory extends DamageDealerFactory<Trap> {
      *                                  trap stats and information
      *                                  into the database table.
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.

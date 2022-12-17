@@ -53,7 +53,6 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
      *                                  and modify the database for the
      *                                  monster.
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.
@@ -80,7 +79,6 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
      * @param theTable                  The table template generator for
      *                                  the monster database table.
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.
@@ -116,7 +114,6 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
      *                                  stats of the dungeon characters
      *                                  (exclude adventurer).
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.
@@ -149,7 +146,6 @@ public final class MonsterFactory extends DungeonCharacterFactory<Monster> {
      *                                  monster stats and information
      *                                  into the database table.
      *
-     * @throws SQLException             Thrown if there are any string.
      * @throws IllegalArgumentException Thrown to indicate that a method has
      *                                  been passed an illegal or inappropriate
      *                                  argument.
