@@ -130,7 +130,7 @@ public class Room implements Serializable {
         return myMonster;
     }
 
-    public String getMonsterName() {
+    String getMonsterName() {
         return myMonsterName;
     }
 
